@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuInterface } from '../interfaces/menu.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SidebarService {
-  menu: any[] = [];
+  menu: MenuInterface[] = [];
 
   constructor(private router: Router) {
     this.chargeMenu();
