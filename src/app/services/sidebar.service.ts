@@ -14,9 +14,18 @@ export class SidebarService {
 
   chargeMenu() {
     this.menu = [
-      { title: 'Dashboard', icon: 'home', path: 'dashboard' },
-      { title: 'Dashboard', icon: 'home', path: 'asd' },
-      { title: 'Dashboard', icon: 'home', path: 'sdasdqads' },
+      { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
+      { title: 'Login', icon: 'login', path: '../auth/login' },
+      {
+        title: 'Password forget',
+        icon: 'not_listed_location',
+        path: '../auth/forget-password',
+      },
+      {
+        title: 'Password reset',
+        icon: 'mode_edit',
+        path: '../auth/reset-password',
+      },
     ];
   }
 }
