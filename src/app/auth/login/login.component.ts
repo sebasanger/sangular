@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../auth.service';
+import { LoginRequestPayload } from './login-request.payload';
 
 @Component({
   selector: 'app-login',
@@ -16,24 +18,27 @@ export class LoginComponent {
     password: [null, Validators.required],
   });
 
-  public hide = true;
+  loginRequestPayload: LoginRequestPayload;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private _userService: UserService
-  ) {}
+    private _authService: AuthService
+  ) {
+    this.loginRequestPayload = {
+      username: '',
+      password: '',
+    };
+  }
 
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
     }
-    const user = new User(
-      this.loginForm.get('email')?.value,
-      this.loginForm.get('password')?.value
-    );
+    this.loginRequestPayload.username = this.loginForm.get('email')?.value;
+    this.loginRequestPayload.password = this.loginForm.get('password')?.value;
 
-    this._userService.login(user, true).subscribe(
+    this._authService.login(this.loginRequestPayload).subscribe(
       (res: any) => {
         Swal.fire('Welcome', res.fullName, 'success');
         this.router.navigateByUrl('/pages/dashboard');
