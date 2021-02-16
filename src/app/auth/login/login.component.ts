@@ -35,11 +35,11 @@ export class LoginComponent {
 
     this._userService.login(user, true).subscribe(
       (res: any) => {
-        Swal.fire('Bienvenido', res.usuario.nombre, 'success');
-        this.router.navigateByUrl('/');
+        Swal.fire('Welcome', res.fullName, 'success');
+        this.router.navigateByUrl('/pages/dashboard');
       },
       (err) => {
-        Swal.fire('Error', err.error.mensaje, 'error');
+        Swal.fire('Error', err.mensaje, 'error');
       }
     );
   }

@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
     ForgetPasswordComponent,
   ],
   imports: [
+    HttpClientModule,
     RouterModule,
     CommonModule,
     MatInputModule,
