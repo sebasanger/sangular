@@ -8,12 +8,21 @@ const routes: Routes = [
   {
     path: 'pages',
     component: PagesComponent,
-    canActivate: [],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
         component: DashboardComponent,
         data: { titulo: 'Dashboard' },
+      },
+      {
+        path: '',
+        component: DashboardComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: '**',
+        component: DashboardComponent,
       },
     ],
   },

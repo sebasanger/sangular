@@ -9,13 +9,14 @@ import {
 import { Observable } from 'rxjs';
 
 import { tap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _userService: UserService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -24,15 +25,12 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this._userService.validateToken().pipe(
-      tap((estaAutenticado) => {
-        if (estaAutenticado) {
-          console.log('Estas autenticado');
-        } else {
-          console.log('NO Estas autenticado');
-          this.router.navigateByUrl('auth/login');
-        }
-      })
-    );
+    const isAuthenticated = this.authService.isLoggedIn();
+    if (isAuthenticated) {
+      return true;
+    } else {
+      this.router.navigateByUrl('/auth/login');
+    }
+    return true;
   }
 }

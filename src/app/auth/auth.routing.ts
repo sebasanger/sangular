@@ -4,6 +4,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthComponent } from './auth.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +14,11 @@ const routes: Routes = [
     canActivate: [],
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'forget-password', component: ForgetPasswordComponent },
+      {
+        path: 'forget-password',
+        component: ForgetPasswordComponent,
+        canActivate: [AuthGuard, AdminGuard],
+      },
       { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },

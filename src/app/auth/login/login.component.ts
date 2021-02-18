@@ -6,7 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
 import { LoginRequestPayload } from './login-request.payload';
-
+import { throwError } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,7 +26,7 @@ export class LoginComponent {
     private _authService: AuthService
   ) {
     this.loginRequestPayload = {
-      username: '',
+      email: '',
       password: '',
     };
   }
@@ -35,16 +35,17 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return;
     }
-    this.loginRequestPayload.username = this.loginForm.get('email')?.value;
+    this.loginRequestPayload.email = this.loginForm.get('email')?.value;
     this.loginRequestPayload.password = this.loginForm.get('password')?.value;
 
     this._authService.login(this.loginRequestPayload).subscribe(
       (res: any) => {
-        Swal.fire('Welcome', res.fullName, 'success');
+        Swal.fire('Welcome', 'You logged in', 'success');
         this.router.navigateByUrl('/pages/dashboard');
       },
       (err) => {
         Swal.fire('Error', err.mensaje, 'error');
+        throwError(err);
       }
     );
   }

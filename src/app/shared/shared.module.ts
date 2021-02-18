@@ -8,10 +8,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
+import { Nopage404Component } from './nopage404/nopage404.component';
 
 @NgModule({
-  declarations: [NavigationComponent],
-  exports: [NavigationComponent],
+  declarations: [NavigationComponent, Nopage404Component],
+  exports: [NavigationComponent, Nopage404Component],
   imports: [
     RouterModule,
     CommonModule,
