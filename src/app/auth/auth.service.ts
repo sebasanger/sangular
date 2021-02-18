@@ -26,7 +26,7 @@ export class AuthService {
     return localStorage.getItem('refreshToken');
   }
 
-  get role(): 'ADMIN' | 'USER' | 'ADMIN, USER' {
+  get role(): string {
     const tokenDecoded: any = jwt_decode(this.getJwtToken()!);
     return tokenDecoded.roles;
   }
