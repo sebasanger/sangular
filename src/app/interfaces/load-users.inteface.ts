@@ -1,7 +1,7 @@
-import { User } from '../models/user.model';
+import { GetUsers } from './get-users';
 
 export interface LoadUsers {
   total: number;
-  users: User[];
+  users: GetUsers[];
   show: number;
 }

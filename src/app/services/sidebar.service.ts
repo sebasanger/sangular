@@ -20,28 +20,14 @@ export class SidebarService {
   chargeMenu() {
     this.menu = [
       { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
-      { title: 'Login', icon: 'login', path: '../auth/login' },
-
-      {
-        title: 'Password reset',
-        icon: 'mode_edit',
-        path: '../auth/reset-password',
-      },
     ];
 
     if (this.authService.role.includes('ADMIN')) {
-      this.menu.push(
-        {
-          title: 'Password forget',
-          icon: 'not_listed_location',
-          path: '../auth/forget-password',
-        },
-        {
-          title: 'Password forget',
-          icon: 'not_listed_location',
-          path: '../auth/forget-password',
-        }
-      );
+      this.menu.push({
+        title: 'Users',
+        icon: 'people',
+        path: '../pages/users',
+      });
     }
   }
 }

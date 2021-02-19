@@ -10,4 +10,8 @@ const base_url = environment.base_url;
 })
 export class UserService {
   constructor(private http: HttpClient) {}
+
+  getAllUsers() {
+    return this.http.get<null>(base_url + 'users');
+  }
 }

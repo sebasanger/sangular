@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { UsersComponent } from './users/users.component';
+import { AdminGuard } from '../guards/admin.guard';
+import { ViewUsersComponent } from './users/view-users/view-users.component';
 
 const routes: Routes = [
   {
@@ -21,8 +24,16 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: '**',
-        component: DashboardComponent,
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [AdminGuard],
+        children: [
+          {
+            path: '',
+            component: ViewUsersComponent,
+            pathMatch: 'full',
+          },
+        ],
       },
     ],
   },
