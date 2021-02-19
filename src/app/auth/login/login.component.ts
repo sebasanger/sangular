@@ -44,7 +44,7 @@ export class LoginComponent {
         this.router.navigateByUrl('/pages/dashboard');
       },
       (err) => {
-        Swal.fire('Error', err.mensaje, 'error');
+        Swal.fire('Error', err.error.mensaje, 'error');
         throwError(err);
       }
     );

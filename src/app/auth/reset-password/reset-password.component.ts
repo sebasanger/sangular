@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { ResetPasswordService } from './reset-password.service';
+import { ResetRequestPayload } from './reset-request.payload';
 
 @Component({
   selector: 'app-reset-password',
@@ -8,22 +11,33 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./reset-password.component.scss'],
 })
 export class ResetPasswordComponent implements OnInit {
+  resetRequestPayload: ResetRequestPayload;
   resetPasswordForm = this.fb.group({
     password: [null, [Validators.required]],
     repeatPassword: [null, Validators.required],
   });
 
-  public hide = true;
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private resetPasswordService: ResetPasswordService
+  ) {
+    this.resetRequestPayload = {
+      password: '',
+      password2: '',
+      token: '',
+    };
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      let token = params['tokenuid'];
-      console.log(token);
+      let tokenuid = params['tokenuid'];
+      this.resetRequestPayload.token = tokenuid;
+      if (!tokenuid) {
+        Swal.fire('Token not valid', 'Follow the link on your email', 'error');
+        this.router.navigateByUrl('auth/login');
+      }
     });
   }
 
@@ -32,9 +46,25 @@ export class ResetPasswordComponent implements OnInit {
       this.resetPasswordForm.controls['repeatPassword'].value !=
       this.resetPasswordForm.controls['password'].value
     ) {
-      alert('Error');
+      Swal.fire('Error', 'Password not missmatch', 'error');
     } else {
-      alert('Thanks!');
+      this.resetRequestPayload.password = this.resetPasswordForm.controls[
+        'password'
+      ].value;
+      this.resetRequestPayload.password2 = this.resetPasswordForm.controls[
+        'repeatPassword'
+      ].value;
+
+      this.resetPasswordService
+        .resetPassword(this.resetRequestPayload)
+        .subscribe(
+          (res) => {
+            Swal.fire('Password changed', 'try login again', 'success');
+          },
+          (err) => {
+            Swal.fire('Error', err.error.message, 'error');
+          }
+        );
     }
   }
 }

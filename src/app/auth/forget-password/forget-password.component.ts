@@ -37,7 +37,7 @@ export class ForgetPasswordComponent implements OnInit {
         this.router.navigateByUrl('auth/login');
       },
       (err) => {
-        Swal.fire('Error', 'This email not existe in own DB', 'error');
+        Swal.fire('Error', err.error.mensaje, 'error');
       }
     );
   }
