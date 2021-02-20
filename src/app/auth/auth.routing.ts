@@ -17,7 +17,6 @@ const routes: Routes = [
       {
         path: 'forget-password',
         component: ForgetPasswordComponent,
-        canActivate: [AuthGuard, AdminGuard],
       },
       { path: 'reset-password', component: ResetPasswordComponent },
     ],
