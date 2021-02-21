@@ -4,22 +4,15 @@ import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
-// TODO: Replace this with your own data model type
 export interface ViewUsersItem {
   id: number;
   fullName: string;
-  roles: string[];
   email: string;
+  roles: string[];
 }
 
-// TODO: replace this with real data from your application
 const EXAMPLE_DATA: ViewUsersItem[] = [];
 
-/**
- * Data source for the ViewUsers view. This class should
- * encapsulate all logic for fetching and manipulating the displayed data
- * (including sorting, pagination, and filtering).
- */
 export class ViewUsersDataSource extends DataSource<ViewUsersItem> {
   data: ViewUsersItem[] = EXAMPLE_DATA;
   paginator!: MatPaginator;
@@ -77,8 +70,10 @@ export class ViewUsersDataSource extends DataSource<ViewUsersItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name':
+        case 'fullName':
           return compare(a.fullName, b.fullName, isAsc);
+        case 'email':
+          return compare(a.email, b.email, isAsc);
         case 'id':
           return compare(+a.id, +b.id, isAsc);
         default:

@@ -18,13 +18,14 @@ export class ViewUsersComponent implements AfterViewInit, OnInit {
   dataSource!: ViewUsersDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'fullname', 'roles', 'email'];
+  displayedColumns = ['id', 'fullName', 'roles', 'email'];
 
   ngOnInit() {
     this.dataSource = new ViewUsersDataSource();
-    this.userService.getAllUsers().subscribe((res) => {
-      console.log(res);
+    this.userService.getAllUsers('').subscribe((res) => {
+      this.dataSource.data = res.content;
     });
+    console.log(this.dataSource);
   }
 
   ngAfterViewInit() {
