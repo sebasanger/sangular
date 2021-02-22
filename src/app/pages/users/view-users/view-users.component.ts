@@ -12,22 +12,22 @@ import { ViewUsersDataSource, ViewUsersItem } from './view-users-datasource';
 })
 export class ViewUsersComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService) {}
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<ViewUsersItem>;
-  dataSource!: ViewUsersDataSource;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatTable) table: MatTable<ViewUsersItem>;
+  dataSource: ViewUsersDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'fullName', 'roles', 'email'];
 
   ngOnInit() {
     this.dataSource = new ViewUsersDataSource();
-    this.userService.getAllUsers('').subscribe((res) => {
+    this.userService.getAllUsers('', 0, 3, 'id', 'desc').subscribe((res) => {
       this.dataSource.data = res.content;
       this.dataSource.paginator.pageIndex = 0;
       this.paginator.length = res.size;
+      console.log(res.content);
     });
-    console.log(this.dataSource);
   }
 
   ngAfterViewInit() {

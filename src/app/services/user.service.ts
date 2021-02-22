@@ -9,7 +9,15 @@ const base_url = environment.base_url;
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getAllUsers(filter: string) {
-    return this.http.get<GetUsers>(`${base_url}user?filter=${filter}`);
+  getAllUsers(
+    filter: string,
+    page: number,
+    size: number,
+    sort: 'id' | 'fullName' | 'email' | null,
+    direction: 'asc' | 'desc' | null
+  ) {
+    return this.http.get<GetUsers>(
+      `${base_url}user?filter=${filter}&page=${page}&size=${size}&sort=${sort},${direction}`
+    );
   }
 }
