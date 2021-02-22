@@ -24,6 +24,8 @@ export class ViewUsersComponent implements AfterViewInit, OnInit {
     this.dataSource = new ViewUsersDataSource();
     this.userService.getAllUsers('').subscribe((res) => {
       this.dataSource.data = res.content;
+      this.dataSource.paginator.pageIndex = 0;
+      this.paginator.length = res.size;
     });
     console.log(this.dataSource);
   }

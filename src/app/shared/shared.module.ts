@@ -9,10 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { Nopage404Component } from './nopage404/nopage404.component';
+import { ThemePickerComponent } from './theme-picker/theme-picker.component';
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
-  declarations: [NavigationComponent, Nopage404Component],
-  exports: [NavigationComponent, Nopage404Component],
+  declarations: [NavigationComponent, Nopage404Component, ThemePickerComponent],
+  exports: [NavigationComponent, Nopage404Component,ThemePickerComponent],
   imports: [
     RouterModule,
     CommonModule,
@@ -22,6 +24,7 @@ import { Nopage404Component } from './nopage404/nopage404.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatMenuModule
   ],
 })
 export class SharedModule {}
