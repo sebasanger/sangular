@@ -30,8 +30,17 @@
   padding-bottom: 6px;
 }
 
-.themepicker{
+.themepicker {
   cursor: pointer;
   margin-right: 10px;
   padding-top: 5px;
+}
+
+.progressbar {
+  padding-top: 15px;
+}
+
+.loader {
+  position: absolute;
+  width: 100%;
 }

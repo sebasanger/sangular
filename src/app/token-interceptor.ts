@@ -11,6 +11,7 @@ import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, switchMap, take, filter } from 'rxjs/operators';
 import { LoginResponse } from './auth/login/login-response.payload';
 import { AuthService } from './auth/auth.service';
+import { LoaderService } from './services/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,11 +37,13 @@ export class TokenInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse && error.status === 403) {
             return this.handleAuthErrors(req, next);
           } else {
+            this.authService.logout();
             return throwError(error);
           }
         })
       );
     }
+
     return next.handle(req);
   }
 

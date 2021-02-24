@@ -1,9 +1,20 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { fromEvent, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { User } from 'src/app/models/user.model';
+
 import { UserService } from 'src/app/services/user.service';
-import { ViewUsersDataSource, ViewUsersItem } from './view-users-datasource';
+import Swal from 'sweetalert2';
+import { ViewUsersDataSource } from './view-users-datasource';
 
 @Component({
   selector: 'app-view-users',
@@ -11,28 +22,54 @@ import { ViewUsersDataSource, ViewUsersItem } from './view-users-datasource';
   styleUrls: ['./view-users.component.scss'],
 })
 export class ViewUsersComponent implements AfterViewInit, OnInit {
-  constructor(private userService: UserService) {}
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<ViewUsersItem>;
-  dataSource: ViewUsersDataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('input') input: ElementRef;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+  constructor(private userService: UserService) {}
+
+  dataSource: ViewUsersDataSource;
   displayedColumns = ['id', 'fullName', 'roles', 'email'];
+  totalElements: number = 0;
 
   ngOnInit() {
-    this.dataSource = new ViewUsersDataSource();
-    this.userService.getAllUsers('', 0, 3, 'id', 'desc').subscribe((res) => {
-      this.dataSource.data = res.content;
-      this.dataSource.paginator.pageIndex = 0;
-      this.paginator.length = res.size;
-      console.log(res.content);
+    this.dataSource = new ViewUsersDataSource(this.userService);
+    this.dataSource.totalElements$.subscribe((res) => {
+      this.totalElements = res;
     });
+    this.dataSource.loadUsers();
+  }
+
+  onRowClicked(row: any) {
+    Swal.fire('User', row.fullName, 'info');
   }
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadLessonsPage();
+        })
+      )
+      .subscribe();
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(tap(() => this.loadLessonsPage()))
+      .subscribe();
+  }
+
+  loadLessonsPage() {
+    this.dataSource.loadUsers(
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.sort.active
+    );
   }
 }

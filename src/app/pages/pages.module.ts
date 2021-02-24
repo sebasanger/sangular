@@ -18,7 +18,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagesComponent } from './pages.component';
 import { UsersComponent } from './users/users.component';
 import { ViewUsersComponent } from './users/view-users/view-users.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -48,6 +49,8 @@ import { ViewUsersComponent } from './users/view-users/view-users.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
   ],
 })
 export class PagesModule {}

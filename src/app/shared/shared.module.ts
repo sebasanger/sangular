@@ -10,11 +10,20 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { Nopage404Component } from './nopage404/nopage404.component';
 import { ThemePickerComponent } from './theme-picker/theme-picker.component';
-import { MatMenuModule } from "@angular/material/menu";
+import { MatMenuModule } from '@angular/material/menu';
+import { LoaderComponent } from './loader/loader.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoaderInterceptor } from '../interceptors/loader-interceptor';
 
 @NgModule({
-  declarations: [NavigationComponent, Nopage404Component, ThemePickerComponent],
-  exports: [NavigationComponent, Nopage404Component,ThemePickerComponent],
+  declarations: [
+    NavigationComponent,
+    Nopage404Component,
+    ThemePickerComponent,
+    LoaderComponent,
+  ],
+  exports: [NavigationComponent, Nopage404Component, ThemePickerComponent],
   imports: [
     RouterModule,
     CommonModule,
@@ -24,7 +33,15 @@ import { MatMenuModule } from "@angular/material/menu";
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
+    },
   ],
 })
 export class SharedModule {}

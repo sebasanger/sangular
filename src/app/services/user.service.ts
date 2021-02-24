@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { GetUsers } from '../interfaces/get-users';
+import { GetPaginatedUsers } from '../interfaces/get-paginated-users';
 const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,17 @@ export class UserService {
 
   getAllUsers(
     filter: string,
-    page: number,
-    size: number,
-    sort: 'id' | 'fullName' | 'email' | null,
-    direction: 'asc' | 'desc' | null
+    sortDirection: string,
+    sort: string,
+    pageIndex: number,
+    pageSize: number
   ) {
-    return this.http.get<GetUsers>(
-      `${base_url}user?filter=${filter}&page=${page}&size=${size}&sort=${sort},${direction}`
-    );
+    return this.http.get<GetPaginatedUsers>(`${base_url}user`, {
+      params: new HttpParams()
+        .set('page', pageIndex.toString())
+        .set('filter', filter)
+        .set('size', pageSize.toString())
+        .set('sort', `${sort},${sortDirection}`),
+    });
   }
 }

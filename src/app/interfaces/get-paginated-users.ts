@@ -1,4 +1,4 @@
-export interface GetUsers {
+export interface GetPaginatedUsers {
   content: [{ id: number; fullName: string; email: string; roles: string[] }];
   pageable: {
     pageNumber: number;

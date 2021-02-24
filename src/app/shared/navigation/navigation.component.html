@@ -51,6 +51,9 @@
         <mat-icon color="danger" (click)="logout()">logout</mat-icon>
       </button>
     </mat-toolbar>
+    <div class="loader">
+      <app-loader class="progressbar"></app-loader>
+    </div>
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
