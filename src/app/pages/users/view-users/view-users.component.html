@@ -1,5 +1,13 @@
 <div class="mat-elevation-z8 table-container">
-  <mat-form-field>
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="addNewUser()"
+    class="add-button"
+  >
+    Add user
+  </button>
+  <mat-form-field color="primary">
     <mat-label>Filter</mat-label>
     <input matInput placeholder="Filter by name or email" #input />
   </mat-form-field>
@@ -18,23 +26,47 @@
       <td mat-cell *matCellDef="let row">{{ row.id }}</td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- fullName Column -->
     <ng-container matColumnDef="fullName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td mat-cell *matCellDef="let row">{{ row.fullName }}</td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
       <td mat-cell *matCellDef="let row">{{ row.email }}</td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- roles Column -->
     <ng-container matColumnDef="roles">
       <th mat-header-cell *matHeaderCellDef>Roles</th>
       <td mat-cell *matCellDef="let row">{{ row.roles }}</td>
     </ng-container>
+
+    <!-- delete Column -->
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button color="accent" (click)="editUser(row.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td></ng-container
+    >
+
+    <!-- delete Column -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let row">
+        <button
+          mat-icon-button
+          color="warn"
+          aria-label="Example icon button with a heart icon"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td></ng-container
+    >
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr

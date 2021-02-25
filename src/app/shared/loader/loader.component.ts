@@ -13,7 +13,6 @@ export class LoaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loaderService.isLoading.subscribe((v) => {
-      console.log(v);
       this.loading = v;
     });
   }

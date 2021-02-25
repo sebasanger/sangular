@@ -20,18 +20,24 @@ import { UsersComponent } from './users/users.component';
 import { ViewUsersComponent } from './users/view-users/view-users.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
 @NgModule({
   declarations: [
     PagesComponent,
     DashboardComponent,
     UsersComponent,
     ViewUsersComponent,
+    CreateUpdateUserComponent,
   ],
   exports: [
     PagesComponent,
     DashboardComponent,
     UsersComponent,
     ViewUsersComponent,
+    CreateUpdateUserComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +57,9 @@ import { MatInputModule } from '@angular/material/input';
     MatSortModule,
     MatProgressSpinnerModule,
     MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    ReactiveFormsModule,
   ],
 })
 export class PagesModule {}

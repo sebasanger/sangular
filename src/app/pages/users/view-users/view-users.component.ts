@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
@@ -26,10 +26,10 @@ export class ViewUsersComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('input') input: ElementRef;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   dataSource: ViewUsersDataSource;
-  displayedColumns = ['id', 'fullName', 'roles', 'email'];
+  displayedColumns = ['id', 'fullName', 'roles', 'email', 'edit', 'delete'];
   totalElements: number = 0;
 
   ngOnInit() {
@@ -53,17 +53,17 @@ export class ViewUsersComponent implements AfterViewInit, OnInit {
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-          this.loadLessonsPage();
+          this.loadUserPage();
         })
       )
       .subscribe();
 
     merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.loadLessonsPage()))
+      .pipe(tap(() => this.loadUserPage()))
       .subscribe();
   }
 
-  loadLessonsPage() {
+  loadUserPage() {
     this.dataSource.loadUsers(
       this.paginator.pageIndex,
       this.paginator.pageSize,
@@ -71,5 +71,13 @@ export class ViewUsersComponent implements AfterViewInit, OnInit {
       this.sort.direction,
       this.sort.active
     );
+  }
+
+  addNewUser() {
+    this.router.navigateByUrl('pages/users/create');
+  }
+
+  editUser(userid: number) {
+    this.router.navigateByUrl('pages/users/update/' + userid);
   }
 }

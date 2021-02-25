@@ -21,7 +21,7 @@ export class TokenInterceptor implements HttpInterceptor {
   refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(public authService: AuthService) {}
-
+  //TODO fix token interceptor
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
@@ -37,7 +37,6 @@ export class TokenInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse && error.status === 403) {
             return this.handleAuthErrors(req, next);
           } else {
-            this.authService.logout();
             return throwError(error);
           }
         })
