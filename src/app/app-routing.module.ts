@@ -5,7 +5,12 @@ import { PagesRoutingModule } from './pages/pages.routing';
 import { Nopage404Component } from './shared/nopage404/nopage404.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/pages', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/pages',
+    pathMatch: 'full',
+    data: { title: 'myTitle' },
+  },
   { path: '**', component: Nopage404Component },
 ];
 

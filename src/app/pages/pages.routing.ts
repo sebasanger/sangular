@@ -13,11 +13,12 @@ const routes: Routes = [
     path: 'pages',
     component: PagesComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Pages' },
     children: [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: { titulo: 'Dashboard' },
+        data: { subtitle: 'Dashboard' },
       },
       {
         path: '',
@@ -37,10 +38,12 @@ const routes: Routes = [
           {
             path: 'create',
             component: CreateUpdateUserComponent,
+            data: { subtitle: 'Add user' },
           },
           {
             path: 'update/:id',
             component: CreateUpdateUserComponent,
+            data: { subtitle: 'Update user' },
           },
         ],
       },

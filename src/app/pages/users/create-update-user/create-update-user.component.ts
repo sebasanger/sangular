@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +11,8 @@ import { UserCreateUpdatePayload } from './form-user.payload';
   styleUrls: ['./create-update-user.component.scss'],
 })
 export class CreateUpdateUserComponent implements OnInit {
+  public pageTitle: string;
+
   //TODO validate email from server
   userForm = this.fb.group({
     fullName: [
@@ -42,6 +43,8 @@ export class CreateUpdateUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.pageTitle = this.route.snapshot.data['subtitle'];
+
     this.route.params.subscribe((params) => {
       const userId = params['id'];
       if (userId > 0) {
@@ -71,32 +74,60 @@ export class CreateUpdateUserComponent implements OnInit {
     this.userRequestPayload.roles = roles.value;
 
     if (this.userRequestPayload.id > 0) {
-      console.log(this.userRequestPayload);
+      this.updateUser();
+      console.log('actualizando');
     } else {
-      this.userService.createUser(this.userRequestPayload).subscribe(
-        (res) => {
-          Swal.fire(
-            'User created',
-            'Activate user acount with the email',
-            'success'
-          );
-          this.router.navigateByUrl('/pages/users');
-        },
-        (err: any) => {
-          const validationErrors = err.error.errors;
+      console.log('creando');
 
-          if (err.status === 400) {
-            Object.keys(validationErrors).forEach((prop) => {
-              const formControl = this.userForm.get(prop);
-              if (formControl) {
-                formControl.setErrors({
-                  serverError: validationErrors[prop],
-                });
-              }
-            });
-          }
-        }
-      );
+      this.createUser();
     }
+  }
+
+  createUser() {
+    this.userService.createUser(this.userRequestPayload).subscribe(
+      (res) => {
+        Swal.fire(
+          'User created',
+          'Activate user acount with the email ' + res.email,
+          'success'
+        );
+        this.router.navigateByUrl('/pages/users');
+      },
+      (err: any) => {
+        const validationErrors = err.error.errors;
+        if (err.status === 400) {
+          Object.keys(validationErrors).forEach((prop) => {
+            const formControl = this.userForm.get(prop);
+            if (formControl) {
+              formControl.setErrors({
+                serverError: validationErrors[prop],
+              });
+            }
+          });
+        }
+      }
+    );
+  }
+
+  updateUser() {
+    this.userService.updateUser(this.userRequestPayload).subscribe(
+      (res) => {
+        Swal.fire('User updated', 'User updated', 'success');
+        this.router.navigateByUrl('/pages/users');
+      },
+      (err: any) => {
+        const validationErrors = err.error.errors;
+        if (err.status === 400) {
+          Object.keys(validationErrors).forEach((prop) => {
+            const formControl = this.userForm.get(prop);
+            if (formControl) {
+              formControl.setErrors({
+                serverError: validationErrors[prop],
+              });
+            }
+          });
+        }
+      }
+    );
   }
 }

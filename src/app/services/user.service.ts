@@ -37,4 +37,9 @@ export class UserService {
     userPayload.urlRedirect = client_url;
     return this.http.post<GetUser>(`${base_url}user`, userPayload);
   }
+
+  updateUser(userPayload: UserCreateUpdatePayload) {
+    userPayload.urlRedirect = client_url;
+    return this.http.put<GetUser>(`${base_url}user`, userPayload);
+  }
 }
