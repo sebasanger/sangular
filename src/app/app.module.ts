@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './token-interceptor';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +26,7 @@ import { TokenInterceptor } from './token-interceptor';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: TokenInterceptorService,
       multi: true,
     },
   ],

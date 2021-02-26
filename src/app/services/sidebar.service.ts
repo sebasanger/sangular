@@ -13,7 +13,6 @@ export class SidebarService {
     this.chargeMenu();
     this.authService.loggedIn.subscribe((res: any) => {
       this.chargeMenu();
-      console.log('Cambianding de user');
     });
   }
 

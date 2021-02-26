@@ -65,10 +65,12 @@ export class AuthService {
       );
   }
 
-  refreshToken() {
+  refreshToken(refreshToken: string, email: string) {
+    this.refreshTokenPayload.refreshToken = refreshToken;
+    this.refreshTokenPayload.email = email;
     return this.httpClient
       .post<LoginResponse>(
-        base_url + '/auth/refresh/token',
+        base_url + 'auth/refresh/token',
         this.refreshTokenPayload
       )
       .pipe(
@@ -90,9 +92,7 @@ export class AuthService {
         responseType: 'text',
       })
       .subscribe(
-        (data) => {
-          console.log(data);
-        },
+        (data) => {},
         (error) => {
           throwError(error);
         }

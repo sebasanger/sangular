@@ -40,11 +40,11 @@ export class LoginComponent {
 
     this._authService.login(this.loginRequestPayload).subscribe(
       (res: any) => {
-        Swal.fire('Welcome', 'You logged in', 'success');
+        Swal.fire('Welcome', 'You are logged in', 'success');
         this.router.navigateByUrl('/pages/dashboard');
       },
       (err) => {
-        Swal.fire('Error', err.error.mensaje, 'error');
+        Swal.fire('Error', err.error.message, 'error');
         throwError(err);
       }
     );

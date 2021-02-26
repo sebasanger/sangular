@@ -75,10 +75,7 @@ export class CreateUpdateUserComponent implements OnInit {
 
     if (this.userRequestPayload.id > 0) {
       this.updateUser();
-      console.log('actualizando');
     } else {
-      console.log('creando');
-
       this.createUser();
     }
   }
