@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
+import { UpdateAcountComponent } from './update-acount/update-acount.component';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -31,6 +32,7 @@ import { CreateUpdateUserComponent } from './users/create-update-user/create-upd
     UsersComponent,
     ViewUsersComponent,
     CreateUpdateUserComponent,
+    UpdateAcountComponent,
   ],
   exports: [
     PagesComponent,

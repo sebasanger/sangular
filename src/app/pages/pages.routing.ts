@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { AdminGuard } from '../guards/admin.guard';
 import { ViewUsersComponent } from './users/view-users/view-users.component';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
+import { UpdateAcountComponent } from './update-acount/update-acount.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,11 @@ const routes: Routes = [
             data: { subtitle: 'Update user' },
           },
         ],
+      },
+      {
+        path: 'update-acount',
+        component: UpdateAcountComponent,
+        data: { subtitle: 'Update acount' },
       },
     ],
   },

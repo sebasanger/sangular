@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { GetPaginatedUsers } from '../interfaces/get-paginated-users';
 import { GetUser } from '../interfaces/get-user.interface';
+import { UpdateAcountPayload } from '../pages/update-acount/form-update-acount-payload';
 import { UserCreateUpdatePayload } from '../pages/users/create-update-user/form-user.payload';
 const base_url = environment.base_url;
 const client_url = environment.client_url;
@@ -39,7 +40,13 @@ export class UserService {
   }
 
   updateUser(userPayload: UserCreateUpdatePayload) {
-    userPayload.urlRedirect = client_url;
     return this.http.put<GetUser>(`${base_url}user`, userPayload);
+  }
+
+  updateAcount(acountPayload: UpdateAcountPayload) {
+    return this.http.put<GetUser>(
+      `${base_url}user/update-acount`,
+      acountPayload
+    );
   }
 }

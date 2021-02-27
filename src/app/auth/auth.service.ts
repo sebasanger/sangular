@@ -9,6 +9,7 @@ import { LoginRequestPayload } from './login/login-request.payload';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
+import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
 
 const base_url = environment.base_url;
 @Injectable({
@@ -103,6 +104,10 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('expiresAt');
     this.router.navigateByUrl('auth/login');
+  }
+
+  getAuthenticatedUser() {
+    return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me');
   }
 
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
