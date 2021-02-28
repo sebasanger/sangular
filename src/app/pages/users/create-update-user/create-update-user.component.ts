@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-import { UserCreateUpdatePayload } from './form-user.payload';
+import {
+  EmailValidPayload,
+  UserCreateUpdatePayload,
+} from './form-user.payload';
 
 @Component({
   selector: 'app-create-update-user',
@@ -11,9 +15,14 @@ import { UserCreateUpdatePayload } from './form-user.payload';
   styleUrls: ['./create-update-user.component.scss'],
 })
 export class CreateUpdateUserComponent implements OnInit {
-  public pageTitle: string;
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private router: Router,
+    private reqValidators: ReqValidatorsService
+  ) {}
 
-  //TODO validate email from server
   userForm = this.fb.group(
     {
       fullName: [
@@ -27,17 +36,10 @@ export class CreateUpdateUserComponent implements OnInit {
       email: [null, [Validators.email, Validators.required]],
       roles: [null, Validators.required],
     },
-    { validators: this.emailValid() }
-  );
-
-  emailValid() {
-    const email: string = this.userForm.controls.email.value;
-    if (email == 'seba.sanger888@gmail.com') {
-      this.userForm.controls.email.setErrors({ emailTaked: true });
-    } else {
-      this.userForm.controls.email.setErrors({ emailTaked: false });
+    {
+      validators: this.emailValid('email'),
     }
-  }
+  );
 
   roles = [
     { name: 'User', value: 'USER' },
@@ -51,20 +53,38 @@ export class CreateUpdateUserComponent implements OnInit {
     urlRedirect: '',
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  public pageTitle: string;
+  private userId: number;
+
+  emailValidPayload: EmailValidPayload = { id: 0, email: '' };
+
+  emailValid(formEmail: string) {
+    return (formGroup: FormGroup) => {
+      const emailControl = formGroup.get(formEmail);
+
+      if (emailControl.value != null) {
+        this.emailValidPayload.email = emailControl.value;
+        this.emailValidPayload.id = this.userId;
+        this.reqValidators
+          .emailIsValid(this.emailValidPayload)
+          .subscribe((res) => {
+            if (res) {
+              emailControl.setErrors({ emailTaked: true });
+            } else {
+              emailControl.setErrors(null);
+            }
+          });
+      }
+    };
+  }
 
   ngOnInit(): void {
     this.pageTitle = this.route.snapshot.data['subtitle'];
 
     this.route.params.subscribe((params) => {
-      const userId = params['id'];
-      if (userId > 0) {
-        this.loadUser(userId);
+      this.userId = params['id'];
+      if (this.userId > 0) {
+        this.loadUser(this.userId);
       }
     });
   }

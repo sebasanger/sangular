@@ -1,7 +1,7 @@
 <form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>{{pageTitle}}</mat-card-title>
+      <mat-card-title>{{ pageTitle }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row">
@@ -39,6 +39,11 @@
             </mat-error>
             <mat-error *ngIf="userForm.controls['email'].hasError('email')">
               Must be a valid email
+            </mat-error>
+            <mat-error
+              *ngIf="userForm.controls['email'].hasError('emailTaked')"
+            >
+              This email is <strong>already taked</strong>
             </mat-error>
             <!-- server-side validation errors -->
             <mat-error *ngIf="userForm.get('email').errors?.serverError">
