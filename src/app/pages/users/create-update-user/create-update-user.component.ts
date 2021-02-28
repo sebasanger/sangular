@@ -14,14 +14,30 @@ export class CreateUpdateUserComponent implements OnInit {
   public pageTitle: string;
 
   //TODO validate email from server
-  userForm = this.fb.group({
-    fullName: [
-      null,
-      [Validators.required, Validators.minLength(3), Validators.maxLength(30)],
-    ],
-    email: [null, [Validators.email, Validators.required]],
-    roles: [null, Validators.required],
-  });
+  userForm = this.fb.group(
+    {
+      fullName: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+        ],
+      ],
+      email: [null, [Validators.email, Validators.required]],
+      roles: [null, Validators.required],
+    },
+    { validators: this.emailValid() }
+  );
+
+  emailValid() {
+    const email: string = this.userForm.controls.email.value;
+    if (email == 'seba.sanger888@gmail.com') {
+      this.userForm.controls.email.setErrors({ emailTaked: true });
+    } else {
+      this.userForm.controls.email.setErrors({ emailTaked: false });
+    }
+  }
 
   roles = [
     { name: 'User', value: 'USER' },
@@ -113,6 +129,12 @@ export class CreateUpdateUserComponent implements OnInit {
         this.router.navigateByUrl('/pages/users');
       },
       (err: any) => {
+        const validationErrorMessage = err.error.message;
+
+        if (validationErrorMessage != null) {
+          Swal.fire('Error', validationErrorMessage, 'error');
+        }
+
         const validationErrors = err.error.errors;
         if (err.status === 400) {
           Object.keys(validationErrors).forEach((prop) => {
