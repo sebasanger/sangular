@@ -16,6 +16,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
+import { ActivateAcountComponent } from './activate-acount/activate-acount.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
     AuthComponent,
     ResetPasswordComponent,
     ForgetPasswordComponent,
+    ActivateAcountComponent,
   ],
   imports: [
     HttpClientModule,

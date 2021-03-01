@@ -35,7 +35,7 @@ export class UserService {
   }
 
   createUser(userPayload: UserCreateUpdatePayload) {
-    userPayload.urlRedirect = client_url;
+    userPayload.urlRedirect = client_url + '/auth/activate-acount?tokenuid=';
     return this.http.post<GetUser>(`${base_url}user`, userPayload);
   }
 

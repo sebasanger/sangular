@@ -6,6 +6,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { ActivateAcountComponent } from './activate-acount/activate-acount.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
         component: ForgetPasswordComponent,
       },
       { path: 'reset-password', component: ResetPasswordComponent },
+      { path: 'activate-acount', component: ActivateAcountComponent },
     ],
   },
 ];

@@ -2,19 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { ResetRequestPayload } from './reset-request.payload';
-
+import { ValidateAcountPayload } from './validate-acount-request.payload';
 const baseUrl = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
-export class ResetPasswordService {
+export class ActivateAcountService {
   constructor(private http: HttpClient, private router: Router) {}
-
-  resetPassword(resetRequestPayload: ResetRequestPayload) {
-    return this.http.post<boolean>(
-      baseUrl + 'reset-password/change-password',
-      resetRequestPayload
+  activateAcount(validateAcountPayload: ValidateAcountPayload) {
+    return this.http.put<boolean>(
+      baseUrl + 'auth/validate-acount',
+      validateAcountPayload
     );
   }
 }

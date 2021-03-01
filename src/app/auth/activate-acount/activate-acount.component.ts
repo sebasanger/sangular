@@ -2,28 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ResetPasswordService } from './reset-password.service';
-import { ResetRequestPayload } from './reset-request.payload';
+import { ResetPasswordService } from '../reset-password/reset-password.service';
+import { ActivateAcountService } from './activate-acount.service';
+import { ValidateAcountPayload } from './validate-acount-request.payload';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss'],
+  selector: 'app-activate-acount',
+  templateUrl: './activate-acount.component.html',
+  styleUrls: ['./activate-acount.component.scss'],
 })
-export class ResetPasswordComponent implements OnInit {
-  resetRequestPayload: ResetRequestPayload;
-  resetPasswordForm = this.fb.group({
+export class ActivateAcountComponent implements OnInit {
+  activateAcountForm = this.fb.group({
     password: [null, [Validators.required]],
     repeatPassword: [null, Validators.required],
   });
+
+  validateAcountPayload: ValidateAcountPayload;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private resetPasswordService: ResetPasswordService
+    private activateAcountService: ActivateAcountService
   ) {
-    this.resetRequestPayload = {
+    this.validateAcountPayload = {
       password: '',
       password2: '',
       token: '',
@@ -33,33 +35,32 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       let tokenuid = params['tokenuid'];
-      this.resetRequestPayload.token = tokenuid;
+      this.validateAcountPayload.token = tokenuid;
       if (!tokenuid) {
         Swal.fire('Token not valid', 'Follow the link on your email', 'error');
         this.router.navigateByUrl('auth/login');
       }
     });
   }
-
   onSubmit() {
     if (
-      this.resetPasswordForm.controls['repeatPassword'].value !=
-      this.resetPasswordForm.controls['password'].value
+      this.activateAcountForm.controls['repeatPassword'].value !=
+      this.activateAcountForm.controls['password'].value
     ) {
       Swal.fire('Error', 'Password not missmatch', 'error');
     } else {
-      this.resetRequestPayload.password = this.resetPasswordForm.controls[
+      this.validateAcountPayload.password = this.activateAcountForm.controls[
         'password'
       ].value;
-      this.resetRequestPayload.password2 = this.resetPasswordForm.controls[
+      this.validateAcountPayload.password2 = this.activateAcountForm.controls[
         'repeatPassword'
       ].value;
 
-      this.resetPasswordService
-        .resetPassword(this.resetRequestPayload)
+      this.activateAcountService
+        .activateAcount(this.validateAcountPayload)
         .subscribe(
           (res) => {
-            Swal.fire('Password changed', 'try login again', 'success');
+            Swal.fire('Acount validated', 'Go to login page', 'success');
             this.router.navigateByUrl('auth/login');
           },
           (err) => {
