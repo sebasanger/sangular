@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
@@ -26,32 +35,26 @@ export class UpdateAcountComponent implements OnInit {
   private userId: number;
   emailValidPayload: EmailValidPayload = { id: 0, email: '' };
 
-  updateAcountForm = this.fb.group(
-    {
-      email: [null, [Validators.required, Validators.email]],
-    },
-    {
-      validators: this.emailValid('email'),
-    }
-  );
+  updateAcountForm = this.fb.group({
+    email: [
+      null,
+      {
+        validators: [Validators.email, Validators.required],
+        asyncValidators: [this.checkEmailIsTaked()],
+        updateOn: 'blur',
+      },
+    ],
+  });
 
-  emailValid(formEmail: string) {
-    return (formGroup: FormGroup) => {
-      const emailControl = formGroup.get(formEmail);
-
-      if (emailControl.value != null) {
-        this.emailValidPayload.email = emailControl.value;
-        this.emailValidPayload.id = this.userId;
-        this.reqValidators
-          .emailIsValid(this.emailValidPayload)
-          .subscribe((res) => {
-            if (res) {
-              emailControl.setErrors({ emailTaked: true });
-            } else {
-              emailControl.setErrors(null);
-            }
-          });
-      }
+  checkEmailIsTaked(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      this.emailValidPayload.id = this.userId | 0;
+      this.emailValidPayload.email = control.value;
+      return this.reqValidators.emailIsValid(this.emailValidPayload).pipe(
+        map((res) => {
+          return res ? { emailTaked: true } : null;
+        })
+      );
     };
   }
 
