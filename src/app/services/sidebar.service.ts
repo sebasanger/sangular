@@ -19,6 +19,7 @@ export class SidebarService {
   chargeMenu() {
     this.menu = [
       { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
+      { title: 'Charts', icon: 'analytics', path: '../pages/charts' },
     ];
 
     if (this.authService.role.includes('ADMIN')) {

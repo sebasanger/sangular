@@ -8,6 +8,7 @@ import { AdminGuard } from '../guards/admin.guard';
 import { ViewUsersComponent } from './users/view-users/view-users.component';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
 import { UpdateAcountComponent } from './update-acount/update-acount.component';
+import { ChartsComponent } from './charts/charts.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         data: { subtitle: 'Dashboard' },
+      },
+      {
+        path: 'charts',
+        component: ChartsComponent,
+        data: { subtitle: 'Charts' },
       },
       {
         path: '',

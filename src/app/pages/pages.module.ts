@@ -25,7 +25,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
 import { UpdateAcountComponent } from './update-acount/update-acount.component';
-import { ChartsModule } from 'ng2-charts';
+import { ComponentsModule } from '../components/components.module';
+import { ChartsComponent } from './charts/charts.component';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -34,6 +35,7 @@ import { ChartsModule } from 'ng2-charts';
     ViewUsersComponent,
     CreateUpdateUserComponent,
     UpdateAcountComponent,
+    ChartsComponent,
   ],
   exports: [
     PagesComponent,
@@ -41,10 +43,12 @@ import { ChartsModule } from 'ng2-charts';
     UsersComponent,
     ViewUsersComponent,
     CreateUpdateUserComponent,
+    ChartsComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
+    ComponentsModule,
     RouterModule,
     MatGridListModule,
     MatCardModule,
@@ -63,7 +67,6 @@ import { ChartsModule } from 'ng2-charts';
     MatSelectModule,
     MatRadioModule,
     ReactiveFormsModule,
-    ChartsModule,
   ],
 })
 export class PagesModule {}
