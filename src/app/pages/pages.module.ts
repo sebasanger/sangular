@@ -25,6 +25,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
 import { UpdateAcountComponent } from './update-acount/update-acount.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -62,6 +63,7 @@ import { UpdateAcountComponent } from './update-acount/update-acount.component';
     MatSelectModule,
     MatRadioModule,
     ReactiveFormsModule,
+    ChartsModule,
   ],
 })
 export class PagesModule {}
