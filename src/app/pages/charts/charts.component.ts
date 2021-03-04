@@ -1,4 +1,8 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import {
+  BreakpointObserver,
+  Breakpoints,
+  BreakpointState,
+} from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
@@ -9,19 +13,33 @@ import { map } from 'rxjs/operators';
 })
 export class ChartsComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) {}
-  public rows: number;
   public cols: number;
-  ngOnInit(): void {}
 
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        this.cols = 2;
-        this.rows = 2;
-      } else {
-        this.cols = 1;
-        this.rows = 1;
-      }
-    })
-  );
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .subscribe((state: BreakpointState) => {
+        if (state.breakpoints[Breakpoints.XSmall]) {
+          this.cols = 1;
+        }
+        if (state.breakpoints[Breakpoints.Small]) {
+          this.cols = 1;
+        }
+        if (state.breakpoints[Breakpoints.Medium]) {
+          this.cols = 2;
+        }
+        if (state.breakpoints[Breakpoints.Large]) {
+          this.cols = 3;
+        }
+        if (state.breakpoints[Breakpoints.XLarge]) {
+          this.cols = 3;
+        }
+      });
+  }
 }
