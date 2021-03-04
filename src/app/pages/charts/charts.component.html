@@ -1,58 +1,50 @@
-<mat-grid-list cols="2" rowHeight="2:1">
-  <!--1-->
-  <mat-grid-tile>
-    <mat-card class="example-card first-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>SALES</mat-card-title>
-        <mat-card-subtitle>Sales per day</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-sales-chart></app-sales-chart>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <!--1-->
-  <!--2-->
-  <mat-grid-tile>
-    <mat-card class="example-card first-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Customers</mat-card-title>
-        <mat-card-subtitle>Customer per day</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
+<div class="grid-container">
+  <mat-grid-list cols="2" gutterSize="15px">
+    <!--1-->
+    <mat-grid-tile>
+      <mat-card class="chart-card">
+        <mat-card-title class="title">Sales</mat-card-title>
+        <mat-card-content>
+          <app-sales-chart></app-sales-chart>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <!--1-->
+    <!--2-->
+    <mat-grid-tile>
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title class="title">Customers</mat-card-title>
+        </mat-card-header>
         <app-customers-chart></app-customers-chart>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <!--2-->
-  <!--3-->
-  <mat-grid-tile>
-    <mat-card class="example-card first-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Customers</mat-card-title>
-        <mat-card-subtitle>Customer per day</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-customers-chart></app-customers-chart>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <!--3-->
-  <!--4-->
-  <mat-grid-tile>
-    <mat-card class="example-card first-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>SALES</mat-card-title>
-        <mat-card-subtitle>Sales per day</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-sales-chart></app-sales-chart>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <!--4-->
-</mat-grid-list>
+        <mat-card-content> </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!--2-->
+    <!--3-->
+    <mat-grid-tile>
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title class="title">Coffes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-customers-chart></app-customers-chart>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!--3-->
+    <!--4-->
+    <mat-grid-tile>
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title class="title">Cars</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-sales-chart></app-sales-chart>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!--4-->
+  </mat-grid-list>
+</div>
