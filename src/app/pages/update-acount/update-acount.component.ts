@@ -7,9 +7,11 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
+import { UploadImageComponent } from 'src/app/components/upload-image/upload-image.component';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
@@ -26,7 +28,8 @@ export class UpdateAcountComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    private reqValidators: ReqValidatorsService
+    private reqValidators: ReqValidatorsService,
+    public dialog: MatDialog
   ) {}
   private updateAcountPayload: UpdateAcountPayload = {
     id: 0,
@@ -77,6 +80,19 @@ export class UpdateAcountComponent implements OnInit {
     }
     this.userService.updateAcount(this.updateAcountPayload).subscribe((res) => {
       Swal.fire('Acount updated', 'Great', 'success');
+    });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(UploadImageComponent, {
+      data: {
+        type: 'user',
+        id: this.userId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 }
