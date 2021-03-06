@@ -36,6 +36,7 @@ export class UpdateAcountComponent implements OnInit {
     email: '',
   };
   private userId: number;
+  public avatar: string;
   emailValidPayload: EmailValidPayload = { id: 0, email: '' };
 
   updateAcountForm = this.fb.group({
@@ -63,9 +64,10 @@ export class UpdateAcountComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthenticatedUser().subscribe((res) => {
-      const { id, email } = res;
+      const { id, email, avatar } = res;
       this.userId = id;
       this.updateAcountPayload.id = id;
+      this.avatar = avatar;
       this.updateAcountForm.controls.email.setValue(email);
     });
   }
@@ -84,15 +86,12 @@ export class UpdateAcountComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(UploadImageComponent, {
+    this.dialog.open(UploadImageComponent, {
       data: {
         type: 'user',
         id: this.userId,
+        image: this.avatar,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 }

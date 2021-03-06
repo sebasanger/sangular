@@ -4,6 +4,7 @@ export interface GetUserAuthenticated {
   email: string;
   roles: string[];
   enable: boolean;
+  avatar: string;
   created_at: Date;
   lastPasswordChangeAt: Date;
 }
