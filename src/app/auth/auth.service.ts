@@ -26,12 +26,9 @@ export class AuthService {
   getRefreshToken() {
     return localStorage.getItem('refreshToken');
   }
-
-  get role(): string {
-    const tokenDecoded: any = jwt_decode(this.getJwtToken()!);
-    return tokenDecoded.roles;
+  getRoles() {
+    return localStorage.getItem('roles');
   }
-
   isLoggedIn(): boolean {
     return this.getJwtToken() != null;
   }
@@ -45,46 +42,52 @@ export class AuthService {
     email: this.getEmail(),
   };
 
+  refreshToken() {
+    return this.httpClient
+      .post<LoginResponse>(
+        'http://localhost:8080/auth/refresh/token',
+        this.refreshTokenPayload
+      )
+      .pipe(
+        tap((data) => {
+          this.setDataOnStorage(data);
+        })
+      );
+  }
+
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data) => {
-          const tokenDecoded: any = jwt_decode(data.authenticationToken);
-          localStorage.setItem('authenticationToken', data.authenticationToken);
-          localStorage.setItem('email', data.email);
-          localStorage.setItem('fullName', tokenDecoded.fullname);
-          localStorage.setItem('refreshToken', data.refreshToken);
-          localStorage.setItem('expiresAt', data.expiresAt.toString());
-
-          this.loggedIn.emit(true);
-          this.fullName.emit(tokenDecoded.fullName);
-          this.fullName.emit(data.email);
-
+          this.setDataOnStorage(data);
           return true;
         })
       );
   }
 
-  refreshToken(refreshToken: string, email: string) {
-    this.refreshTokenPayload.refreshToken = refreshToken;
-    this.refreshTokenPayload.email = email;
-    return this.httpClient
-      .post<LoginResponse>(
-        base_url + 'auth/refresh/token',
-        this.refreshTokenPayload
-      )
-      .pipe(
-        tap((response) => {
-          localStorage.removeItem('authenticationToken');
-          localStorage.removeItem('expiresAt');
-          localStorage.store(
-            'authenticationToken',
-            response.authenticationToken
-          );
-          localStorage.store('expiresAt', response.expiresAt);
-        })
-      );
+  setDataOnStorage(data: LoginResponse) {
+    this.removeDataFromStorage();
+    const tokenDecoded: any = jwt_decode(data.authenticationToken);
+    localStorage.setItem('authenticationToken', data.authenticationToken);
+    localStorage.setItem('email', data.email);
+    localStorage.setItem('fullName', tokenDecoded.fullname);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    localStorage.setItem('expiresAt', data.expiresAt.toString());
+    localStorage.setItem('roles', tokenDecoded.roles);
+
+    this.loggedIn.emit(true);
+    this.fullName.emit(tokenDecoded.fullName);
+    this.fullName.emit(data.email);
+  }
+
+  removeDataFromStorage() {
+    localStorage.removeItem('authenticationToken');
+    localStorage.removeItem('email');
+    localStorage.removeItem('fullName');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresAt');
+    localStorage.removeItem('roles');
   }
 
   logout() {
@@ -98,11 +101,7 @@ export class AuthService {
           throwError(error);
         }
       );
-    localStorage.removeItem('authenticationToken');
-    localStorage.removeItem('email');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('expiresAt');
+    this.removeDataFromStorage();
     this.router.navigateByUrl('auth/login');
   }
 
@@ -112,5 +111,4 @@ export class AuthService {
 
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
   @Output() fullName: EventEmitter<string> = new EventEmitter();
-  @Output() email: EventEmitter<string> = new EventEmitter();
 }

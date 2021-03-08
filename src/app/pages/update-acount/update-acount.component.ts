@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UploadImageComponent } from 'src/app/components/upload-image/upload-image.component';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
@@ -29,7 +30,8 @@ export class UpdateAcountComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private reqValidators: ReqValidatorsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fileUploadService: FileUploadService
   ) {}
   private updateAcountPayload: UpdateAcountPayload = {
     id: 0,
@@ -69,6 +71,9 @@ export class UpdateAcountComponent implements OnInit {
       this.updateAcountPayload.id = id;
       this.avatar = avatar;
       this.updateAcountForm.controls.email.setValue(email);
+      this.fileUploadService.imageChanged.subscribe((newAvatar: string) => {
+        this.avatar = newAvatar;
+      });
     });
   }
 

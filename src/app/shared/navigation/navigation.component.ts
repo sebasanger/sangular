@@ -25,10 +25,11 @@ export class NavigationComponent {
     this.authService.loggedIn.subscribe(
       (data: boolean) => (this.isLoggedIn = data)
     );
-    this.authService.email.subscribe((data: string) => (this.email = data));
+    this.authService.fullName.subscribe(
+      (data: string) => (this.fullName = data)
+    );
     this.isLoggedIn = this.authService.isLoggedIn();
     this.email = this.authService.getEmail();
-    this.fullName = this.authService.getFullName();
   }
 
   logout() {

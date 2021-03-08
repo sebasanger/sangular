@@ -17,12 +17,13 @@ export class SidebarService {
   }
 
   chargeMenu() {
+    const roles = this.authService.getRoles();
     this.menu = [
       { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
       { title: 'Charts', icon: 'analytics', path: '../pages/charts' },
     ];
 
-    if (this.authService.role.includes('ADMIN')) {
+    if (roles.includes('ADMIN')) {
       this.menu.push({
         title: 'Users',
         icon: 'people',
