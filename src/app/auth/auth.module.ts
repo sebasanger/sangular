@@ -17,7 +17,7 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
 import { ActivateAcountComponent } from './activate-acount/activate-acount.component';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -40,6 +40,7 @@ import { ActivateAcountComponent } from './activate-acount/activate-acount.compo
     MatIconModule,
     FlexLayoutModule,
     SharedModule,
+    MatCheckboxModule,
   ],
 })
 export class AuthModule {}

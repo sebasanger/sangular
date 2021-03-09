@@ -30,6 +30,11 @@
                 Email not valid
               </mat-error>
             </mat-form-field>
+            <mat-checkbox
+              [checked]="remember"
+              (change)="changerRememberStatus()"
+              >Remember me</mat-checkbox
+            >
           </div>
           <div class="col">
             <mat-form-field color="accent">

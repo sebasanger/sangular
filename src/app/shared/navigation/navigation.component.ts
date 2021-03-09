@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
   public menuItems: any[];
   isLoggedIn: boolean;
   email: string | null;
@@ -19,9 +19,12 @@ export class NavigationComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
-    private _sidebarService: SidebarService
+    private sidebarService: SidebarService
   ) {
-    this.menuItems = _sidebarService.menu;
+    this.fullName = this.authService.getFullName();
+  }
+  ngOnInit(): void {
+    this.menuItems = this.sidebarService.menu;
     this.authService.loggedIn.subscribe(
       (data: boolean) => (this.isLoggedIn = data)
     );

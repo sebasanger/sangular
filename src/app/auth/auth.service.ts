@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
 
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { LoginResponse } from './login/login-response.payload';
 import { LoginRequestPayload } from './login/login-request.payload';
 import { environment } from 'src/environments/environment';
@@ -21,20 +21,33 @@ export class AuthService {
     return localStorage.getItem('email');
   }
   getFullName() {
-    return localStorage.getItem('fullName');
+    const data: any = this.decodeDataFromJwtOnStorage;
+    return data != null ? data.fullname : '';
   }
   getRefreshToken() {
     return localStorage.getItem('refreshToken');
   }
   getRoles() {
-    return localStorage.getItem('roles');
+    const data: any = this.decodeDataFromJwtOnStorage;
+    return data != null ? data.roles : '';
   }
   isLoggedIn(): boolean {
     return this.getJwtToken() != null;
   }
 
-  getJwtToken(): string | null {
+  getJwtToken(): string {
     return localStorage.getItem('authenticationToken');
+  }
+
+  get decodeDataFromJwtOnStorage(): string | null {
+    const token: string = this.getJwtToken();
+
+    try {
+      return jwt_decode(token);
+    } catch (error) {
+      this.refreshToken().subscribe();
+    }
+    return null;
   }
 
   refreshTokenPayload = {
@@ -43,6 +56,8 @@ export class AuthService {
   };
 
   refreshToken() {
+    console.log('Token refreshed');
+
     return this.httpClient
       .post<LoginResponse>(
         'http://localhost:8080/auth/refresh/token',
@@ -50,7 +65,11 @@ export class AuthService {
       )
       .pipe(
         tap((data) => {
-          this.setDataOnStorage(data);
+          this.setUserDataOnStorageAndRemoveOld(data);
+        }),
+        catchError((err) => {
+          this.logout();
+          return throwError(err);
         })
       );
   }
@@ -60,21 +79,19 @@ export class AuthService {
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data) => {
-          this.setDataOnStorage(data);
+          this.setUserDataOnStorageAndRemoveOld(data);
           return true;
         })
       );
   }
 
-  setDataOnStorage(data: LoginResponse) {
+  setUserDataOnStorageAndRemoveOld(data: LoginResponse) {
     this.removeDataFromStorage();
     const tokenDecoded: any = jwt_decode(data.authenticationToken);
     localStorage.setItem('authenticationToken', data.authenticationToken);
-    localStorage.setItem('email', data.email);
-    localStorage.setItem('fullName', tokenDecoded.fullname);
     localStorage.setItem('refreshToken', data.refreshToken);
+    localStorage.setItem('email', data.email);
     localStorage.setItem('expiresAt', data.expiresAt.toString());
-    localStorage.setItem('roles', tokenDecoded.roles);
 
     this.loggedIn.emit(true);
     this.fullName.emit(tokenDecoded.fullName);
@@ -83,11 +100,9 @@ export class AuthService {
 
   removeDataFromStorage() {
     localStorage.removeItem('authenticationToken');
-    localStorage.removeItem('email');
-    localStorage.removeItem('fullName');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('email');
     localStorage.removeItem('expiresAt');
-    localStorage.removeItem('roles');
   }
 
   logout() {
