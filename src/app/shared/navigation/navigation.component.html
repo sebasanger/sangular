@@ -30,18 +30,29 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>sangular</span>
-      <span class="spacer"></span>
+      <span class="title">sangular</span>
       <app-theme-picker class="themepicker"></app-theme-picker>
+      <span class="spacer"></span>
 
       <span>{{ fullName }}</span>
       <button
         routerLink="update-acount"
         mat-icon-button
-        class="example-icon favorite-icon"
-        aria-label="Example icon-button with heart icon"
+        class="user-menu"
+        aria-label="User avatar"
       >
-        <mat-icon color="danger">account_circle</mat-icon>
+        <img
+          [src]="avatar"
+          alt="User avatar"
+          class="user-avatar"
+          *ngIf="avatar"
+        />
+        <img
+          src="/assets/images/ss-icon.jpg"
+          alt="User avatar"
+          class="user-avatar"
+          *ngIf="!avatar"
+        />
       </button>
 
       <button

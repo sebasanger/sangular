@@ -3,7 +3,11 @@
   <input type="file" (change)="changeImage($event.target)" />
 
   <div class="img-container">
-    <img class="image-prev" *ngIf="!temporalImage" [src]="actualImage" />
+    <img
+      class="image-prev"
+      *ngIf="!temporalImage && actualImage"
+      [src]="actualImage"
+    />
     <img class="image-prev" *ngIf="temporalImage" [src]="temporalImage" />
   </div>
 </mat-dialog-content>

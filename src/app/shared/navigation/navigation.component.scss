@@ -26,7 +26,6 @@
 }
 
 .menu-icon {
-  margin-right: 5px;
   padding-bottom: 6px;
 }
 
@@ -43,4 +42,19 @@
 .loader {
   position: absolute;
   width: 100%;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 40px;
+  border-radius: 30%;
+}
+
+.user-menu {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.title {
+  margin-right: 15px;
 }

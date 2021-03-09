@@ -13,8 +13,9 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class NavigationComponent implements OnInit {
   public menuItems: any[];
   isLoggedIn: boolean;
-  email: string | null;
-  fullName: string | null;
+  email: string;
+  fullName: string;
+  avatar: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -31,8 +32,11 @@ export class NavigationComponent implements OnInit {
     this.authService.fullName.subscribe(
       (data: string) => (this.fullName = data)
     );
+
     this.isLoggedIn = this.authService.isLoggedIn();
     this.email = this.authService.getEmail();
+    this.avatar = this.authService.getAvatar();
+    console.log(this.avatar);
   }
 
   logout() {

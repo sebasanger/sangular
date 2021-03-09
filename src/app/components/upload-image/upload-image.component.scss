@@ -1,13 +1,12 @@
 .img-container {
   margin-top: 40px;
-  width: 500px;
-  height: 500px;
+  position: relative;
 }
 
 .image-prev {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 500px;
+  height: 400px;
 }
 
 .image-prev img {

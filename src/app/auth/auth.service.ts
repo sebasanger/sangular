@@ -31,6 +31,10 @@ export class AuthService {
     const data: any = this.decodeDataFromJwtOnStorage;
     return data != null ? data.roles : '';
   }
+  getAvatar() {
+    const data: any = this.decodeDataFromJwtOnStorage;
+    return data != null ? data.avatar : '';
+  }
   isLoggedIn(): boolean {
     return this.getJwtToken() != null;
   }
