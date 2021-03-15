@@ -5,12 +5,10 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 import { AuthService } from '../auth/auth.service';
-import { LoginResponse } from '../auth/login/login-response.payload';
+import { LoginResponse } from '../interfaces/login-response.payload';
 
 @Injectable({
   providedIn: 'root',

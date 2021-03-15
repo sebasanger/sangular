@@ -5,7 +5,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
-import { LoginRequestPayload } from './login-request.payload';
+import { LoginRequestPayload } from '../../interfaces/login-request.payload';
 import { throwError } from 'rxjs';
 @Component({
   selector: 'app-login',

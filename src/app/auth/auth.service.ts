@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
 import { catchError, map, tap } from 'rxjs/operators';
-import { LoginResponse } from './login/login-response.payload';
-import { LoginRequestPayload } from './login/login-request.payload';
+import { LoginRequestPayload } from '../interfaces/login-request.payload';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
+import { LoginResponse } from '../interfaces/login-response.payload';
 
 const base_url = environment.base_url;
 @Injectable({
