@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
 import { LoginRequestPayload } from '../../interfaces/login-request.payload';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   public remember: boolean = false;
-
+  public loading: boolean = false;
+  private suscription: Subscription;
   public loginForm = this.fb.group({
     email: [
       localStorage.getItem('remember'),
@@ -31,13 +31,22 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private store: Store<{ ui: boolean }>
   ) {
     this.loginRequestPayload = {
       email: '',
       password: '',
     };
     this.remember = localStorage.getItem('remember') != null;
+  }
+  ngOnDestroy(): void {
+    this.suscription.unsubscribe();
+  }
+  ngOnInit(): void {
+    this.suscription = this.store.select('ui').subscribe((ui: any) => {
+      this.loading = ui.isLoading;
+    });
   }
 
   onSubmit() {

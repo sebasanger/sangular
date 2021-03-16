@@ -11,8 +11,9 @@ import { AuthModule } from './auth/auth.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-
+import { uiReducer } from './reducers/ui.reducer';
+import { authReducer } from './reducers/auth.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,8 +25,10 @@ import { reducers, metaReducers } from './reducers';
     }),
     PagesModule,
     AuthModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
+    StoreModule.forRoot({ ui: uiReducer, auth: authReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
     }),
   ],
   providers: [

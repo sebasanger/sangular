@@ -60,12 +60,22 @@
       </mat-card-content>
       <mat-card-actions>
         <button
+          *ngIf="!loading"
           mat-raised-button
           color="primary"
           [disabled]="loginForm.invalid"
           type="submit"
         >
           Login
+        </button>
+        <button
+          *ngIf="loading"
+          disabled="true"
+          mat-raised-button
+          color="primary"
+          type="button"
+        >
+          Loading...
         </button>
       </mat-card-actions>
     </form>

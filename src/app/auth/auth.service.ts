@@ -10,13 +10,21 @@ import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
 import { LoginResponse } from '../interfaces/login-response.payload';
+import { Store } from '@ngrx/store';
+import { ACTVATE_LOADING } from '../actions/ui.actions';
+import { SET_USER } from '../actions/auth.actions';
+import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(
+    private store: Store,
+    private httpClient: HttpClient,
+    private router: Router
+  ) {}
   getEmail() {
     return localStorage.getItem('email');
   }
@@ -79,10 +87,15 @@ export class AuthService {
   }
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
+    this.store.dispatch(ACTVATE_LOADING());
+
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data) => {
+          this.store.dispatch(
+            SET_USER({ user: new User('ass', 'asd', 1, 'ADMIN_ROLE', 'asdas') })
+          );
           this.setUserDataOnStorageAndRemoveOld(data);
           return true;
         })
