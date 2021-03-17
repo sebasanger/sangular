@@ -1,4 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
+  <!-- Navigation menu in sidebar-->
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -7,7 +8,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Menu </mat-toolbar>
+    <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a
         *ngFor="let item of menuItems"
@@ -19,7 +20,9 @@
       >
     </mat-nav-list>
   </mat-sidenav>
+  <!-- Navigation menu in sidebar-->
   <mat-sidenav-content>
+    <!-- Left side of navbar-->
     <mat-toolbar color="primary">
       <button
         type="button"
@@ -30,16 +33,17 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span class="title">sangular</span>
+      <span class="title" routerLink="dashboard">Sangular</span>
       <app-theme-picker class="themepicker"></app-theme-picker>
       <span class="spacer"></span>
-
+      <!-- Left side of navbar-->
+      <!-- Rigth side of navbar-->
       <span>{{ fullName }}</span>
       <button
-        routerLink="update-acount"
         mat-icon-button
         class="user-menu"
         aria-label="User avatar"
+        [matMenuTriggerFor]="menu"
       >
         <img
           [src]="avatar"
@@ -54,18 +58,25 @@
           *ngIf="!avatar"
         />
       </button>
-
-      <button
-        mat-icon-button
-        class="example-icon"
-        aria-label="Example icon-button with share icon"
-      >
-        <mat-icon color="danger" (click)="logout()">logout</mat-icon>
-      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="update-acount">
+          <mat-icon>perm_identity</mat-icon>
+          <span>Modify acount</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+      <!-- Rigth side of navbar-->
     </mat-toolbar>
+    <!-- Progresbar -->
     <div class="loader">
       <app-loader class="progressbar"></app-loader>
     </div>
+    <!-- Progresbar -->
+    <!-- Main content -->
     <ng-content></ng-content>
+    <!-- Main content -->
   </mat-sidenav-content>
 </mat-sidenav-container>
