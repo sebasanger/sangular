@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
@@ -19,12 +19,18 @@ const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnInit {
   constructor(
-    private store: Store,
+    private storeAuth: Store<{ auth: any }>,
+    private storeUi: Store<{ ui: any }>,
     private httpClient: HttpClient,
     private router: Router
   ) {}
+  userStore$: Observable<any>;
+  ngOnInit(): void {
+    this.userStore$ = this.storeAuth.select('auth');
+  }
+
   getEmail() {
     return localStorage.getItem('email');
   }
@@ -87,14 +93,14 @@ export class AuthService {
   }
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
-    this.store.dispatch(ACTVATE_LOADING());
+    this.storeUi.dispatch(ACTVATE_LOADING());
 
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data: any) => {
           console.log(data);
-          this.store.dispatch(SET_USER({ user: new User(data.user) }));
+          this.storeAuth.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
           return true;
         })
