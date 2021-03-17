@@ -14,7 +14,7 @@ const initState: State = {
 
 const _authReducer = createReducer(
   initState,
-  on(SET_USER, (state) => ({ user: { ...state.user }, isAuthenticated: true }))
+  on(SET_USER, (state, { user }) => ({ user: user, isAuthenticated: true }))
 );
 
 export function authReducer(state: State, action: Action) {

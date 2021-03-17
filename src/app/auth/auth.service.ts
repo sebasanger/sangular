@@ -92,10 +92,9 @@ export class AuthService {
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
-        map((data) => {
-          this.store.dispatch(
-            SET_USER({ user: new User('ass', 'asd', 1, 'ADMIN_ROLE', 'asdas') })
-          );
+        map((data: any) => {
+          console.log(data);
+          this.store.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
           return true;
         })
