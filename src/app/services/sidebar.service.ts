@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
 import { MenuInterface } from '../interfaces/menu.interface';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
