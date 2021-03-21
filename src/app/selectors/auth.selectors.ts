@@ -7,3 +7,13 @@ export const getUser = createSelector(
   getUserStatus,
   (state: authReducer.State) => state.user
 );
+
+export const getIsUserAuthenticated = createSelector(
+  getUserStatus,
+  (state: authReducer.State) => state.isAuthenticated
+);
+
+export const getUserRoles = createSelector(
+  getUserStatus,
+  (state: authReducer.State) => state.user.roles
+);

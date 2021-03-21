@@ -4,6 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { AuthService } from 'src/app/services/auth.service';
+
+import * as userAuthSelector from '../../selectors/auth.selectors';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
 
@@ -14,7 +16,6 @@ import { User } from 'src/app/models/user.model';
 })
 export class NavigationComponent implements OnInit {
   public menuItems: any[];
-  isLoggedIn: boolean;
   public user: User;
   private suscription: Subscription;
   avatar: string;
@@ -25,18 +26,20 @@ export class NavigationComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     private sidebarService: SidebarService,
-    private store: Store<{ auth: any }>
+    private authStore: Store<{ auth: any }>
   ) {}
   ngOnInit(): void {
-    this.suscription = this.store.select('auth').subscribe((data: any) => {
-      this.user = data;
-    });
+    this.suscription = this.authStore
+      .select(userAuthSelector.getUser)
+      .subscribe((res) => {
+        this.user = res;
+      });
     this.menuItems = this.sidebarService.menu;
   }
 
   logout() {
     this.authService.logout();
-    this.isLoggedIn = false;
+    this.suscription.unsubscribe();
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver

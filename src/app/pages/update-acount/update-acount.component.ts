@@ -63,18 +63,7 @@ export class UpdateAcountComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    this.authService.getAuthenticatedUser().subscribe((res) => {
-      const { id, email, avatar } = res;
-      this.userId = id;
-      this.updateAcountPayload.id = id;
-      this.avatar = avatar;
-      this.updateAcountForm.controls.email.setValue(email);
-      this.fileUploadService.imageChanged.subscribe((newAvatar: string) => {
-        this.avatar = newAvatar;
-      });
-    });
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     if (this.updateAcountForm.invalid) {

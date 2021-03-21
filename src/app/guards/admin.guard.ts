@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
@@ -6,15 +6,26 @@ import {
   UrlTree,
   Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  private user: User;
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private authStore: Store<{ auth: any }>
+  ) {
+    this.authStore.select('auth').subscribe((data: any) => {
+      this.user = data.user;
+    });
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,8 +35,7 @@ export class AdminGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const roles = this.authService.getRoles();
-    if (roles.includes('ADMIN')) {
+    if (this.user.roles.includes('ADMIN')) {
       return true;
     } else {
       this.router.navigateByUrl('/pages');
