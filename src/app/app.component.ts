@@ -8,10 +8,5 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {
-    this.authService.getAuthenticatedUser().subscribe((res) => {
-      res;
-    });
-  }
   title = 'sangular';
 }

@@ -15,7 +15,7 @@ export class SidebarService {
 
   constructor(private authStore: Store<{ auth: any }>) {
     this.authStore.select('auth').subscribe((res) => {
-      this.user = res;
+      this.user = res.user;
       this.chargeMenu();
     });
   }
@@ -25,7 +25,6 @@ export class SidebarService {
       { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
       { title: 'Charts', icon: 'analytics', path: '../pages/charts' },
     ];
-    console.log(this.user);
 
     if (this.user.roles.includes('ADMIN')) {
       this.menu.push({

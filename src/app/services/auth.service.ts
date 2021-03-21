@@ -1,7 +1,7 @@
 import { Injectable, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoginRequestPayload } from '../interfaces/login-request.payload';
@@ -124,9 +124,12 @@ export class AuthService implements OnInit {
   getAuthenticatedUser() {
     return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me').pipe(
       map((data: any) => {
-        console.log(data);
-
         this.storeAuth.dispatch(SET_USER({ user: new User(data) }));
+        if (data != null) {
+          return true;
+        } else {
+          return false;
+        }
       })
     );
   }
