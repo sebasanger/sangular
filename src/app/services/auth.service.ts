@@ -11,7 +11,6 @@ import jwt_decode from 'jwt-decode';
 import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
 import { LoginResponse } from '../interfaces/login-response.payload';
 import { Store } from '@ngrx/store';
-import { ACTVATE_LOADING } from '../actions/ui.actions';
 import { SET_USER } from '../actions/auth.actions';
 import { User } from '../models/user.model';
 
@@ -22,37 +21,25 @@ const base_url = environment.base_url;
 export class AuthService implements OnInit {
   constructor(
     private storeAuth: Store<{ auth: any }>,
-    private storeUi: Store<{ ui: any }>,
     private httpClient: HttpClient,
     private router: Router
   ) {}
-  userStore$: Observable<any>;
+  userStore$: Observable<any> = new Observable();
+
   ngOnInit(): void {
     this.userStore$ = this.storeAuth.select('auth');
+    this.getAuthenticatedUser().subscribe((res) => {
+      console.log(res);
+    });
   }
 
   getEmail() {
     return localStorage.getItem('email');
   }
-  getFullName() {
-    const data: any = this.decodeDataFromJwtOnStorage;
-    return data != null ? data.fullname : '';
-  }
+
   getRefreshToken() {
     return localStorage.getItem('refreshToken');
   }
-  getRoles() {
-    const data: any = this.decodeDataFromJwtOnStorage;
-    return data != null ? data.roles : '';
-  }
-  getAvatar() {
-    const data: any = this.decodeDataFromJwtOnStorage;
-    return data != null ? data.avatar : '';
-  }
-  isLoggedIn(): boolean {
-    return this.getJwtToken() != null;
-  }
-
   getJwtToken(): string {
     return localStorage.getItem('authenticationToken');
   }
@@ -82,7 +69,8 @@ export class AuthService implements OnInit {
         this.refreshTokenPayload
       )
       .pipe(
-        tap((data) => {
+        tap((data: any) => {
+          this.storeAuth.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
         }),
         catchError((err) => {
@@ -93,13 +81,10 @@ export class AuthService implements OnInit {
   }
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
-    this.storeUi.dispatch(ACTVATE_LOADING());
-
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data: any) => {
-          console.log(data);
           this.storeAuth.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
           return true;
@@ -112,18 +97,12 @@ export class AuthService implements OnInit {
     const tokenDecoded: any = jwt_decode(data.authenticationToken);
     localStorage.setItem('authenticationToken', data.authenticationToken);
     localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('email', data.email);
     localStorage.setItem('expiresAt', data.expiresAt.toString());
-
-    this.loggedIn.emit(true);
-    this.fullName.emit(tokenDecoded.fullName);
-    this.fullName.emit(data.email);
   }
 
   removeDataFromStorage() {
     localStorage.removeItem('authenticationToken');
     localStorage.removeItem('refreshToken');
-    localStorage.removeItem('email');
     localStorage.removeItem('expiresAt');
   }
 
@@ -143,9 +122,12 @@ export class AuthService implements OnInit {
   }
 
   getAuthenticatedUser() {
-    return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me');
-  }
+    return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me').pipe(
+      map((data: any) => {
+        console.log(data);
 
-  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
-  @Output() fullName: EventEmitter<string> = new EventEmitter();
+        this.storeAuth.dispatch(SET_USER({ user: new User(data) }));
+      })
+    );
+  }
 }

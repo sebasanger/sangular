@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { SidebarService } from 'src/app/services/sidebar.service';
-import { AuthService } from 'src/app/auth/auth.service';
-import * as userAuthSelector from '../../selectors/auth.selectors';
+import { AuthService } from 'src/app/services/auth.service';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
 
@@ -16,10 +15,9 @@ import { User } from 'src/app/models/user.model';
 export class NavigationComponent implements OnInit {
   public menuItems: any[];
   isLoggedIn: boolean;
-  email: string;
-  fullName: string;
+  public user: User;
+  private suscription: Subscription;
   avatar: string;
-  user: User;
 
   user$: Observable<any>;
 
@@ -27,26 +25,13 @@ export class NavigationComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     private sidebarService: SidebarService,
-    private authStore: Store<{ auth: any }>
-  ) {
-    this.fullName = this.authService.getFullName();
-  }
+    private store: Store<{ auth: any }>
+  ) {}
   ngOnInit(): void {
-    this.authStore.select(userAuthSelector.getUser).subscribe((res) => {
-      this.user = res;
+    this.suscription = this.store.select('auth').subscribe((data: any) => {
+      this.user = data;
     });
     this.menuItems = this.sidebarService.menu;
-    this.authService.loggedIn.subscribe(
-      (data: boolean) => (this.isLoggedIn = data)
-    );
-    this.authService.fullName.subscribe(
-      (data: string) => (this.fullName = data)
-    );
-
-    this.isLoggedIn = this.authService.isLoggedIn();
-    this.email = this.authService.getEmail();
-    this.avatar = this.authService.getAvatar();
-    console.log(this.avatar);
   }
 
   logout() {

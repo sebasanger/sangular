@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AuthService } from '../auth.service';
 import { LoginRequestPayload } from '../../interfaces/login-request.payload';
 import { Subscription, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

@@ -7,8 +7,8 @@ import {
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { LoginResponse } from '../interfaces/login-response.payload';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',

@@ -6,17 +6,25 @@ import {
   UrlTree,
   Router,
 } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
-import { tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  private isAuthenticated: boolean;
+  ngOnInit(): void {
+    this.store.select('auth').subscribe((data: any) => {
+      this.isAuthenticated = data.isAuthenticated;
+    });
+  }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<{ auth: any }>
+  ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -25,8 +33,7 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const isAuthenticated = this.authService.isLoggedIn();
-    if (isAuthenticated) {
+    if (this.isAuthenticated) {
       return true;
     } else {
       this.router.navigateByUrl('/auth/login');
