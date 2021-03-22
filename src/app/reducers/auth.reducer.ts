@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { SET_USER } from '../actions/auth.actions';
+import { SET_USER, UPDATE_USER } from '../actions/auth.actions';
 import { User } from '../models/user.model';
 
 export interface State {
@@ -14,7 +14,8 @@ const initState: State = {
 
 const _authReducer = createReducer(
   initState,
-  on(SET_USER, (state, { user }) => ({ user: user, isAuthenticated: true }))
+  on(SET_USER, (state, { user }) => ({ user: user, isAuthenticated: true })),
+  on(UPDATE_USER, (state, { user }) => ({ ...state, user: user }))
 );
 
 export function authReducer(state: State, action: Action) {
