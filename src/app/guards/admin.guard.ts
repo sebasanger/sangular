@@ -17,11 +17,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class AdminGuard implements CanActivate {
   private user: User;
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private authStore: Store<{ auth: any }>
-  ) {
+  constructor(private router: Router, private authStore: Store<{ auth: any }>) {
     this.authStore.select('auth').subscribe((data: any) => {
       this.user = data.user;
     });

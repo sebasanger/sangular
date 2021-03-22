@@ -1,11 +1,7 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MenuInterface } from '../interfaces/menu.interface';
-import { AuthService } from './auth.service';
-import * as userAuthSelector from '../selectors/auth.selectors';
 import { User } from '../models/user.model';
-import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })

@@ -1,8 +1,6 @@
 import { Injectable, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { Observable, of, throwError } from 'rxjs';
-
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoginRequestPayload } from '../interfaces/login-request.payload';
 import { environment } from 'src/environments/environment';
@@ -13,30 +11,27 @@ import { LoginResponse } from '../interfaces/login-response.payload';
 import { Store } from '@ngrx/store';
 import { SET_USER } from '../actions/auth.actions';
 import { User } from '../models/user.model';
+import { RefreshTokenPayload } from '../interfaces/refresh-token.payload';
 
 const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnInit {
+export class AuthService {
+  private user: User;
   constructor(
-    private storeAuth: Store<{ auth: any }>,
+    private authStore: Store<{ auth: any }>,
     private httpClient: HttpClient,
     private router: Router
-  ) {}
-  userStore$: Observable<any> = new Observable();
-
-  ngOnInit(): void {
-    this.userStore$ = this.storeAuth.select('auth');
-    this.getAuthenticatedUser().subscribe((res) => {
-      console.log(res);
+  ) {
+    this.authStore.select('auth').subscribe((data: any) => {
+      this.user = data.user;
     });
   }
 
   getEmail() {
     return localStorage.getItem('email');
   }
-
   getRefreshToken() {
     return localStorage.getItem('refreshToken');
   }
@@ -44,33 +39,19 @@ export class AuthService implements OnInit {
     return localStorage.getItem('authenticationToken');
   }
 
-  get decodeDataFromJwtOnStorage(): string | null {
-    const token: string = this.getJwtToken();
-
-    try {
-      return jwt_decode(token);
-    } catch (error) {
-      this.refreshToken().subscribe();
-    }
-    return null;
-  }
-
-  refreshTokenPayload = {
-    refreshToken: this.getRefreshToken(),
-    email: this.getEmail(),
-  };
-
   refreshToken() {
-    console.log('Token refreshed');
-
+    const refreshTokenPayload: RefreshTokenPayload = {
+      email: this.getEmail(),
+      refreshToken: this.getRefreshToken(),
+    };
     return this.httpClient
       .post<LoginResponse>(
         'http://localhost:8080/auth/refresh/token',
-        this.refreshTokenPayload
+        refreshTokenPayload
       )
       .pipe(
         tap((data: any) => {
-          this.storeAuth.dispatch(SET_USER({ user: new User(data.user) }));
+          this.authStore.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
         }),
         catchError((err) => {
@@ -85,7 +66,7 @@ export class AuthService implements OnInit {
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data: any) => {
-          this.storeAuth.dispatch(SET_USER({ user: new User(data.user) }));
+          this.authStore.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
           return true;
         })
@@ -94,8 +75,8 @@ export class AuthService implements OnInit {
 
   setUserDataOnStorageAndRemoveOld(data: LoginResponse) {
     this.removeDataFromStorage();
-    const tokenDecoded: any = jwt_decode(data.authenticationToken);
     localStorage.setItem('authenticationToken', data.authenticationToken);
+    localStorage.setItem('email', data.user.email);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('expiresAt', data.expiresAt.toString());
   }
@@ -103,28 +84,19 @@ export class AuthService implements OnInit {
   removeDataFromStorage() {
     localStorage.removeItem('authenticationToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('email');
     localStorage.removeItem('expiresAt');
   }
 
   logout() {
-    this.httpClient
-      .post(base_url + 'auth/logout', this.refreshTokenPayload, {
-        responseType: 'text',
-      })
-      .subscribe(
-        (data) => {},
-        (error) => {
-          throwError(error);
-        }
-      );
-    this.removeDataFromStorage();
     this.router.navigateByUrl('auth/login');
+    this.removeDataFromStorage();
   }
 
   getAuthenticatedUser() {
     return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me').pipe(
       map((data: any) => {
-        this.storeAuth.dispatch(SET_USER({ user: new User(data) }));
+        this.authStore.dispatch(SET_USER({ user: new User(data) }));
         if (data != null) {
           return true;
         } else {
