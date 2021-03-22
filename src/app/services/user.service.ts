@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { GetPaginatedUsers } from '../interfaces/get-paginated-users';
 import { GetUser } from '../interfaces/get-user.interface';
-import { UpdateAcountPayload } from '../pages/update-acount/form-update-acount-payload';
+import { UpdateAcountPayload } from '../interfaces/form-update-acount-payload';
 import { UserCreateUpdatePayload } from '../pages/users/create-update-user/form-user.payload';
 const base_url = environment.base_url;
 const client_url = environment.client_url;

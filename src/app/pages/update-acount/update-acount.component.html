@@ -9,16 +9,12 @@
           <div class="col">
             <mat-form-field class="full-width">
               <input matInput placeholder="Email" formControlName="email" />
-              <mat-error
-                *ngIf="updateAcountForm.controls['email'].hasError('required')"
-              >
+              <mat-error *ngIf="updateAcountForm.controls['email'].hasError('required')">
                 Email name is <strong>required</strong>
               </mat-error>
-              <mat-error
-                *ngIf="
+              <mat-error *ngIf="
                   updateAcountForm.controls['email'].hasError('emailTaked')
-                "
-              >
+                ">
                 This email is <strong>already taked</strong>
               </mat-error>
             </mat-form-field>
@@ -26,22 +22,12 @@
         </div>
         <div class="row">
           <div class="col">
-            <button
-              mat-raised-button
-              color="accent"
-              type="button"
-              (click)="openDialog()"
-            >
+            <button mat-raised-button color="accent" type="button" (click)="openDialog()">
               Change avatar
             </button>
             <div class="img-container">
-              <img class="image-prev" [src]="avatar" *ngIf="avatar" />
-              <img
-                src="/assets/images/ss-icon.jpg"
-                alt="no image"
-                class="image-prev"
-                *ngIf="!avatar"
-              />
+              <img class="image-prev" [src]="user.img" *ngIf="user.img" />
+              <img src="/assets/images/ss-icon.jpg" alt="no image" class="image-prev" *ngIf="!user.img" />
             </div>
           </div>
         </div>

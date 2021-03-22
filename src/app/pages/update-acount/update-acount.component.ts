@@ -7,55 +7,59 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UploadImageComponent } from 'src/app/components/upload-image/upload-image.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { FileUploadService } from 'src/app/services/file-upload.service';
+import { UpdateAcountPayload } from 'src/app/interfaces/form-update-acount-payload';
+import { User } from 'src/app/models/user.model';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-import { EmailValidPayload } from './EmailValidPayload';
-import { UpdateAcountPayload } from './form-update-acount-payload';
+import { EmailValidPayload } from '../../interfaces/EmailValidPayload';
 
 @Component({
   selector: 'app-update-acount',
   templateUrl: './update-acount.component.html',
   styleUrls: ['./update-acount.component.scss'],
 })
-export class UpdateAcountComponent implements OnInit {
+export class UpdateAcountComponent {
+  public user: User;
+  public updateAcountForm: any;
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private userService: UserService,
     private reqValidators: ReqValidatorsService,
     public dialog: MatDialog,
-    private fileUploadService: FileUploadService
-  ) {}
-  private updateAcountPayload: UpdateAcountPayload = {
-    id: 0,
-    email: '',
-  };
-  private userId: number;
-  public avatar: string;
-  emailValidPayload: EmailValidPayload = { id: 0, email: '' };
+    private userService: UserService,
+    private authStore: Store<{ auth: any }>
+  ) {
+    this.authStore.select('auth').subscribe((data: any) => {
+      this.user = data.user;
+      this.loadForm();
+    });
+  }
 
-  updateAcountForm = this.fb.group({
-    email: [
-      null,
-      {
-        validators: [Validators.email, Validators.required],
-        asyncValidators: [this.checkEmailIsTaked()],
-        updateOn: 'blur',
-      },
-    ],
-  });
+  loadForm() {
+    this.updateAcountForm = this.fb.group({
+      email: [
+        this.user.email,
+        {
+          validators: [Validators.email, Validators.required],
+          asyncValidators: [this.checkEmailIsTaked()],
+          updateOn: 'blur',
+        },
+      ],
+    });
+  }
 
   checkEmailIsTaked(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      this.emailValidPayload.id = this.userId | 0;
-      this.emailValidPayload.email = control.value;
-      return this.reqValidators.emailIsValid(this.emailValidPayload).pipe(
+      const emailValidPayload: EmailValidPayload = {
+        id: this.user.id,
+        email: control.value,
+      };
+
+      return this.reqValidators.emailIsValid(emailValidPayload).pipe(
         map((res) => {
           return res ? { emailTaked: true } : null;
         })
@@ -63,27 +67,26 @@ export class UpdateAcountComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
-
   onSubmit() {
     if (this.updateAcountForm.invalid) {
       return;
     } else {
-      this.updateAcountPayload.email = this.updateAcountForm.controls[
-        'email'
-      ].value;
+      const updateAcountPayload: UpdateAcountPayload = {
+        email: this.updateAcountForm.controls['email'].value,
+        id: 0,
+      };
+      this.userService.updateAcount(updateAcountPayload).subscribe((res) => {
+        Swal.fire('Acount updated', 'Great', 'success');
+      });
     }
-    this.userService.updateAcount(this.updateAcountPayload).subscribe((res) => {
-      Swal.fire('Acount updated', 'Great', 'success');
-    });
   }
 
   openDialog() {
     this.dialog.open(UploadImageComponent, {
       data: {
         type: 'user',
-        id: this.userId,
-        image: this.avatar,
+        id: this.user.id,
+        image: this.user.img,
       },
     });
   }
