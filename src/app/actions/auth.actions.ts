@@ -1,12 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../models/user.model';
 
-export const SET_USER = createAction(
+export const getUserAuth = createAction(
   '[AUTH]  Set User...',
   props<{ user: User }>()
 );
 
-export const UPDATE_USER = createAction(
-  '[AUTH]  Update user...',
-  props<{ user: User }>()
+export const apiGetUserAuth = createAction('[AUTH API]  Api get user auth...');
+
+export const apiGetUserAuthError = createAction(
+  '[AUTH API]  Api get user auth ERROR...',
+  props<{ error: any }>()
 );

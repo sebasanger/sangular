@@ -10,7 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UPDATE_USER } from 'src/app/actions/auth.actions';
 import { UploadImageComponent } from 'src/app/components/upload-image/upload-image.component';
 import { UpdateAcountPayload } from 'src/app/interfaces/form-update-acount-payload';
 import { User } from 'src/app/models/user.model';
@@ -78,7 +77,6 @@ export class UpdateAcountComponent {
       };
       const userUpdate: User = new User(this.user);
       userUpdate.email = this.updateAcountForm.controls['email'].value;
-      this.authStore.dispatch(UPDATE_USER({ user: userUpdate }));
 
       this.userService.updateAcount(updateAcountPayload).subscribe((res) => {
         Swal.fire('Acount updated', 'Great', 'success');

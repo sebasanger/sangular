@@ -30,7 +30,7 @@ export class NavigationComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.suscription = this.authStore
-      .select(userAuthSelector.getUser)
+      .select(userAuthSelector.getUserState)
       .subscribe((res) => {
         this.user = res;
       });

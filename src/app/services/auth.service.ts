@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
 import { LoginResponse } from '../interfaces/login-response.payload';
 import { Store } from '@ngrx/store';
-import { SET_USER } from '../actions/auth.actions';
 import { User } from '../models/user.model';
 import { RefreshTokenPayload } from '../interfaces/refresh-token.payload';
 
@@ -42,14 +41,13 @@ export class AuthService {
     return localStorage.getItem('authenticationToken');
   }
 
-  login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
+  login(loginRequestPayload: LoginRequestPayload): Observable<LoginResponse> {
     return this.httpClient
       .post<LoginResponse>(base_url + 'auth/login', loginRequestPayload)
       .pipe(
         map((data: any) => {
-          this.authStore.dispatch(SET_USER({ user: new User(data.user) }));
           this.setUserDataOnStorageAndRemoveOld(data);
-          return true;
+          return data;
         })
       );
   }
@@ -71,9 +69,12 @@ export class AuthService {
   }
 
   getAuthenticatedUser() {
+    return this.httpClient.get<User>(base_url + 'auth/me');
+  }
+
+  checkUserAuthenticated() {
     return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me').pipe(
       map((data: any) => {
-        this.authStore.dispatch(SET_USER({ user: new User(data) }));
         if (data != null) {
           return true;
         } else {
