@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import * as userAuthSelector from '../../selectors/auth.selectors';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
+import { apiUserAuthLogout } from 'src/app/actions/auth.actions';
 
 @Component({
   selector: 'app-navigation',
@@ -18,9 +19,7 @@ export class NavigationComponent implements OnInit {
   public menuItems: any[];
   public user: User;
   private suscription: Subscription;
-  avatar: string;
-
-  user$: Observable<any>;
+  public avatar: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -29,17 +28,14 @@ export class NavigationComponent implements OnInit {
     private authStore: Store<{ auth: any }>
   ) {}
   ngOnInit(): void {
-    this.suscription = this.authStore
-      .select(userAuthSelector.getUserState)
-      .subscribe((res) => {
-        this.user = res;
-      });
+    this.authStore.select(userAuthSelector.getUserState).subscribe((res) => {
+      this.user = res;
+    });
     this.menuItems = this.sidebarService.menu;
   }
 
   logout() {
-    this.authService.logout();
-    this.suscription.unsubscribe();
+    this.authStore.dispatch(apiUserAuthLogout());
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver

@@ -6,6 +6,8 @@ import {
   apiGetUserAuth,
   apiGetUserAuthError,
   getUserAuth,
+  apiUserAuthLogout,
+  userAuthLogout,
 } from '../actions/auth.actions';
 import { AuthService } from '../services/auth.service';
 
@@ -33,6 +35,17 @@ export class AuthEffects {
           }),
           tap(() => console.log('Usuario obtenido'))
         );
+      })
+    );
+  });
+
+  logoutUserAuth$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(apiUserAuthLogout),
+      mergeMap((action) => {
+        return this.authService
+          .logout()
+          .pipe(map((res: any) => userAuthLogout()));
       })
     );
   });

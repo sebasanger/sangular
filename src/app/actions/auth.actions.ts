@@ -12,3 +12,7 @@ export const apiGetUserAuthError = createAction(
   '[AUTH API]  Api get user auth ERROR...',
   props<{ error: any }>()
 );
+
+export const apiUserAuthLogout = createAction('[AUTH API]  Logout user...');
+
+export const userAuthLogout = createAction('[AUTH]  Logout user...');
