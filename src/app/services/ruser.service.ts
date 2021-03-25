@@ -3,17 +3,12 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-interface UserInterface {
-  email: string;
-  fullName: string;
-  id: number;
-  roles: string[];
-  img: string;
-}
+import { User } from '../models/user.model';
+
 @Injectable({
   providedIn: 'root',
 })
-export class RuserService extends EntityCollectionServiceBase<UserInterface> {
+export class RuserService extends EntityCollectionServiceBase<User> {
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('User', serviceElementsFactory);
   }

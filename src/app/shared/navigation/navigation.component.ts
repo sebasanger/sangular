@@ -5,10 +5,10 @@ import { map, shareReplay } from 'rxjs/operators';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import * as userAuthSelector from '../../selectors/auth.selectors';
+import * as userAuthSelector from '../../state/auth/auth.selectors';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
-import { apiUserAuthLogout } from 'src/app/actions/auth.actions';
+import { apiUserAuthLogout } from 'src/app/state/auth/auth.actions';
 
 @Component({
   selector: 'app-navigation',

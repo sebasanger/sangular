@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AuthService } from './services/auth.service';
-import { fromRoot } from './reducers/indexAuth';
+import { authRoot } from './state/auth/indexAuth';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from './models/user.model';
@@ -22,14 +20,19 @@ export class AppComponent {
   ) {
     this.heroes$ = ruserService.entities$;
     this.loading$ = ruserService.loading$;
-    authStore.dispatch(fromRoot.apiGetUserAuth());
-    authStore.select(fromRoot.getUserState).subscribe((res) => {});
+    authStore.dispatch(authRoot.apiGetUserAuth());
   }
 
   ngOnInit() {
-    console.log('aca');
-
     this.getHeroes();
+    // const updateUser = new User(
+    //   'segasaga@gmail.com',
+    //   'sebastian gabriel sangermano',
+    //   ['USER', 'ADMIN'],
+    //   10,
+    //   'miImagejeje'
+    // );
+    // this.update(updateUser);
   }
 
   add(user: User) {

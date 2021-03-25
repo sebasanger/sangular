@@ -8,8 +8,8 @@ import {
   getUserAuth,
   apiUserAuthLogout,
   userAuthLogout,
-} from '../actions/auth.actions';
-import { AuthService } from '../services/auth.service';
+} from './auth.actions';
+import { AuthService } from '../../services/auth.service';
 
 @Injectable({
   providedIn: 'root',

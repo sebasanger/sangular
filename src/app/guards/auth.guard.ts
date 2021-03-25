@@ -6,11 +6,8 @@ import {
   UrlTree,
   Router,
 } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable, of, Subscription } from 'rxjs';
-import { catchError, map, mergeMap, take, tap } from 'rxjs/operators';
-import { User } from '../models/user.model';
-import { getIsUserAuthenticated } from '../selectors/auth.selectors';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root',

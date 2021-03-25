@@ -75,8 +75,6 @@ export class UpdateAcountComponent {
         email: this.updateAcountForm.controls['email'].value,
         id: this.user.id,
       };
-      const userUpdate: User = new User(this.user);
-      userUpdate.email = this.updateAcountForm.controls['email'].value;
 
       this.userService.updateAcount(updateAcountPayload).subscribe((res) => {
         Swal.fire('Acount updated', 'Great', 'success');

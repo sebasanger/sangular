@@ -1,6 +1,6 @@
-import { Action, createReducer, on } from '@ngrx/store';
-import * as AuthActions from '../actions/auth.actions';
-import { User } from '../models/user.model';
+import { createReducer, on } from '@ngrx/store';
+import * as AuthActions from './auth.actions';
+import { User } from '../../models/user.model';
 
 export const authFeatureKey = 'auth';
 export interface State {

@@ -11,10 +11,9 @@ import { AuthModule } from './auth/auth.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { StoreModule } from '@ngrx/store';
-import { uiReducer } from './reducers/ui.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { fromRoot } from './reducers/indexAuth';
+import { authRoot } from './state/auth/indexAuth';
 import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 
@@ -32,12 +31,12 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     }),
     PagesModule,
     AuthModule,
-    StoreModule.forRoot({ ui: uiReducer, auth: fromRoot.authReducer }),
+    StoreModule.forRoot({ auth: authRoot.authReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([fromRoot.AuthEffects]),
+    EffectsModule.forRoot([authRoot.AuthEffects]),
     EntityDataModule.forRoot(entityConfig),
     // StoreModule.forRoot({}, {}),
   ],
