@@ -15,6 +15,12 @@ import { uiReducer } from './reducers/ui.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { fromRoot } from './reducers/indexAuth';
+import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
+import { entityConfig } from './entity-metadata';
+
+const defaultDataServiceConfig: DefaultDataServiceConfig = {
+  root: environment.base_url,
+};
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -32,6 +38,8 @@ import { fromRoot } from './reducers/indexAuth';
       logOnly: environment.production,
     }),
     EffectsModule.forRoot([fromRoot.AuthEffects]),
+    EntityDataModule.forRoot(entityConfig),
+    // StoreModule.forRoot({}, {}),
   ],
   providers: [
     {
@@ -39,6 +47,7 @@ import { fromRoot } from './reducers/indexAuth';
       useClass: TokenInterceptorService,
       multi: true,
     },
+    { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig },
   ],
   bootstrap: [AppComponent],
 })

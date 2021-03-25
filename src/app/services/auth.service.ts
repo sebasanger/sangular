@@ -10,6 +10,7 @@ import { LoginResponse } from '../interfaces/login-response.payload';
 import { Store } from '@ngrx/store';
 import { User } from '../models/user.model';
 import { RefreshTokenPayload } from '../interfaces/refresh-token.payload';
+import { EntityCollectionServiceBase } from '@ngrx/data';
 
 const base_url = environment.base_url;
 @Injectable({
