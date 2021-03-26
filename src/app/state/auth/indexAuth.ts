@@ -6,7 +6,12 @@ import {
 import {
   apiGetUserAuth,
   apiGetUserAuthError,
-  getUserAuth,
+  getUserAuthSuccess,
+  apiUserAuthLogout,
+  login,
+  loginError,
+  loginSuccess,
+  userAuthLogout,
 } from './auth.actions';
 import { authReducer, authFeatureKey } from './auth.reducer';
 import { AuthEffects } from './auth.effects';
@@ -17,7 +22,12 @@ export const authRoot = {
   getUserState,
   apiGetUserAuth,
   apiGetUserAuthError,
-  getUserAuth,
+  getUserAuthSuccess,
   authFeatureKey,
   AuthEffects,
+  apiUserAuthLogout,
+  login,
+  loginError,
+  loginSuccess,
+  userAuthLogout,
 };

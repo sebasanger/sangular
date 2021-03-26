@@ -2,38 +2,49 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import {
-  apiGetUserAuth,
-  apiGetUserAuthError,
-  getUserAuth,
-  apiUserAuthLogout,
-  userAuthLogout,
-} from './auth.actions';
+import * as authActions from './auth.actions';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   getUserAuth$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(apiGetUserAuth),
-      tap(() => {
-        console.log('Obteniendo ifo del usuuario');
-      }),
+      ofType(authActions.apiGetUserAuth),
       mergeMap((action) => {
-        console.log('Ejecutando la peticion del usuario authenticado');
         return this.authService.getAuthenticatedUser().pipe(
           map((res: any) => {
-            return getUserAuth({ user: res });
+            return authActions.getUserAuthSuccess({ user: res });
           }),
           catchError((error: any) => {
-            of(apiGetUserAuthError({ error }));
+            of(authActions.apiGetUserAuthError({ error }));
             throw error;
+          })
+        );
+      })
+    );
+  });
+
+  loginUserAuth$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.login),
+      mergeMap((action) => {
+        return this.authService.login(action.payload).pipe(
+          map((res: any) => {
+            this.router.navigateByUrl('pages/dashboard');
+            Swal.fire('Welcome', 'Hello', 'success');
+            return authActions.loginSuccess({ user: res.user });
           }),
-          tap(() => console.log('Usuario obtenido'))
+          catchError((error: any) => of(authActions.loginError({ error })))
         );
       })
     );
@@ -41,26 +52,12 @@ export class AuthEffects {
 
   logoutUserAuth$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(apiUserAuthLogout),
+      ofType(authActions.apiUserAuthLogout),
       mergeMap((action) => {
         return this.authService
           .logout()
-          .pipe(map((res: any) => userAuthLogout()));
+          .pipe(map((res: any) => authActions.userAuthLogout()));
       })
     );
   });
-
-  /*MODO CORTO SIN USAR LOG Y RETORNO RAPIDO EN LAS FAT ARROWS
-  gettUserAuth$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(apiGetUserAuth),
-      mergeMap((action) => {
-        return this.authService.getAuthenticatedUser().pipe(
-          map((res: any) => getUserAuth({ user: res.user })),
-          catchError((error: any) => of(apiGetUserAuthError({ error })))
-        );
-      })
-    );
-  });
- */
 }

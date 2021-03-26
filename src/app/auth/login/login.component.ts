@@ -1,20 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { LoginRequestPayload } from '../../interfaces/login-request.payload';
-import { Subscription, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'src/app/services/auth.service';
+import { authRoot } from '../../state/auth/indexAuth';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent {
   public remember: boolean = false;
-  public loading: boolean = false;
-  private suscription: Subscription;
   public loginForm = this.fb.group({
     email: [
       localStorage.getItem('remember'),
@@ -30,23 +25,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private _authService: AuthService,
-    private store: Store<{ ui: boolean }>
+    private authStore: Store<{ auth: any }>
   ) {
     this.loginRequestPayload = {
       email: '',
       password: '',
     };
     this.remember = localStorage.getItem('remember') != null;
-  }
-  ngOnDestroy(): void {
-    this.suscription.unsubscribe();
-  }
-  ngOnInit(): void {
-    this.suscription = this.store.select('ui').subscribe((ui: any) => {
-      this.loading = ui.isLoading;
-    });
   }
 
   onSubmit() {
@@ -61,16 +46,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginRequestPayload.email = this.loginForm.get('email')?.value;
     this.loginRequestPayload.password = this.loginForm.get('password')?.value;
     this.loginRequestPayload.remember = this.loginForm.get('remember')?.value;
-
-    this._authService.login(this.loginRequestPayload).subscribe(
-      (res: any) => {
-        Swal.fire('Welcome', 'You are logged in', 'success');
-        this.router.navigateByUrl('/pages/dashboard');
-      },
-      (err) => {
-        Swal.fire('Error', err.error.message, 'error');
-        throwError(err);
-      }
+    this.authStore.dispatch(
+      authRoot.login({ payload: this.loginRequestPayload })
     );
   }
 }

@@ -20,7 +20,7 @@ export class UserService {
     pageIndex: number,
     pageSize: number
   ) {
-    return this.http.get<GetPaginatedUsers>(`${base_url}user`, {
+    return this.http.get<GetPaginatedUsers>(`${base_url}user/pageable`, {
       params: new HttpParams()
         .set('page', pageIndex.toString())
         .set('filter', filter)

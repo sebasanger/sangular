@@ -15,7 +15,11 @@ const initState: State = {
 
 export const authReducer = createReducer(
   initState,
-  on(AuthActions.getUserAuth, (state, { user }) => ({
+  on(AuthActions.getUserAuthSuccess, (state, { user }) => ({
+    user: user,
+    isAuthenticated: true,
+  })),
+  on(AuthActions.loginSuccess, (state, { user }) => ({
     user: user,
     isAuthenticated: true,
   })),
