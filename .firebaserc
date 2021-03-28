@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "segasa-sangular": {
+      "hosting": {
+        "sangular": [
+          "segasa-sangular"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "segasa-sangular"
+  }
+}
