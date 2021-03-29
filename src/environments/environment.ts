@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://segasa-springular.herokuapp.com/',
+  base_url: 'http://localhost:8080/',
   client_url: 'http://localhost:4200/',
 };
 

@@ -24,15 +24,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.getHeroes();
-    // const updateUser = new User(
-    //   'segasaga@gmail.com',
-    //   'sebastian gabriel sangermano',
-    //   ['USER', 'ADMIN'],
-    //   10,
-    //   'miImagejeje'
-    // );
-    // this.update(updateUser);
+    //this.getHeroes();
   }
 
   add(user: User) {

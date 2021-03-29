@@ -59,6 +59,10 @@
 }
 
 .title {
-  margin-right: 15px;
+  margin-right: 5px;
   cursor: pointer;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 }

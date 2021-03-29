@@ -43,8 +43,7 @@ export class AuthEffects {
             this.router.navigateByUrl('pages/dashboard');
             Swal.fire('Welcome', 'Hello', 'success');
             return authActions.loginSuccess({ user: res.user });
-          }),
-          catchError((error: any) => of(authActions.loginError({ error })))
+          })
         );
       })
     );

@@ -18,8 +18,6 @@ export class LoginComponent {
     password: [null, Validators.required],
   });
 
-  loginRequestPayload: LoginRequestPayload;
-
   changerRememberStatus() {
     this.remember = !this.remember;
   }
@@ -27,10 +25,6 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authStore: Store<{ auth: any }>
   ) {
-    this.loginRequestPayload = {
-      email: '',
-      password: '',
-    };
     this.remember = localStorage.getItem('remember') != null;
   }
 
@@ -43,11 +37,11 @@ export class LoginComponent {
     } else {
       localStorage.removeItem('remember');
     }
-    this.loginRequestPayload.email = this.loginForm.get('email')?.value;
-    this.loginRequestPayload.password = this.loginForm.get('password')?.value;
-    this.loginRequestPayload.remember = this.loginForm.get('remember')?.value;
-    this.authStore.dispatch(
-      authRoot.login({ payload: this.loginRequestPayload })
-    );
+    const loginRequestPayload: LoginRequestPayload = {
+      email: this.loginForm.get('email')?.value,
+      password: this.loginForm.get('password')?.value,
+    };
+
+    this.authStore.dispatch(authRoot.login({ payload: loginRequestPayload }));
   }
 }
