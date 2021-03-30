@@ -1,36 +1,20 @@
 <mat-sidenav-container class="sidenav-container">
   <!-- Navigation menu in sidebar-->
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
-  >
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a
-        *ngFor="let item of menuItems"
-        mat-list-item
-        [routerLink]="[item.path]"
-        routerLinkActive="item-selected"
-        ><mat-icon class="menu-icon" color="danger">{{ item.icon }}</mat-icon
-        >{{ item.title }}</a
-      >
+      <a *ngFor="let item of menuItems" mat-list-item [routerLink]="[item.path]" routerLinkActive="item-selected">
+        <mat-icon class="menu-icon" color="danger">{{ item.icon }}</mat-icon>{{ item.title }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <!-- Navigation menu in sidebar-->
   <mat-sidenav-content>
     <!-- Left side of navbar-->
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span class="title" routerLink="dashboard">Sangular</span>
@@ -38,25 +22,10 @@
       <span class="spacer"></span>
       <!-- Left side of navbar-->
       <!-- Rigth side of navbar-->
-      <span>{{ user.fullName }}</span>
-      <button
-        mat-icon-button
-        class="user-menu"
-        aria-label="User avatar"
-        [matMenuTriggerFor]="menu"
-      >
-        <img
-          [src]="avatar"
-          alt="User avatar"
-          class="user-avatar"
-          *ngIf="avatar"
-        />
-        <img
-          src="/assets/images/ss-icon.jpg"
-          alt="User avatar"
-          class="user-avatar"
-          *ngIf="!avatar"
-        />
+      <span class="user-fullname">{{ user.fullName }}</span>
+      <button mat-icon-button class="user-menu" aria-label="User avatar" [matMenuTriggerFor]="menu">
+        <img [src]="avatar" alt="User avatar" class="user-avatar" *ngIf="avatar" />
+        <img src="/assets/images/ss-icon.jpg" alt="User avatar" class="user-avatar" *ngIf="!avatar" />
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="update-acount">

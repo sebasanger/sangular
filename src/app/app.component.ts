@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { authRoot } from './state/auth/indexAuth';
+import { userRoot } from './state/user/indexUser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from './models/user.model';
@@ -16,11 +17,21 @@ export class AppComponent {
 
   constructor(
     authStore: Store<{ auth: any }>,
+    userStore: Store<{ user: any }>,
     private ruserService: RuserService
   ) {
     this.heroes$ = ruserService.entities$;
     this.loading$ = ruserService.loading$;
     authStore.dispatch(authRoot.apiGetUserAuth());
+    userStore.dispatch(
+      userRoot.apiGetUsersPaginated({
+        filter: '',
+        pageIndex: 1,
+        pageSize: 1,
+        sort: '',
+        sortDirection: 'asc',
+      })
+    );
   }
 
   ngOnInit() {

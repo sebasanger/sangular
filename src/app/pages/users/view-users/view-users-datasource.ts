@@ -2,15 +2,8 @@ import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { catchError, finalize, map } from 'rxjs/operators';
-import {
-  Observable,
-  of as observableOf,
-  merge,
-  BehaviorSubject,
-  of,
-} from 'rxjs';
+import { Observable, of as observableOf, BehaviorSubject, of } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
 
 export interface Users {
   id: number;

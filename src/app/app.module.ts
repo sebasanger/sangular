@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { authRoot } from './state/auth/indexAuth';
+import { userRoot } from './state/user/indexUser';
 import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 
@@ -31,14 +32,16 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     }),
     PagesModule,
     AuthModule,
-    StoreModule.forRoot({ auth: authRoot.authReducer }),
+    StoreModule.forRoot({
+      auth: authRoot.authReducer,
+      user: userRoot.userReducer,
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([authRoot.AuthEffects]),
+    EffectsModule.forRoot([authRoot.AuthEffects, userRoot.UserEffects]),
     EntityDataModule.forRoot(entityConfig),
-    // StoreModule.forRoot({}, {}),
   ],
   providers: [
     {

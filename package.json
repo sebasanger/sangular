@@ -2,6 +2,8 @@
   "name": "sangular",
   "version": "0.0.0",
   "scripts": {
+    "build:ci": "npm run build:prod && npm run scully:ci",
+    "scully:ci": "scully -- --host='0.0.0.0' --scanRoutes --serverTimeout=60000",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
