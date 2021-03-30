@@ -2,82 +2,116 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { fromEvent, merge } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 
 import { UserService } from 'src/app/services/user.service';
+import { userRoot } from 'src/app/state/user/indexUser';
 import Swal from 'sweetalert2';
-import { ViewUsersDataSource } from './view-users-datasource';
 
 @Component({
   selector: 'app-view-users',
   templateUrl: './view-users.component.html',
   styleUrls: ['./view-users.component.scss'],
 })
-export class ViewUsersComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild('input') input: ElementRef;
 
-  constructor(private userService: UserService, private router: Router) {}
-
-  dataSource: ViewUsersDataSource;
-  displayedColumns = ['id', 'fullName', 'roles', 'email', 'edit', 'delete'];
-  totalElements: number = 0;
+  constructor(
+    private userStore: Store<{ user: any }>,
+    private router: Router
+  ) {}
+  public filterSubject = new Subject<string>();
+  public loading: boolean;
+  public error$: Observable<boolean>;
+  public defaultSort: Sort = { active: 'id', direction: 'asc' };
+  public dataSource: MatTableDataSource<User>;
+  public noData: User[] = [<User>{}];
+  private subscription: Subscription = new Subscription();
+  public displayedColumns = [
+    'id',
+    'fullName',
+    'roles',
+    'email',
+    'edit',
+    'delete',
+  ];
+  public totalElements: number = 0;
+  private filter: string = '';
 
   ngOnInit() {
-    this.dataSource = new ViewUsersDataSource(this.userService);
-    this.dataSource.totalElements$.subscribe((res) => {
-      this.totalElements = res;
-    });
-    this.dataSource.loadUsers();
+    this.userStore
+      .pipe(select(userRoot.getUsersPaginatedState))
+      .subscribe((res: any) => this.initializeData(res));
   }
 
-  onRowClicked(row: any) {
-    Swal.fire('User', row.fullName, 'info');
-  }
-
-  ngAfterViewInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    fromEvent(this.input.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(150),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          this.loadUserPage();
-        })
-      )
-      .subscribe();
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.loadUserPage()))
-      .subscribe();
-  }
-
-  loadUserPage() {
-    this.dataSource.loadUsers(
-      this.paginator.pageIndex,
-      this.paginator.pageSize,
-      this.input.nativeElement.value,
-      this.sort.direction,
-      this.sort.active
+  private initializeData(users: User[]): void {
+    this.dataSource = new MatTableDataSource(
+      users.length ? users : this.noData
     );
   }
 
+  ngAfterViewInit() {
+    this.loadUserPage();
+    let filter$ = this.filterSubject.pipe(
+      debounceTime(150),
+      distinctUntilChanged(),
+      tap((value: string) => {
+        this.paginator.pageIndex = 0;
+        this.filter = value;
+      })
+    );
+
+    let sort$ = this.sort.sortChange.pipe(
+      tap(() => (this.paginator.pageIndex = 0))
+    );
+
+    this.subscription.add(
+      merge(filter$, sort$, this.paginator.page)
+        .pipe(tap(() => this.loadUserPage()))
+        .subscribe()
+    );
+  }
+
+  loadUserPage() {
+    this.userStore.dispatch(
+      userRoot.apiGetUsersPaginated({
+        filter: this.filter.toLocaleLowerCase(),
+        pageIndex: this.paginator.pageIndex,
+        pageSize: this.paginator.pageSize,
+        sortDirection: this.sort.direction,
+        sort: this.sort.active,
+      })
+    );
+  }
+
+  public retry(): void {
+    this.loadUserPage();
+  }
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
   addNewUser() {
     this.router.navigateByUrl('pages/users/create');
   }
 
   editUser(userid: number) {
     this.router.navigateByUrl('pages/users/update/' + userid);
+  }
+
+  onRowClicked(row: any) {
+    Swal.fire('User', row.fullName, 'info');
   }
 }

@@ -1,11 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromAuth from './user.reducer';
+import * as fromUser from './user.reducer';
 
-export const UserStateSelector = createFeatureSelector<fromAuth.State>(
-  fromAuth.userFeatureKey
+export const UserStateSelector = createFeatureSelector<fromUser.State>(
+  fromUser.userFeatureKey
 );
 
-export const getUserState = createSelector(
+export const getUserSelectedState = createSelector(
   UserStateSelector,
-  (state: fromAuth.State) => state.user
+  (state: fromUser.State) => state.userSelected
+);
+
+export const getUsersPaginatedState = createSelector(
+  UserStateSelector,
+  (state: fromUser.State) => state.paginatedUsers.content
 );

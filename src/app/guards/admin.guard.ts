@@ -31,7 +31,7 @@ export class AdminGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.user.roles.includes('ADMIN')) {
+    if (this.user != null && this.user.roles.includes('ADMIN')) {
       console.log('User is admin');
       return true;
     } else {

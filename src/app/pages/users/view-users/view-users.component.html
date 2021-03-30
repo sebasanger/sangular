@@ -1,25 +1,13 @@
 <div class="mat-elevation-z8 table-container">
-  <button
-    mat-raised-button
-    color="accent"
-    (click)="addNewUser()"
-    class="add-button"
-  >
+  <button mat-raised-button color="accent" (click)="addNewUser()" class="add-button">
     Add user
   </button>
   <mat-form-field color="primary">
     <mat-label>Filter</mat-label>
-    <input matInput placeholder="Filter by name or email" #input />
+    <input matInput placeholder="Filter by name or email" (keyup)="filterSubject.next($any($event.target).value)" />
   </mat-form-field>
-  <table
-    mat-table
-    matSort
-    matSortActive="id"
-    matSortDirection="asc"
-    matSortDisableClear
-    aria-label="Elements"
-    [dataSource]="dataSource"
-  >
+  <table mat-table matSort matSortActive="id" matSortDirection="asc" matSortDisableClear aria-label="Elements"
+    [dataSource]="dataSource">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -51,37 +39,23 @@
         <button mat-icon-button color="accent" (click)="editUser(row.id)">
           <mat-icon>edit</mat-icon>
         </button>
-      </td></ng-container
-    >
+      </td>
+    </ng-container>
 
     <!-- delete Column -->
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td mat-cell *matCellDef="let row">
-        <button
-          mat-icon-button
-          color="warn"
-          aria-label="Example icon button with a heart icon"
-        >
+        <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
           <mat-icon>delete</mat-icon>
         </button>
-      </td></ng-container
-    >
+      </td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      (click)="onRowClicked(row)"
-    ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></tr>
   </table>
 
-  <mat-paginator
-    #paginator
-    [length]="totalElements"
-    [pageIndex]="0"
-    [pageSize]="5"
-    [pageSizeOptions]="[3, 5, 8, 10]"
-  >
+  <mat-paginator #paginator [length]="totalElements" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[3, 5, 8, 10]">
   </mat-paginator>
 </div>

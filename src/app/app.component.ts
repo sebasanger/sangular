@@ -17,21 +17,11 @@ export class AppComponent {
 
   constructor(
     authStore: Store<{ auth: any }>,
-    userStore: Store<{ user: any }>,
     private ruserService: RuserService
   ) {
     this.heroes$ = ruserService.entities$;
     this.loading$ = ruserService.loading$;
     authStore.dispatch(authRoot.apiGetUserAuth());
-    userStore.dispatch(
-      userRoot.apiGetUsersPaginated({
-        filter: '',
-        pageIndex: 1,
-        pageSize: 1,
-        sort: '',
-        sortDirection: 'asc',
-      })
-    );
   }
 
   ngOnInit() {

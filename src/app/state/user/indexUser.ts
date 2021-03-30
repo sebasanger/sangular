@@ -5,7 +5,11 @@ import {
 } from './user.actions';
 import { UserEffects } from './user.effects';
 import { userFeatureKey, userReducer } from './user.reducer';
-import {} from './user.selectors';
+import {
+  UserStateSelector,
+  getUserSelectedState,
+  getUsersPaginatedState,
+} from './user.selectors';
 export const userRoot = {
   apiGetUserPaginatedError,
   apiGetUsersPaginated,
@@ -13,4 +17,7 @@ export const userRoot = {
   UserEffects,
   userFeatureKey,
   userReducer,
+  UserStateSelector,
+  getUserSelectedState,
+  getUsersPaginatedState,
 };
