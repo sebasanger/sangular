@@ -21,3 +21,5 @@ export const apiGetUserPaginatedError = createAction(
   '[USER API]  Api get user paginated ERROR...',
   props<{ error: any }>()
 );
+
+export const loading = createAction('[USER]  Loading users...');

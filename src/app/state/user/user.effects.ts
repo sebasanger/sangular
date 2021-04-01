@@ -15,6 +15,7 @@ export class UserEffects {
     return this.actions$.pipe(
       ofType(userActions.apiGetUsersPaginated),
       mergeMap((action) => {
+        of(userActions.loading());
         return this.userService
           .getAllUsers(
             action.filter,

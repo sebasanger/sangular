@@ -6,18 +6,32 @@ import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
 export const userFeatureKey = 'user';
 export interface State {
   paginatedUsers: GetPaginatedUsers;
+  loading: boolean;
+  error: boolean;
   userSelected: User;
 }
 
 const initState: State = {
   paginatedUsers: null,
   userSelected: null,
+  loading: false,
+  error: false,
 };
 
 export const userReducer = createReducer(
   initState,
+  on(AuthActions.loading, (state) => ({
+    ...state,
+    loading: true,
+  })),
   on(AuthActions.getUsersPaginatedSuccess, (state, { paginatedUsers }) => ({
     ...state,
     paginatedUsers,
+    error: null,
+    loading: false,
+  })),
+  on(AuthActions.apiGetUserPaginatedError, (state, { error }) => ({
+    ...state,
+    error,
   }))
 );

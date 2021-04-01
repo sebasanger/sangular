@@ -14,3 +14,8 @@ export const getUsersPaginatedState = createSelector(
   UserStateSelector,
   (state: fromUser.State) => state.paginatedUsers.content
 );
+
+export const getUsersLoadingState = createSelector(
+  UserStateSelector,
+  (state: fromUser.State) => state.loading
+);

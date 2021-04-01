@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
 import { User } from 'src/app/models/user.model';
 
 import { UserService } from 'src/app/services/user.service';
@@ -52,19 +53,27 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   private filter: string = '';
 
   ngOnInit() {
-    this.userStore
-      .pipe(select(userRoot.getUsersPaginatedState))
-      .subscribe((res: any) => this.initializeData(res));
+    this.userStore.select('user').subscribe((res) => {
+      this.initializeData(res);
+    });
+
+    this.userStore.select(userRoot.getUsersLoadingState).subscribe((res) => {
+      this.loading = res;
+    });
   }
 
-  private initializeData(users: User[]): void {
-    this.dataSource = new MatTableDataSource(
-      users.length ? users : this.noData
-    );
+  private initializeData(data: any): void {
+    if (data.paginatedUsers != null && data.paginatedUsers.content.length > 0) {
+      this.dataSource = new MatTableDataSource(data.paginatedUsers.content);
+      this.totalElements = data.paginatedUsers.totalElements;
+    } else {
+      this.dataSource = new MatTableDataSource(this.noData);
+    }
   }
 
   ngAfterViewInit() {
     this.loadUserPage();
+
     let filter$ = this.filterSubject.pipe(
       debounceTime(150),
       distinctUntilChanged(),
@@ -100,6 +109,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   public retry(): void {
     this.loadUserPage();
   }
+
   public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -112,6 +122,6 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   onRowClicked(row: any) {
-    Swal.fire('User', row.fullName, 'info');
+    //Swal.fire('User', row.fullName, 'info');
   }
 }
