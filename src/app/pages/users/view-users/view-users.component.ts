@@ -9,16 +9,12 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
 import { User } from 'src/app/models/user.model';
-
-import { UserService } from 'src/app/services/user.service';
 import { userRoot } from 'src/app/state/user/indexUser';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-view-users',

@@ -9,8 +9,8 @@ import {
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UpdateImage } from 'src/app/interfaces/update-image.interface';
 import Swal from 'sweetalert2';
+import { UpdateImage } from 'src/app/interfaces/user/update-image.interface';
 @Component({
   selector: 'app-upload-image',
   templateUrl: './upload-image.component.html',

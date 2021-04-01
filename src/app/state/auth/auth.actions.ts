@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { LoginRequestPayload } from 'src/app/interfaces/login-request.payload';
+import { LoginRequestPayload } from 'src/app/interfaces/auth/login-request.payload';
 import { User } from '../../models/user.model';
 
 export const apiGetUserAuth = createAction('[AUTH API]  Api get user auth...');

@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { GetPaginatedUsers } from '../interfaces/get-paginated-users';
-import { GetUser } from '../interfaces/get-user.interface';
-import { UpdateAcountPayload } from '../interfaces/form-update-acount-payload';
-import { UserCreateUpdatePayload } from '../pages/users/create-update-user/form-user.payload';
+import { UpdateAcountPayload } from '../interfaces/user/form-update-acount-payload';
+import { UserCreateUpdatePayload } from '../interfaces/user/form-user.payload';
+import { GetPaginatedUsers } from '../interfaces/user/get-paginated-users';
+import { GetUser } from '../interfaces/user/get-user.interface';
+
 const base_url = environment.base_url;
 const client_url = environment.client_url;
 @Injectable({

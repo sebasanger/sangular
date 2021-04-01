@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { UpdateImage } from '../interfaces/update-image.interface';
+import { UpdateImage } from '../interfaces/user/update-image.interface';
 
 const base_url = environment.base_url;
 @Injectable({

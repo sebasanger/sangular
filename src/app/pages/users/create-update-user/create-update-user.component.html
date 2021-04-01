@@ -7,14 +7,8 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Full name"
-              formControlName="fullName"
-            />
-            <mat-error
-              *ngIf="userForm.controls['fullName'].hasError('required')"
-            >
+            <input matInput placeholder="Full name" formControlName="fullName" />
+            <mat-error *ngIf="userForm.controls['fullName'].hasError('required')">
               Full name is <strong>required</strong>
             </mat-error>
             <!-- server-side validation errors -->
@@ -28,21 +22,14 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Email"
-              formControlName="email"
-              type="email"
-            />
+            <input matInput placeholder="Email" formControlName="email" type="email" />
             <mat-error *ngIf="userForm.controls['email'].hasError('required')">
               Email is <strong>required</strong>
             </mat-error>
             <mat-error *ngIf="userForm.controls['email'].hasError('email')">
               Must be a valid email
             </mat-error>
-            <mat-error
-              *ngIf="userForm.controls['email'].hasError('emailTaked')"
-            >
+            <mat-error *ngIf="userForm.controls['email'].hasError('emailTaked')">
               This email is <strong>already taked</strong>
             </mat-error>
             <!-- server-side validation errors -->

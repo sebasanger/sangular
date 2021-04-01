@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
+import { GetPaginatedUsers } from 'src/app/interfaces/user/get-paginated-users';
 import { User } from 'src/app/models/user.model';
 
 export const apiGetUsersPaginated = createAction(

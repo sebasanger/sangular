@@ -2,22 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { LoginRequestPayload } from '../interfaces/login-request.payload';
+import { LoginRequestPayload } from '../interfaces/auth/login-request.payload';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { GetUserAuthenticated } from '../interfaces/get-user-authenticated';
-import { LoginResponse } from '../interfaces/login-response.payload';
-import { Store } from '@ngrx/store';
 import { User } from '../models/user.model';
-import { RefreshTokenPayload } from '../interfaces/refresh-token.payload';
-import { EntityCollectionServiceBase } from '@ngrx/data';
+import { LoginResponse } from '../interfaces/auth/login-response.payload';
+import { GetUserAuthenticated } from '../interfaces/user/get-user-authenticated';
 
 const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private user: User;
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   getJwtToken(): string {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { LoginRequestPayload } from '../../interfaces/login-request.payload';
+import { LoginRequestPayload } from '../../interfaces/auth/login-request.payload';
 import { Store } from '@ngrx/store';
 import { authRoot } from '../../state/auth/indexAuth';
 @Component({

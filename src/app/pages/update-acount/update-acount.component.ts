@@ -11,12 +11,12 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UploadImageComponent } from 'src/app/components/upload-image/upload-image.component';
-import { UpdateAcountPayload } from 'src/app/interfaces/form-update-acount-payload';
+import { UpdateAcountPayload } from 'src/app/interfaces/user/form-update-acount-payload';
 import { User } from 'src/app/models/user.model';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-import { EmailValidPayload } from '../../interfaces/EmailValidPayload';
+import { EmailValidPayload } from '../../interfaces/user/EmailValidPayload';
 
 @Component({
   selector: 'app-update-acount',

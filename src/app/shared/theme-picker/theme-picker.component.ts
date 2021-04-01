@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ThemeOptions } from 'src/app/interfaces/ui/theme-options';
 import { ThemeService } from 'src/app/services/theme.service';
-import { ThemeOptions } from 'src/app/interfaces/theme-options';
 
 @Component({
   selector: 'app-theme-picker',

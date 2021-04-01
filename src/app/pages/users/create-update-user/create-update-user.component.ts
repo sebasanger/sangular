@@ -11,14 +11,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { EmailValidPayload } from 'src/app/interfaces/user/EmailValidPayload';
+import { UserCreateUpdatePayload } from 'src/app/interfaces/user/form-user.payload';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import { userRoot } from 'src/app/state/user/indexUser';
 import Swal from 'sweetalert2';
-import {
-  EmailValidPayload,
-  UserCreateUpdatePayload,
-} from './form-user.payload';
 
 @Component({
   selector: 'app-create-update-user',
