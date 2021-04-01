@@ -3,6 +3,9 @@ import {
   apiGetUsersPaginated,
   getUsersPaginatedSuccess,
   loading,
+  apiGetUserById,
+  getUserByIdError,
+  setUserSelected,
 } from './user.actions';
 import { UserEffects } from './user.effects';
 import { userFeatureKey, userReducer } from './user.reducer';
@@ -24,4 +27,7 @@ export const userRoot = {
   getUsersPaginatedState,
   loading,
   getUsersLoadingState,
+  apiGetUserById,
+  getUserByIdError,
+  setUserSelected,
 };

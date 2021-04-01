@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { GetPaginatedUsers } from 'src/app/interfaces/get-paginated-users';
+import { User } from 'src/app/models/user.model';
 
 export const apiGetUsersPaginated = createAction(
   '[USER API]  Api get user paginated...',
@@ -23,3 +24,24 @@ export const apiGetUserPaginatedError = createAction(
 );
 
 export const loading = createAction('[USER]  Loading users...');
+
+export const apiGetUserById = createAction(
+  '[USER API]  Api get user by id...',
+  props<{
+    id: number;
+  }>()
+);
+
+export const setUserSelected = createAction(
+  '[USER API]  Set user selected...',
+  props<{
+    user: User;
+  }>()
+);
+
+export const getUserByIdError = createAction(
+  '[USER API]  Error on get user by id...',
+  props<{
+    error: any;
+  }>()
+);

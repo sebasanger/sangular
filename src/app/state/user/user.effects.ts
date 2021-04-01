@@ -38,4 +38,24 @@ export class UserEffects {
       })
     );
   });
+
+  getUserById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userActions.apiGetUserById),
+      mergeMap((action) => {
+        of(userActions.loading());
+        return this.userService.getUserById(action.id).pipe(
+          map((res: any) => {
+            return userActions.setUserSelected({
+              user: res,
+            });
+          }),
+          catchError((error: any) => {
+            of(userActions.getUserByIdError({ error }));
+            throw error;
+          })
+        );
+      })
+    );
+  });
 }

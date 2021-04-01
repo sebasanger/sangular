@@ -33,5 +33,13 @@ export const userReducer = createReducer(
   on(AuthActions.apiGetUserPaginatedError, (state, { error }) => ({
     ...state,
     error,
+  })),
+  on(AuthActions.setUserSelected, (state, { user }) => ({
+    ...state,
+    userSelected: user,
+  })),
+  on(AuthActions.getUserByIdError, (state, { error }) => ({
+    ...state,
+    userSelected: error,
   }))
 );

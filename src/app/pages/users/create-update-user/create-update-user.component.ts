@@ -8,10 +8,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
+import { userRoot } from 'src/app/state/user/indexUser';
 import Swal from 'sweetalert2';
 import {
   EmailValidPayload,
@@ -29,7 +31,8 @@ export class CreateUpdateUserComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-    private reqValidators: ReqValidatorsService
+    private reqValidators: ReqValidatorsService,
+    private userStore: Store<{ user: any }>
   ) {}
 
   userForm = this.fb.group({
@@ -78,21 +81,19 @@ export class CreateUpdateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pageTitle = this.route.snapshot.data['subtitle'];
-
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
       if (this.userId > 0) {
-        this.loadUser(this.userId);
+        this.userStore.dispatch(userRoot.apiGetUserById({ id: this.userId }));
       }
     });
   }
 
   loadUser(userId: number) {
-    this.userService.getUserById(userId).subscribe((res) => {
+    this.userStore.select(userRoot.getUserSelectedState).subscribe((res) => {
       const { fullName, email, id, roles } = res;
       this.userRequestPayload.id = id;
-      this.userForm.controls['fullName'].setValue(fullName);
+      this.userForm.controls['fullName'].setValue(res.fullName);
       this.userForm.controls['email'].setValue(email);
       this.userForm.controls['roles'].setValue(roles);
     });
