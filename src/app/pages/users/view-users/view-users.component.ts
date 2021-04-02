@@ -53,7 +53,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   private filter: string = '';
 
   ngOnInit() {
-    this.userStore.select(selectAllUsers).subscribe((res) => {
+    this.userStore.select('user').subscribe((res) => {
       this.initializeData(res);
     });
 

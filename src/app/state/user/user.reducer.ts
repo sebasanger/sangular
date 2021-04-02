@@ -1,33 +1,23 @@
-import { createReducer, on } from '@ngrx/store';
-import * as AuthActions from './user.actions';
+import { Action, createReducer, on } from '@ngrx/store';
+import * as UserActions from './user.actions';
 import { User } from '../../models/user.model';
 import { GetPaginatedUsers } from 'src/app/interfaces/user/get-paginated-users';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export const userFeatureKey = 'user';
 
-export function selectUserId(a: User): number {
-  return a.id;
-}
+export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>();
 
-export function sortByName(a: User, b: User): number {
-  return a.fullName.localeCompare(b.fullName);
-}
-
-export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>({
-  selectId: selectUserId,
-  sortComparer: sortByName,
-});
 export interface State extends EntityState<User> {
   paginatedUsers: GetPaginatedUsers;
   loading: boolean;
   error: boolean;
-  userSelected: User;
+  selectedUserId: number | null;
   total: number;
 }
 export const initialState: State = userAdapter.getInitialState({
   paginatedUsers: null,
-  userSelected: null,
+  selectedUserId: null,
   loading: false,
   error: false,
   total: 0,
@@ -35,26 +25,93 @@ export const initialState: State = userAdapter.getInitialState({
 
 export const userReducer = createReducer(
   initialState,
-  on(AuthActions.loading, (state) => ({
+  on(UserActions.loading, (state) => ({
     ...state,
     loading: true,
   })),
-  on(AuthActions.getUsersPaginatedSuccess, (state, { paginatedUsers }) => ({
+  on(UserActions.getUsersPaginatedSuccess, (state, { paginatedUsers }) => ({
     ...state,
     paginatedUsers,
     error: null,
     loading: false,
   })),
-  on(AuthActions.apiGetUserPaginatedError, (state, { error }) => ({
+  on(UserActions.apiGetUserPaginatedError, (state, { error }) => ({
     ...state,
     error,
   })),
-  on(AuthActions.setUserSelected, (state, { user }) => ({
+  on(UserActions.setUserSelected, (state, { user }) => ({
     ...state,
     userSelected: user,
   })),
-  on(AuthActions.getUserByIdError, (state, { error }) => ({
+  on(UserActions.getUserByIdError, (state, { error }) => ({
     ...state,
     userSelected: error,
-  }))
+  })),
+  on(UserActions.addUser, (state, { user }) => {
+    return userAdapter.addOne(user, state);
+  }),
+  on(UserActions.setUser, (state, { user }) => {
+    return userAdapter.setOne(user, state);
+  }),
+  on(UserActions.upsertUser, (state, { user }) => {
+    return userAdapter.upsertOne(user, state);
+  }),
+  on(UserActions.addUsers, (state, { users }) => {
+    return userAdapter.addMany(users, state);
+  }),
+  on(UserActions.upsertUsers, (state, { users }) => {
+    return userAdapter.upsertMany(users, state);
+  }),
+  on(UserActions.updateUser, (state, { update }) => {
+    return userAdapter.updateOne(update, state);
+  }),
+  on(UserActions.updateUsers, (state, { updates }) => {
+    return userAdapter.updateMany(updates, state);
+  }),
+  on(UserActions.mapUser, (state, { entityMap }) => {
+    return userAdapter.mapOne(entityMap, state);
+  }),
+  on(UserActions.mapUsers, (state, { entityMap }) => {
+    return userAdapter.map(entityMap, state);
+  }),
+  on(UserActions.deleteUser, (state, { id }) => {
+    return userAdapter.removeOne(id, state);
+  }),
+  on(UserActions.deleteUsers, (state, { ids }) => {
+    return userAdapter.removeMany(ids, state);
+  }),
+  on(UserActions.deleteUsersByPredicate, (state, { predicate }) => {
+    return userAdapter.removeMany(predicate, state);
+  }),
+  on(UserActions.loadUsers, (state, { users }) => {
+    return userAdapter.setAll(users, state);
+  }),
+  on(UserActions.clearUsers, (state) => {
+    return userAdapter.removeAll({ ...state, selectedUserId: null });
+  })
 );
+
+export function reducer(state: State | undefined, action: Action) {
+  return userReducer(state, action);
+}
+
+export const getSelectedUserId = (state: State) => state.selectedUserId;
+
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = userAdapter.getSelectors();
+
+// select the array of user ids
+export const selectUserIds = selectIds;
+
+// select the dictionary of user entities
+export const selectUserEntities = selectEntities;
+
+// select the array of users
+export const selectAllUsers = selectAll;
+
+// select the total user count
+export const selectUserTotal = selectTotal;
