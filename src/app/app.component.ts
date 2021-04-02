@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { authRoot } from './state/auth/indexAuth';
-import { userRoot } from './state/user/indexUser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from './models/user.model';
@@ -16,7 +15,8 @@ export class AppComponent {
   heroes$: Observable<User[]>;
 
   constructor(
-    authStore: Store<{ auth: any }>,
+    private authStore: Store<{ auth: any }>,
+    private userStore: Store<{ user: any }>,
     private ruserService: RuserService
   ) {
     this.heroes$ = ruserService.entities$;
@@ -25,7 +25,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    //this.getHeroes();
+    //this.getUsers();
   }
 
   add(user: User) {
@@ -36,7 +36,7 @@ export class AppComponent {
     this.ruserService.delete(user.id);
   }
 
-  getHeroes() {
+  getUsers() {
     this.ruserService.getAll();
   }
 

@@ -1,21 +1,43 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromUser from './user.reducer';
+import { userAdapter } from './user.reducer';
+import { State } from './user.reducer';
+export const {
+  selectIds: _selectCustomerDataIds,
+  selectEntities: _selectCustomerEntities,
+  selectAll: _selectAllCustomer,
+  selectTotal: _selectCustomerTotal,
+} = userAdapter.getSelectors();
 
-export const UserStateSelector = createFeatureSelector<fromUser.State>(
+export const UserStateSelector = createFeatureSelector<State>(
   fromUser.userFeatureKey
 );
 
-export const getUserSelectedState = createSelector(
+export const selectUserIds = createSelector(
   UserStateSelector,
-  (state: fromUser.State) => state.userSelected
+  _selectCustomerDataIds
+);
+export const selectUserEntities = createSelector(
+  UserStateSelector,
+  _selectCustomerEntities
 );
 
-export const getUsersPaginatedState = createSelector(
+export const selectAllUsers = createSelector(
   UserStateSelector,
-  (state: fromUser.State) => state.paginatedUsers.content
+  (state: State): any => state.paginatedUsers
 );
 
-export const getUsersLoadingState = createSelector(
+export const selectUserError = createSelector(
   UserStateSelector,
-  (state: fromUser.State) => state.loading
+  (state: State): boolean => state.error
+);
+
+export const selectUserLoading = createSelector(
+  UserStateSelector,
+  (state: State): boolean => state.loading
+);
+
+export const selectUserTotal = createSelector(
+  UserStateSelector,
+  (state: State): number => state.total
 );

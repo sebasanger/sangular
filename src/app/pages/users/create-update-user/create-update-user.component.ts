@@ -3,7 +3,6 @@ import {
   AbstractControl,
   AsyncValidatorFn,
   FormBuilder,
-  FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
@@ -16,6 +15,7 @@ import { UserCreateUpdatePayload } from 'src/app/interfaces/user/form-user.paylo
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import { userRoot } from 'src/app/state/user/indexUser';
+import { selectUserIds } from 'src/app/state/user/user.selectors';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -85,16 +85,18 @@ export class CreateUpdateUserComponent implements OnInit {
         this.userStore.dispatch(userRoot.apiGetUserById({ id: this.userId }));
       }
     });
+    this.loadUser();
   }
 
-  loadUser(userId: number) {
-    this.userStore.select(userRoot.getUserSelectedState).subscribe((res) => {
-      const { fullName, email, id, roles } = res;
-      this.userRequestPayload.id = id;
-      this.userForm.controls['fullName'].setValue(res.fullName);
-      this.userForm.controls['email'].setValue(email);
-      this.userForm.controls['roles'].setValue(roles);
-    });
+  loadUser() {
+    // this.userStore.select(selectAllUsers).subscribe((res) => {
+    //   if (res != null) {
+    //     this.userRequestPayload.id = res.id;
+    //     this.userForm.controls['fullName'].setValue(res.fullName);
+    //     this.userForm.controls['email'].setValue(res.email);
+    //     this.userForm.controls['roles'].setValue(res.roles);
+    //   }
+    // });
   }
 
   onSubmit() {

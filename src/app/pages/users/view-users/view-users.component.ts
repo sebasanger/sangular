@@ -15,6 +15,10 @@ import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { userRoot } from 'src/app/state/user/indexUser';
+import {
+  selectAllUsers,
+  selectUserLoading,
+} from 'src/app/state/user/user.selectors';
 
 @Component({
   selector: 'app-view-users',
@@ -49,11 +53,11 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   private filter: string = '';
 
   ngOnInit() {
-    this.userStore.select('user').subscribe((res) => {
+    this.userStore.select(selectAllUsers).subscribe((res) => {
       this.initializeData(res);
     });
 
-    this.userStore.select(userRoot.getUsersLoadingState).subscribe((res) => {
+    this.userStore.select(selectUserLoading).subscribe((res) => {
       this.loading = res;
     });
   }
