@@ -47,7 +47,7 @@ export class AuthEffects {
           }),
           catchError((error: HttpErrorResponse) => {
             of(authActions.loginError({ error: error.error }));
-            throw Error(error.message);
+            throw error;
           })
         );
       })

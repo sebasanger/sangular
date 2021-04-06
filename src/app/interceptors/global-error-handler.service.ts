@@ -7,9 +7,9 @@ import Swal from 'sweetalert2';
 })
 export class GlobalErrorHandlerService implements ErrorHandler {
   constructor() {}
-  handleError(error: any): void {
-    console.log(error.error);
-
-    Swal.fire('Error', error.error, 'error');
+  handleError(errorResponse: HttpErrorResponse): void {
+    console.log(errorResponse);
+    const message = errorResponse.error.message || '';
+    Swal.fire('Error', message, 'error');
   }
 }
