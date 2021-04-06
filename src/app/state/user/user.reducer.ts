@@ -10,43 +10,22 @@ export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>();
 
 export interface State extends EntityState<User> {
   paginatedUsers: GetPaginatedUsers;
-  loading: boolean;
-  error: boolean;
   selectedUserId: number | null;
-  total: number;
 }
 export const initialState: State = userAdapter.getInitialState({
   paginatedUsers: null,
   selectedUserId: null,
-  loading: false,
-  error: false,
-  total: 0,
 });
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.loading, (state) => ({
-    ...state,
-    loading: true,
-  })),
-  on(UserActions.getUsersPaginatedSuccess, (state, { paginatedUsers }) => ({
+  on(UserActions.setPaginatedUsers, (state, { paginatedUsers }) => ({
     ...state,
     paginatedUsers,
     error: null,
     loading: false,
   })),
-  on(UserActions.apiGetUserPaginatedError, (state, { error }) => ({
-    ...state,
-    error,
-  })),
-  on(UserActions.setUserSelected, (state, { user }) => ({
-    ...state,
-    userSelected: user,
-  })),
-  on(UserActions.getUserByIdError, (state, { error }) => ({
-    ...state,
-    userSelected: error,
-  })),
+
   on(UserActions.addUser, (state, { user }) => {
     return userAdapter.addOne(user, state);
   }),

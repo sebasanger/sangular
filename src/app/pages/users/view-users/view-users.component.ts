@@ -14,11 +14,7 @@ import { Store } from '@ngrx/store';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
-import { userRoot } from 'src/app/state/user/indexUser';
-import {
-  selectAllUsers,
-  selectUserLoading,
-} from 'src/app/state/user/user.selectors';
+import { getUsersPaginated } from 'src/app/state/user/user.api.actions';
 
 @Component({
   selector: 'app-view-users',
@@ -56,10 +52,6 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
     this.userStore.select('user').subscribe((res) => {
       this.initializeData(res);
     });
-
-    this.userStore.select(selectUserLoading).subscribe((res) => {
-      this.loading = res;
-    });
   }
 
   private initializeData(data: any): void {
@@ -96,7 +88,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
 
   loadUserPage() {
     this.userStore.dispatch(
-      userRoot.apiGetUsersPaginated({
+      getUsersPaginated({
         filter: this.filter.toLocaleLowerCase(),
         pageIndex: this.paginator.pageIndex,
         pageSize: this.paginator.pageSize,
@@ -121,7 +113,5 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
     this.router.navigateByUrl('pages/users/update/' + userid);
   }
 
-  onRowClicked(row: any) {
-    //Swal.fire('User', row.fullName, 'info');
-  }
+  onRowClicked(row: any) {}
 }

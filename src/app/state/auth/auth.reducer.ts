@@ -6,11 +6,13 @@ export const authFeatureKey = 'auth';
 export interface State {
   isAuthenticated: boolean;
   user: User;
+  errorMessage: String;
 }
 
 const initState: State = {
   isAuthenticated: false,
   user: null,
+  errorMessage: null,
 };
 
 export const authReducer = createReducer(
@@ -24,6 +26,11 @@ export const authReducer = createReducer(
     ...state,
     user: user,
     isAuthenticated: true,
+  })),
+  on(AuthActions.loginError, (state, { error }) => ({
+    ...state,
+    errorMessage: error.message,
+    isAuthenticated: false,
   })),
   on(AuthActions.userAuthLogout, (state) => ({
     ...state,

@@ -14,8 +14,7 @@ import { EmailValidPayload } from 'src/app/interfaces/user/EmailValidPayload';
 import { UserCreateUpdatePayload } from 'src/app/interfaces/user/form-user.payload';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
-import { userRoot } from 'src/app/state/user/indexUser';
-import { selectUserIds } from 'src/app/state/user/user.selectors';
+import { getUserById } from 'src/app/state/user/user.api.actions';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -82,21 +81,23 @@ export class CreateUpdateUserComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
       if (this.userId > 0) {
-        this.userStore.dispatch(userRoot.apiGetUserById({ id: this.userId }));
+        this.userStore.dispatch(getUserById({ id: this.userId }));
       }
     });
     this.loadUser();
   }
 
   loadUser() {
-    // this.userStore.select(selectAllUsers).subscribe((res) => {
-    //   if (res != null) {
-    //     this.userRequestPayload.id = res.id;
-    //     this.userForm.controls['fullName'].setValue(res.fullName);
-    //     this.userForm.controls['email'].setValue(res.email);
-    //     this.userForm.controls['roles'].setValue(res.roles);
-    //   }
-    // });
+    this.userStore.select('user').subscribe((res) => {
+      console.log(res.entities);
+
+      if (res != null) {
+        this.userRequestPayload.id = res.id;
+        this.userForm.controls['fullName'].setValue(res.fullName);
+        this.userForm.controls['email'].setValue(res.email);
+        this.userForm.controls['roles'].setValue(res.roles);
+      }
+    });
   }
 
   onSubmit() {

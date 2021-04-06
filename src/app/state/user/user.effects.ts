@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
+import * as userApiActions from './user.api.actions';
 import * as userActions from './user.actions';
 import { UserService } from 'src/app/services/user.service';
 
@@ -13,9 +13,8 @@ export class UserEffects {
 
   getPaginatedUsers$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(userActions.apiGetUsersPaginated),
+      ofType(userApiActions.getUsersPaginated),
       mergeMap((action) => {
-        of(userActions.loading());
         return this.userService
           .getAllUsers(
             action.filter,
@@ -26,12 +25,11 @@ export class UserEffects {
           )
           .pipe(
             map((res: any) => {
-              return userActions.getUsersPaginatedSuccess({
+              return userActions.setPaginatedUsers({
                 paginatedUsers: res,
               });
             }),
             catchError((error: any) => {
-              of(userActions.apiGetUserPaginatedError({ error }));
               throw error;
             })
           );
@@ -41,17 +39,15 @@ export class UserEffects {
 
   getUserById$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(userActions.apiGetUserById),
+      ofType(userApiActions.getUserById),
       mergeMap((action) => {
-        of(userActions.loading());
         return this.userService.getUserById(action.id).pipe(
           map((res: any) => {
-            return userActions.setUserSelected({
+            return userActions.setUser({
               user: res,
             });
           }),
           catchError((error: any) => {
-            of(userActions.getUserByIdError({ error }));
             throw error;
           })
         );
