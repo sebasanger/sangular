@@ -15,13 +15,11 @@ export class AppComponent {
   heroes$: Observable<User[]>;
 
   constructor(
-    private authStore: Store<{ auth: any }>,
     private userStore: Store<{ user: any }>,
     private ruserService: RuserService
   ) {
     this.heroes$ = ruserService.entities$;
     this.loading$ = ruserService.loading$;
-    authStore.dispatch(authRoot.apiGetUserAuth());
   }
 
   ngOnInit() {

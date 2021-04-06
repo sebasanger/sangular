@@ -6,6 +6,7 @@ import * as authActions from './auth.actions';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -39,16 +40,14 @@ export class AuthEffects {
       ofType(authActions.login),
       mergeMap((action) => {
         return this.authService.login(action.payload).pipe(
-          map((res: any) => {
+          map((res) => {
             this.router.navigateByUrl('pages/dashboard');
             Swal.fire('Welcome', 'Hello', 'success');
             return authActions.loginSuccess({ user: res.user });
           }),
-          catchError((error) => {
-            console.log(error);
-
-            of(authActions.loginError({ error }));
-            throw error;
+          catchError((error: HttpErrorResponse) => {
+            of(authActions.loginError({ error: error.error }));
+            throw Error(error.message);
           })
         );
       })

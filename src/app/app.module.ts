@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,7 @@ import { authRoot } from './state/auth/indexAuth';
 import { userRoot } from './state/user/indexUser';
 import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
+import { GlobalErrorHandlerService } from './interceptors/global-error-handler.service';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.base_url,
@@ -44,6 +45,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
+    { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

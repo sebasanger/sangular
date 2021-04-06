@@ -28,9 +28,9 @@ export class TokenInterceptorService {
           if (error instanceof HttpErrorResponse && error.status === 401) {
             this.authService.logout();
             this.router.navigateByUrl('auth/login');
-            return throwError(error + ' 401');
+            return throwError(error);
           } else {
-            return throwError(error + ' Other error');
+            return throwError(error);
           }
         })
       );
@@ -40,9 +40,9 @@ export class TokenInterceptorService {
           if (error instanceof HttpErrorResponse && error.status === 401) {
             this.authService.logout();
             this.router.navigateByUrl('auth/login');
-            return throwError(error + ' 401');
+            return throwError(error);
           } else {
-            return throwError(error + ' Other error');
+            return throwError(error);
           }
         })
       );
