@@ -14,15 +14,18 @@ import { EmailValidPayload } from 'src/app/interfaces/user/EmailValidPayload';
 import { UserCreateUpdatePayload } from 'src/app/interfaces/user/form-user.payload';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
-import { getUserById } from 'src/app/state/user/user.api.actions';
+import { createUser, getUserById } from 'src/app/state/user/user.api.actions';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
+const client_url = environment.client_url;
 @Component({
   selector: 'app-create-update-user',
   templateUrl: './create-update-user.component.html',
   styleUrls: ['./create-update-user.component.scss'],
 })
 export class CreateUpdateUserComponent implements OnInit {
+  private userId: number;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -53,15 +56,7 @@ export class CreateUpdateUserComponent implements OnInit {
     { name: 'Admin', value: 'ADMIN' },
   ];
 
-  userRequestPayload: UserCreateUpdatePayload = {
-    fullName: '',
-    email: '',
-    roles: [],
-    urlRedirect: '',
-  };
-
   public pageTitle: string;
-  private userId: number;
 
   emailValidPayload: EmailValidPayload = { id: 0, email: '' };
 
@@ -92,7 +87,7 @@ export class CreateUpdateUserComponent implements OnInit {
       const selectedUser = res.selectedUser;
 
       if (selectedUser != null) {
-        this.userRequestPayload.id = selectedUser.id;
+        this.userId = selectedUser.id;
         this.userForm.controls['fullName'].setValue(selectedUser.fullName);
         this.userForm.controls['email'].setValue(selectedUser.email);
         this.userForm.controls['roles'].setValue(selectedUser.roles);
@@ -105,46 +100,29 @@ export class CreateUpdateUserComponent implements OnInit {
       return;
     }
     const { fullName, email, roles } = this.userForm.controls;
+    const userRequestPayload: UserCreateUpdatePayload = {
+      email: email.value,
+      fullName: fullName.value,
+      urlRedirect: client_url + '/auth/activate-acount?tokenuid=',
+      roles: roles.value,
+      id: this.userId,
+    };
 
-    this.userRequestPayload.fullName = fullName.value;
-    this.userRequestPayload.email = email.value;
-    this.userRequestPayload.roles = roles.value;
-
-    if (this.userRequestPayload.id > 0) {
-      this.updateUser();
+    if (userRequestPayload.id > 0) {
+      this.updateUser(userRequestPayload);
     } else {
-      this.createUser();
+      this.addNewUser(userRequestPayload);
     }
   }
 
-  createUser() {
-    this.userService.createUser(this.userRequestPayload).subscribe(
-      (res) => {
-        Swal.fire(
-          'User created',
-          'Activate user acount with the email ' + res.email,
-          'success'
-        );
-        this.router.navigateByUrl('/pages/users');
-      },
-      (err: any) => {
-        const validationErrors = err.error.errors;
-        if (err.status === 400) {
-          Object.keys(validationErrors).forEach((prop) => {
-            const formControl = this.userForm.get(prop);
-            if (formControl) {
-              formControl.setErrors({
-                serverError: validationErrors[prop],
-              });
-            }
-          });
-        }
-      }
+  addNewUser(userRequestPayload: UserCreateUpdatePayload) {
+    this.userStore.dispatch(
+      createUser({ userCreateUpdatePayload: userRequestPayload })
     );
   }
 
-  updateUser() {
-    this.userService.updateUser(this.userRequestPayload).subscribe(
+  updateUser(userRequestPayload: UserCreateUpdatePayload) {
+    this.userService.updateUser(userRequestPayload).subscribe(
       (res) => {
         Swal.fire('User updated', 'User updated', 'success');
         this.router.navigateByUrl('/pages/users');

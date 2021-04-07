@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
 import * as userApiActions from './user.api.actions';
 import * as userActions from './user.actions';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserEffects {
-  constructor(private actions$: Actions, private userService: UserService) {}
+  constructor(
+    private actions$: Actions,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   getPaginatedUsers$ = createEffect(() => {
     return this.actions$.pipe(
@@ -51,6 +57,33 @@ export class UserEffects {
             throw error;
           })
         );
+      })
+    );
+  });
+
+  createUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userApiActions.createUser),
+
+      concatMap((action) => {
+        return this.userService
+          .createNewUser(action.userCreateUpdatePayload)
+          .pipe(
+            tap((res) => {
+              console.log(res);
+            }),
+            map((res: any) => {
+              Swal.fire(
+                'User created',
+                'Activate user acount with the email ' + res.email,
+                'success'
+              );
+              this.router.navigateByUrl('/pages/users');
+              return userActions.addUser({
+                user: res,
+              });
+            })
+          );
       })
     );
   });

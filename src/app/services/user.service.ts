@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UpdateAcountPayload } from '../interfaces/user/form-update-acount-payload';
 import { UserCreateUpdatePayload } from '../interfaces/user/form-user.payload';
 import { GetPaginatedUsers } from '../interfaces/user/get-paginated-users';
 import { GetUser } from '../interfaces/user/get-user.interface';
+import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
-const client_url = environment.client_url;
 @Injectable({
   providedIn: 'root',
 })
@@ -34,8 +35,7 @@ export class UserService {
     return this.http.get<GetUser>(`${base_url}user/${userId}`);
   }
 
-  createUser(userPayload: UserCreateUpdatePayload) {
-    userPayload.urlRedirect = client_url + '/auth/activate-acount?tokenuid=';
+  createNewUser(userPayload: UserCreateUpdatePayload): Observable<User> {
     return this.http.post<GetUser>(`${base_url}user`, userPayload);
   }
 
