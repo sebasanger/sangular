@@ -1,7 +1,7 @@
 import {
   getIsUserAuthenticated,
   getUserRoles,
-  getUserState,
+  getUserAuth,
 } from './auth.selectors';
 import {
   apiGetUserAuth,
@@ -19,7 +19,7 @@ export const authRoot = {
   authReducer,
   getIsUserAuthenticated,
   getUserRoles,
-  getUserState,
+  getUserAuth,
   apiGetUserAuth,
   apiGetUserAuthError,
   getUserAuthSuccess,

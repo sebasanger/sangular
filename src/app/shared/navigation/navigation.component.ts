@@ -9,7 +9,8 @@ import * as userAuthSelector from '../../state/auth/auth.selectors';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
 import { apiUserAuthLogout } from 'src/app/state/auth/auth.actions';
-
+import { getMenuItems } from '../../state/menu/menu.selectors';
+import { loadMenu } from 'src/app/state/menu/menu.actions';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -18,20 +19,21 @@ import { apiUserAuthLogout } from 'src/app/state/auth/auth.actions';
 export class NavigationComponent implements OnInit {
   public menuItems: any[];
   public user: User;
-  private suscription: Subscription;
   public avatar: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private authService: AuthService,
-    private sidebarService: SidebarService,
-    private authStore: Store<{ auth: any }>
+    private authStore: Store<{ auth: any }>,
+    private menuStore: Store<{ menu: any }>
   ) {}
   ngOnInit(): void {
-    this.authStore.select(userAuthSelector.getUserState).subscribe((res) => {
+    this.menuStore.dispatch(loadMenu());
+    this.authStore.select(userAuthSelector.getUserAuth).subscribe((res) => {
       this.user = res;
     });
-    this.menuItems = this.sidebarService.menu;
+    this.menuStore.select(getMenuItems).subscribe((res) => {
+      this.menuItems = res;
+    });
   }
 
   logout() {

@@ -8,8 +8,17 @@ import Swal from 'sweetalert2';
 export class GlobalErrorHandlerService implements ErrorHandler {
   constructor() {}
   handleError(errorResponse: HttpErrorResponse): void {
-    console.log(errorResponse);
-    const message = errorResponse.error.message || '';
-    Swal.fire('Error', message, 'error');
+    // console.log(errorResponse);
+    if (errorResponse.error != null && errorResponse.status == 401) {
+      Swal.fire(
+        'Error',
+        errorResponse.error.message != null
+          ? errorResponse.error.message
+          : 'Unknown error',
+        'error'
+      );
+    } else {
+      throw errorResponse;
+    }
   }
 }

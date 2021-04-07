@@ -22,7 +22,7 @@
       <span class="spacer"></span>
       <!-- Left side of navbar-->
       <!-- Rigth side of navbar-->
-      <span class="user-fullname">{{ user.fullName }}</span>
+      <span class="user-fullname" *ngIf="user != null && user.fullName != null">{{ user.fullName }}</span>
       <button mat-icon-button class="user-menu" aria-label="User avatar" [matMenuTriggerFor]="menu">
         <img [src]="avatar" alt="User avatar" class="user-avatar" *ngIf="avatar" />
         <img src="/assets/images/ss-icon.jpg" alt="User avatar" class="user-avatar" *ngIf="!avatar" />

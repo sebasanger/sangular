@@ -18,7 +18,8 @@ import { userRoot } from './state/user/indexUser';
 import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 import { GlobalErrorHandlerService } from './interceptors/global-error-handler.service';
-
+import { MenuEfects } from './state/menu/menu.effects';
+import { menuReducer } from './state/menu/menu.reducer';
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.base_url,
 };
@@ -36,12 +37,17 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     StoreModule.forRoot({
       auth: authRoot.authReducer,
       user: userRoot.userReducer,
+      menu: menuReducer,
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([authRoot.AuthEffects, userRoot.UserEffects]),
+    EffectsModule.forRoot([
+      authRoot.AuthEffects,
+      userRoot.UserEffects,
+      MenuEfects,
+    ]),
     EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
