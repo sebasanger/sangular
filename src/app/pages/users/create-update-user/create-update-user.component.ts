@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -8,15 +8,13 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { EmailValidPayload } from 'src/app/interfaces/user/EmailValidPayload';
 import { UserCreateUpdatePayload } from 'src/app/interfaces/user/form-user.payload';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
-import { UserService } from 'src/app/services/user.service';
-import { createUser, getUserById } from 'src/app/state/user/user.api.actions';
 import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import * as userApiActions from '../../../state/user/user.api.actions';
 
 const client_url = environment.client_url;
 @Component({
@@ -24,13 +22,12 @@ const client_url = environment.client_url;
   templateUrl: './create-update-user.component.html',
   styleUrls: ['./create-update-user.component.scss'],
 })
-export class CreateUpdateUserComponent implements OnInit {
+export class CreateUpdateUserComponent implements OnInit, OnDestroy {
   private userId: number;
+  private ngUnsubscribe: Subject<boolean> = new Subject();
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private userService: UserService,
-    private router: Router,
     private reqValidators: ReqValidatorsService,
     private userStore: Store<{ user: any }>
   ) {}
@@ -61,10 +58,14 @@ export class CreateUpdateUserComponent implements OnInit {
   emailValidPayload: EmailValidPayload = { id: 0, email: '' };
 
   checkEmailIsTaked(): AsyncValidatorFn {
+    console.log('email versh');
+
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       this.emailValidPayload.id = this.userId | 0;
       this.emailValidPayload.email = control.value;
+
       return this.reqValidators.emailIsValid(this.emailValidPayload).pipe(
+        takeUntil(this.ngUnsubscribe),
         map((res) => {
           return res ? { emailTaked: true } : null;
         })
@@ -75,8 +76,11 @@ export class CreateUpdateUserComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
+      takeUntil(this.ngUnsubscribe);
       if (this.userId > 0) {
-        this.userStore.dispatch(getUserById({ id: this.userId }));
+        this.userStore.dispatch(
+          userApiActions.getUserById({ id: this.userId })
+        );
       }
     });
     this.loadUser();
@@ -108,44 +112,44 @@ export class CreateUpdateUserComponent implements OnInit {
       id: this.userId,
     };
 
-    if (userRequestPayload.id > 0) {
-      this.updateUser(userRequestPayload);
+    if (userRequestPayload.id > 0 || userRequestPayload.id != null) {
+      this.userStore.dispatch(
+        userApiActions.modifyUser({
+          userCreateUpdatePayload: userRequestPayload,
+        })
+      );
     } else {
-      this.addNewUser(userRequestPayload);
+      this.userStore.dispatch(
+        userApiActions.createUser({
+          userCreateUpdatePayload: userRequestPayload,
+        })
+      );
     }
   }
 
-  addNewUser(userRequestPayload: UserCreateUpdatePayload) {
-    this.userStore.dispatch(
-      createUser({ userCreateUpdatePayload: userRequestPayload })
-    );
-  }
-
-  updateUser(userRequestPayload: UserCreateUpdatePayload) {
-    this.userService.updateUser(userRequestPayload).subscribe(
-      (res) => {
-        Swal.fire('User updated', 'User updated', 'success');
-        this.router.navigateByUrl('/pages/users');
-      },
-      (err: any) => {
-        const validationErrorMessage = err.error.message;
-
-        if (validationErrorMessage != null) {
-          Swal.fire('Error', validationErrorMessage, 'error');
-        }
-
-        const validationErrors = err.error.errors;
-        if (err.status === 400) {
-          Object.keys(validationErrors).forEach((prop) => {
-            const formControl = this.userForm.get(prop);
-            if (formControl) {
-              formControl.setErrors({
-                serverError: validationErrors[prop],
-              });
-            }
-          });
-        }
-      }
-    );
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
   }
 }
+/*
+(err: any) => {
+  const validationErrorMessage = err.error.message;
+
+  if (validationErrorMessage != null) {
+    Swal.fire('Error', validationErrorMessage, 'error');
+  }
+
+  const validationErrors = err.error.errors;
+  if (err.status === 400) {
+    Object.keys(validationErrors).forEach((prop) => {
+      const formControl = this.userForm.get(prop);
+      if (formControl) {
+        formControl.setErrors({
+          serverError: validationErrors[prop],
+        });
+      }
+    });
+  }
+}
+*/

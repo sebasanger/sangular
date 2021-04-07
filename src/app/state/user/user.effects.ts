@@ -64,14 +64,10 @@ export class UserEffects {
   createUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(userApiActions.createUser),
-
       concatMap((action) => {
         return this.userService
           .createNewUser(action.userCreateUpdatePayload)
           .pipe(
-            tap((res) => {
-              console.log(res);
-            }),
             map((res: any) => {
               Swal.fire(
                 'User created',
@@ -82,8 +78,32 @@ export class UserEffects {
               return userActions.addUser({
                 user: res,
               });
+            }),
+            catchError((error: any) => {
+              throw error;
             })
           );
+      })
+    );
+  });
+
+  updateUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userApiActions.modifyUser),
+
+      concatMap((action) => {
+        return this.userService.updateUser(action.userCreateUpdatePayload).pipe(
+          map((res: any) => {
+            Swal.fire('User updated', 'the user data is updated', 'success');
+            this.router.navigateByUrl('/pages/users');
+            return userActions.addUser({
+              user: res,
+            });
+          }),
+          catchError((error: any) => {
+            throw error();
+          })
+        );
       })
     );
   });

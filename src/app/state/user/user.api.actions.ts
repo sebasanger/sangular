@@ -27,7 +27,7 @@ export const createUser = createAction(
   }>()
 );
 
-export const uploadUser = createAction(
+export const modifyUser = createAction(
   '[USER API]  Update user...',
   props<{
     userCreateUpdatePayload: UserCreateUpdatePayload;
