@@ -11,10 +11,16 @@ export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>();
 export interface State extends EntityState<User> {
   paginatedUsers: GetPaginatedUsers;
   selectedUserId: number | null;
+  selectedUser: User;
+  error: any;
+  loading: boolean;
 }
 export const initialState: State = userAdapter.getInitialState({
   paginatedUsers: null,
   selectedUserId: null,
+  selectedUser: null,
+  error: null,
+  loading: false,
 });
 
 export const userReducer = createReducer(
@@ -30,6 +36,9 @@ export const userReducer = createReducer(
     return userAdapter.addOne(user, state);
   }),
   on(UserActions.setUser, (state, { user }) => {
+    return userAdapter.setOne(user, state);
+  }),
+  on(UserActions.selectUser, (state, { user }) => {
     return userAdapter.setOne(user, state);
   }),
   on(UserActions.upsertUser, (state, { user }) => {
@@ -67,6 +76,9 @@ export const userReducer = createReducer(
   }),
   on(UserActions.clearUsers, (state) => {
     return userAdapter.removeAll({ ...state, selectedUserId: null });
+  }),
+  on(UserActions.selectUser, (state, { user }) => {
+    return userAdapter.removeAll({ ...state, selectedUser: user });
   })
 );
 

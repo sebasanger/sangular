@@ -13,8 +13,6 @@ export const reducers: ActionReducerMap<State> = {
   users: fromUser.reducer,
 };
 
-export const selectUserState = createFeatureSelector<State>(
+export const UserStateSelector = createFeatureSelector<State>(
   fromUser.userFeatureKey
 );
-
-

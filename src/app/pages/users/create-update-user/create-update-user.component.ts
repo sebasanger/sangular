@@ -89,13 +89,13 @@ export class CreateUpdateUserComponent implements OnInit {
 
   loadUser() {
     this.userStore.select('user').subscribe((res) => {
-      console.log(res.entities);
+      const selectedUser = res.selectedUser;
 
-      if (res != null) {
-        this.userRequestPayload.id = res.id;
-        this.userForm.controls['fullName'].setValue(res.fullName);
-        this.userForm.controls['email'].setValue(res.email);
-        this.userForm.controls['roles'].setValue(res.roles);
+      if (selectedUser != null) {
+        this.userRequestPayload.id = selectedUser.id;
+        this.userForm.controls['fullName'].setValue(selectedUser.fullName);
+        this.userForm.controls['email'].setValue(selectedUser.email);
+        this.userForm.controls['roles'].setValue(selectedUser.roles);
       }
     });
   }

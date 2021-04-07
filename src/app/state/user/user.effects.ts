@@ -43,7 +43,7 @@ export class UserEffects {
       mergeMap((action) => {
         return this.userService.getUserById(action.id).pipe(
           map((res: any) => {
-            return userActions.setUser({
+            return userActions.selectUser({
               user: res,
             });
           }),

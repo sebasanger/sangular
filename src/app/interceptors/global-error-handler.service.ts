@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 export class GlobalErrorHandlerService implements ErrorHandler {
   constructor() {}
   handleError(errorResponse: HttpErrorResponse): void {
-    // console.log(errorResponse);
     if (errorResponse.error != null && errorResponse.status == 401) {
       Swal.fire(
         'Error',

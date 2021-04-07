@@ -12,6 +12,10 @@ export const loadUsers = createAction(
   '[User/API] Load Users',
   props<{ users: User[] }>()
 );
+export const selectUser = createAction(
+  '[User/API] Set selected user',
+  props<{ user: User }>()
+);
 export const addUser = createAction(
   '[User/API] Add User',
   props<{ user: User }>()
