@@ -63,4 +63,17 @@ export class AuthService {
       })
     );
   }
+
+  checkUserIsAdmin() {
+    return this.httpClient.get<GetUserAuthenticated>(base_url + 'auth/me').pipe(
+      map((data: any) => {
+        if (data != null && data.roles.includes('ADMIN')) {
+          console.log(data.roles);
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
 }
