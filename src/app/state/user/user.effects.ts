@@ -80,7 +80,9 @@ export class UserEffects {
               });
             }),
             catchError((error: any) => {
-              throw error;
+              console.log(error);
+
+              throw userActions.setErrors(error);
             })
           );
       })
@@ -101,6 +103,7 @@ export class UserEffects {
             });
           }),
           catchError((error: any) => {
+            userActions.setErrors(error);
             throw error();
           })
         );

@@ -14,6 +14,7 @@ import { Store } from '@ngrx/store';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
+import { clearUsers } from 'src/app/state/user/user.actions';
 import { getUsersPaginated } from 'src/app/state/user/user.api.actions';
 
 @Component({
@@ -106,6 +107,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
   addNewUser() {
+    this.userStore.dispatch(clearUsers());
     this.router.navigateByUrl('pages/users/create');
   }
 

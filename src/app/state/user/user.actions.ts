@@ -7,7 +7,10 @@ export const setPaginatedUsers = createAction(
   '[USER]  Set users paginated success...',
   props<{ paginatedUsers: GetPaginatedUsers }>()
 );
-
+export const setErrors = createAction(
+  '[USER]  Set users paginated success...',
+  props<{ error: any }>()
+);
 export const loadUsers = createAction(
   '[User/API] Load Users',
   props<{ users: User[] }>()

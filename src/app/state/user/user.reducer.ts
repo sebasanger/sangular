@@ -3,6 +3,7 @@ import * as UserActions from './user.actions';
 import { User } from '../../models/user.model';
 import { GetPaginatedUsers } from 'src/app/interfaces/user/get-paginated-users';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export const userFeatureKey = 'user';
 
@@ -12,7 +13,7 @@ export interface State extends EntityState<User> {
   paginatedUsers: GetPaginatedUsers;
   selectedUserId: number | null;
   selectedUser: User;
-  error: any;
+  error: HttpErrorResponse;
   loading: boolean;
 }
 export const initialState: State = userAdapter.getInitialState({
@@ -30,6 +31,10 @@ export const userReducer = createReducer(
     paginatedUsers,
     error: null,
     loading: false,
+  })),
+  on(UserActions.setErrors, (state, { error }) => ({
+    ...state,
+    error: error,
   })),
 
   on(UserActions.addUser, (state, { user }) => {
@@ -75,7 +80,11 @@ export const userReducer = createReducer(
     return userAdapter.setAll(users, state);
   }),
   on(UserActions.clearUsers, (state) => {
-    return userAdapter.removeAll({ ...state, selectedUserId: null });
+    return userAdapter.removeAll({
+      ...state,
+      selectedUserId: null,
+      selectedUser: null,
+    });
   }),
   on(UserActions.selectUser, (state, { user }) => {
     return userAdapter.removeAll({ ...state, selectedUser: user });
