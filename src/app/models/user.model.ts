@@ -4,6 +4,6 @@ export class User {
     public fullName: string,
     public roles: string[],
     public id?: number,
-    public img?: string
+    public avatar?: string
   ) {}
 }

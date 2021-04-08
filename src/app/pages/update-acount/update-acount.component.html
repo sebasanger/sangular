@@ -26,8 +26,9 @@
               Change avatar
             </button>
             <div class="img-container">
-              <img class="image-prev" [src]="user.img" *ngIf="user.img" />
-              <img src="/assets/images/ss-icon.jpg" alt="no image" class="image-prev" *ngIf="!user.img" />
+              <img class="image-prev" *ngIf="avatar != null && avatar != ''" [src]="avatar" />
+              <img src="/assets/images/ss-icon.jpg" alt="no image" class="image-prev"
+                *ngIf="avatar == null || avatar == ''" />
             </div>
           </div>
         </div>

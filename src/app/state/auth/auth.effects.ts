@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
 import * as authActions from './auth.actions';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -61,6 +61,26 @@ export class AuthEffects {
         return this.authService
           .logout()
           .pipe(map((res: any) => authActions.userAuthLogout()));
+      })
+    );
+  });
+
+  updateAcount$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.updateAcount),
+
+      concatMap((action) => {
+        return this.authService.updateAcount(action.updateAcountPayload).pipe(
+          map((res: any) => {
+            Swal.fire('Acount updated', 'Your data is updated', 'success');
+            //this.router.navigateByUrl('/pages/users');
+            return authActions.apiGetUserAuth();
+          }),
+          catchError((error: any) => {
+            authActions.loginError(error);
+            throw error();
+          })
+        );
       })
     );
   });

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { LoginResponse } from '../interfaces/auth/login-response.payload';
 import { GetUserAuthenticated } from '../interfaces/user/get-user-authenticated';
+import { UpdateAcountPayload } from '../interfaces/user/form-update-acount-payload';
+import { GetUser } from '../interfaces/user/get-user.interface';
 
 const base_url = environment.base_url;
 @Injectable({
@@ -61,6 +63,13 @@ export class AuthService {
           return false;
         }
       })
+    );
+  }
+
+  updateAcount(acountPayload: UpdateAcountPayload) {
+    return this.httpClient.put<GetUser>(
+      `${base_url}user/update-acount`,
+      acountPayload
     );
   }
 

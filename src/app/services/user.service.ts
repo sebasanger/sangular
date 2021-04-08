@@ -46,11 +46,4 @@ export class UserService {
   deleteUser(id: number) {
     return this.http.delete(`${base_url}user/${id}`);
   }
-
-  updateAcount(acountPayload: UpdateAcountPayload) {
-    return this.http.put<GetUser>(
-      `${base_url}user/update-acount`,
-      acountPayload
-    );
-  }
 }

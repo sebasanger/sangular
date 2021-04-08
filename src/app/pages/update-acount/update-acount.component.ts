@@ -17,32 +17,40 @@ import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { EmailValidPayload } from '../../interfaces/user/EmailValidPayload';
-
+import * as authActions from '../../state/auth/auth.actions';
 @Component({
   selector: 'app-update-acount',
   templateUrl: './update-acount.component.html',
   styleUrls: ['./update-acount.component.scss'],
 })
-export class UpdateAcountComponent {
+export class UpdateAcountComponent implements OnInit {
   public user: User;
   public updateAcountForm: any;
+  private userId: number;
+  public avatar: string;
   constructor(
     private fb: FormBuilder,
     private reqValidators: ReqValidatorsService,
     public dialog: MatDialog,
     private userService: UserService,
     private authStore: Store<{ auth: any }>
-  ) {
+  ) {}
+  ngOnInit(): void {
+    this.loadForm();
+
     this.authStore.select('auth').subscribe((data: any) => {
-      this.user = data.user;
-      this.loadForm();
+      if (data.user != null) {
+        this.user = data.user;
+
+        this.loadUser();
+      }
     });
   }
 
   loadForm() {
     this.updateAcountForm = this.fb.group({
       email: [
-        this.user.email,
+        '',
         {
           validators: [Validators.email, Validators.required],
           asyncValidators: [this.checkEmailIsTaked()],
@@ -50,6 +58,12 @@ export class UpdateAcountComponent {
         },
       ],
     });
+  }
+
+  loadUser() {
+    this.userId = this.user.id;
+    this.avatar = this.user.avatar;
+    this.updateAcountForm.controls['email'].setValue(this.user.email);
   }
 
   checkEmailIsTaked(): AsyncValidatorFn {
@@ -76,9 +90,11 @@ export class UpdateAcountComponent {
         id: this.user.id,
       };
 
-      this.userService.updateAcount(updateAcountPayload).subscribe((res) => {
-        Swal.fire('Acount updated', 'Great', 'success');
-      });
+      this.authStore.dispatch(
+        authActions.updateAcount({
+          updateAcountPayload: updateAcountPayload,
+        })
+      );
     }
   }
 
@@ -87,7 +103,7 @@ export class UpdateAcountComponent {
       data: {
         type: 'user',
         id: this.user.id,
-        image: this.user.img,
+        image: this.user.avatar,
       },
     });
   }
