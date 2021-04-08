@@ -124,36 +124,17 @@ export class UserEffects {
       ofType(userApiActions.deletUser),
       switchMap((action) => {
         const userId = action.id;
-        console.log('aca sir');
-
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!',
-        }).then((result: any) => {
-          console.log('aca sor');
-          if (result.isConfirmed) {
-            return this.userService.deleteUser(userId).pipe(
-              map((res: any) => {
-                Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-                return userActions.deleteUser({ id: userId });
-              }),
-              catchError((error: any) => {
-                Swal.fire('Error!', 'Error on delete!.', 'error');
-                userActions.setErrors(error);
-                throw error();
-              })
-            );
-          } else {
-            Swal.fire('Cancelled', 'the user is safe', 'error');
-          }
-        });
-        console.log('aca pir');
-        return of(null);
+        return this.userService.deleteUser(userId).pipe(
+          map((res: any) => {
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            return userActions.deleteUser({ id: userId });
+          }),
+          catchError((error: any) => {
+            Swal.fire('Error!', 'Error on delete!.', 'error');
+            userActions.setErrors(error);
+            throw error();
+          })
+        );
       })
     );
   });

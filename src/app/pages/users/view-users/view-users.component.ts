@@ -16,6 +16,7 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import * as userActions from 'src/app/state/user/user.actions';
 import * as userApiActions from 'src/app/state/user/user.api.actions';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-view-users',
@@ -116,7 +117,24 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   deleteUser(id: number) {
-    this.userStore.dispatch(userApiActions.deletUser({ id }));
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.userStore.dispatch(userApiActions.deletUser({ id }));
+        setTimeout(() => {
+          this.loadUserPage();
+        }, 500);
+      } else {
+        Swal.fire('Cancelled', 'the user is safe', 'error');
+      }
+    });
   }
 
   onRowClicked(row: any) {}
