@@ -58,8 +58,6 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
   emailValidPayload: EmailValidPayload = { id: 0, email: '' };
 
   checkEmailIsTaked(): AsyncValidatorFn {
-    console.log('email versh');
-
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       this.emailValidPayload.id = this.userId | 0;
       this.emailValidPayload.email = control.value;

@@ -14,8 +14,8 @@ import { Store } from '@ngrx/store';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
-import { clearUsers } from 'src/app/state/user/user.actions';
-import { getUsersPaginated } from 'src/app/state/user/user.api.actions';
+import * as userActions from 'src/app/state/user/user.actions';
+import * as userApiActions from 'src/app/state/user/user.api.actions';
 
 @Component({
   selector: 'app-view-users',
@@ -89,7 +89,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
 
   loadUserPage() {
     this.userStore.dispatch(
-      getUsersPaginated({
+      userApiActions.getUsersPaginated({
         filter: this.filter.toLocaleLowerCase(),
         pageIndex: this.paginator.pageIndex,
         pageSize: this.paginator.pageSize,
@@ -107,12 +107,16 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
   addNewUser() {
-    this.userStore.dispatch(clearUsers());
+    this.userStore.dispatch(userActions.clearUsers());
     this.router.navigateByUrl('pages/users/create');
   }
 
   editUser(userid: number) {
     this.router.navigateByUrl('pages/users/update/' + userid);
+  }
+
+  deleteUser(id: number) {
+    this.userStore.dispatch(userApiActions.deletUser({ id }));
   }
 
   onRowClicked(row: any) {}
