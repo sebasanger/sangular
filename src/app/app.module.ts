@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,6 +49,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
       MenuEfects,
     ]),
     EntityDataModule.forRoot(entityConfig),
+    MatSnackBarModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
