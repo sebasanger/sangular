@@ -16,8 +16,13 @@ export class GlobalErrorHandlerService implements ErrorHandler {
           : 'Unknown error',
         'error'
       );
+    } else if (errorResponse.error != null && errorResponse.status == 400) {
+      console.log(errorResponse.error);
+      console.log(errorResponse.error.errors);
+
+      Swal.fire('Error', errorResponse.error.errors, 'error');
     } else {
-      throw errorResponse;
+      return;
     }
   }
 }

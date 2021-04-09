@@ -72,7 +72,10 @@ export class UserEffects {
   createUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(userApiActions.createUser),
-      concatMap((action) => {
+      mergeMap((action) => {
+        tap(() => {
+          console.log('aca bro');
+        });
         return this.userService
           .createNewUser(action.userCreateUpdatePayload)
           .pipe(
@@ -88,9 +91,8 @@ export class UserEffects {
               });
             }),
             catchError((error: any) => {
-              console.log(error);
-
-              throw userActions.setErrors(error);
+              of(userActions.setErrors({ error: error }));
+              throw error;
             })
           );
       })
@@ -111,8 +113,8 @@ export class UserEffects {
             });
           }),
           catchError((error: any) => {
-            userActions.setErrors(error);
-            throw error();
+            of(userActions.setErrors({ error: error }));
+            throw error;
           })
         );
       })

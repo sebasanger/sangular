@@ -77,8 +77,8 @@ export class AuthEffects {
             return authActions.apiGetUserAuth();
           }),
           catchError((error: any) => {
-            authActions.loginError(error);
-            throw error();
+            of(authActions.loginError({ error: error }));
+            throw error;
           })
         );
       })
