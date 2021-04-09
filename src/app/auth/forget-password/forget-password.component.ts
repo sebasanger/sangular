@@ -37,7 +37,7 @@ export class ForgetPasswordComponent implements OnInit {
         this.router.navigateByUrl('auth/login');
       },
       (err) => {
-        Swal.fire('Error', err.error.mensaje, 'error');
+        Swal.fire('Error', err.error.message, 'error');
       }
     );
   }

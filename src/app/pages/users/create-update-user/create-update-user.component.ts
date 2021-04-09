@@ -45,7 +45,7 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
       },
     ],
-    roles: [null],
+    roles: [null, Validators.required],
   });
 
   roles = [

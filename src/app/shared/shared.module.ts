@@ -23,7 +23,12 @@ import { LoaderInterceptor } from '../interceptors/loader-interceptor';
     ThemePickerComponent,
     LoaderComponent,
   ],
-  exports: [NavigationComponent, Nopage404Component, ThemePickerComponent],
+  exports: [
+    NavigationComponent,
+    Nopage404Component,
+    ThemePickerComponent,
+    LoaderComponent,
+  ],
   imports: [
     RouterModule,
     CommonModule,
