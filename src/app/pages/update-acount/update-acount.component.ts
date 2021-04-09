@@ -15,7 +15,6 @@ import { UpdateAcountPayload } from 'src/app/interfaces/user/form-update-acount-
 import { User } from 'src/app/models/user.model';
 import { ReqValidatorsService } from 'src/app/services/req-validators.service';
 import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2';
 import { EmailValidPayload } from '../../interfaces/user/EmailValidPayload';
 import * as authActions from '../../state/auth/auth.actions';
 @Component({
@@ -32,7 +31,6 @@ export class UpdateAcountComponent implements OnInit {
     private fb: FormBuilder,
     private reqValidators: ReqValidatorsService,
     public dialog: MatDialog,
-    private userService: UserService,
     private authStore: Store<{ auth: any }>
   ) {}
   ngOnInit(): void {

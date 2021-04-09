@@ -11,6 +11,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { UpdateImage } from 'src/app/interfaces/user/update-image.interface';
+import { Store } from '@ngrx/store';
+import { apiGetUserAuth } from 'src/app/state/auth/auth.actions';
 @Component({
   selector: 'app-upload-image',
   templateUrl: './upload-image.component.html',
@@ -23,7 +25,8 @@ export class UploadImageComponent implements OnInit {
   constructor(
     private fileUploadService: FileUploadService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authStore: Store<{ auth: any }>
   ) {}
 
   updateImageForm = this.fb.group({
@@ -60,6 +63,9 @@ export class UploadImageComponent implements OnInit {
   saveImage() {
     this.fileUploadService.updateImage(this.updateImage).subscribe(
       (res) => {
+        if (this.updateImage.type == 'user') {
+          this.authStore.dispatch(apiGetUserAuth());
+        }
         Swal.fire('Great', 'Image changed', 'success');
       },
       (err) => {

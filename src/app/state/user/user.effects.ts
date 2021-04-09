@@ -126,7 +126,7 @@ export class UserEffects {
         const userId = action.id;
         return this.userService.deleteUser(userId).pipe(
           map((res: any) => {
-            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            Swal.fire('Deleted!', 'The user has been deleted.', 'success');
             return userActions.deleteUser({ id: userId });
           }),
           catchError((error: any) => {

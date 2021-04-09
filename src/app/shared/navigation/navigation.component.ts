@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { SidebarService } from 'src/app/services/sidebar.service';
-import { AuthService } from 'src/app/services/auth.service';
 
 import * as userAuthSelector from '../../state/auth/auth.selectors';
 import { Store } from '@ngrx/store';
@@ -27,6 +25,12 @@ export class NavigationComponent implements OnInit {
     private menuStore: Store<{ menu: any }>
   ) {}
   ngOnInit(): void {
+    this.authStore.select('auth').subscribe((data: any) => {
+      if (data.user != null) {
+        this.user = data.user;
+        this.avatar = this.user.avatar;
+      }
+    });
     this.menuStore.dispatch(loadMenu());
     this.authStore.select(userAuthSelector.getUserAuth).subscribe((res) => {
       this.user = res;
