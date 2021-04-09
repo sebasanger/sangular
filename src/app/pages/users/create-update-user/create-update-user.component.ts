@@ -105,7 +105,7 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
     const userRequestPayload: UserCreateUpdatePayload = {
       email: email.value,
       fullName: fullName.value,
-      urlRedirect: client_url + '/auth/activate-acount?tokenuid=',
+      urlRedirect: client_url + 'auth/activate-acount?tokenuid=',
       roles: roles.value,
       id: this.userId,
     };

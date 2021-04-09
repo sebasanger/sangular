@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ResetPasswordService } from '../reset-password/reset-password.service';
 import { ActivateAcountService } from './activate-acount.service';
 import { ValidateAcountPayload } from './validate-acount-request.payload';
 
