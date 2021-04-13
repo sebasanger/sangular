@@ -20,6 +20,7 @@ import { entityConfig } from './entity-metadata';
 import { GlobalErrorHandlerService } from './interceptors/global-error-handler.service';
 import { MenuEfects } from './state/menu/menu.effects';
 import { menuReducer } from './state/menu/menu.reducer';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.base_url,
 };
@@ -33,6 +34,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
       enabled: environment.production,
     }),
     PagesModule,
+    SimpleNotificationsModule.forRoot(),
     AuthModule,
     StoreModule.forRoot({
       auth: authRoot.authReducer,
