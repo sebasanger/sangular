@@ -59,7 +59,6 @@ export class ResetPasswordComponent implements OnInit {
         .resetPassword(this.resetRequestPayload)
         .subscribe(
           (res) => {
-            Swal.fire('Password changed', 'try login again', 'success');
             this.router.navigateByUrl('auth/login');
           },
           (err) => {
