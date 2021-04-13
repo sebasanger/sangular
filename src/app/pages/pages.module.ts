@@ -27,6 +27,7 @@ import { CreateUpdateUserComponent } from './users/create-update-user/create-upd
 import { UpdateAcountComponent } from './update-acount/update-acount.component';
 import { ComponentsModule } from '../components/components.module';
 import { ChartsComponent } from './charts/charts.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -67,6 +68,7 @@ import { ChartsComponent } from './charts/charts.component';
     MatSelectModule,
     MatRadioModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
   ],
 })
 export class PagesModule {}

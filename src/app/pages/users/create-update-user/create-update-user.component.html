@@ -1,64 +1,49 @@
-<form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()" fxLayout="column">
   <mat-card class="shipping-card">
     <mat-card-header>
       <mat-card-title>{{ pageTitle }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Full name" formControlName="fullName" />
-            <mat-error *ngIf="userForm.controls['fullName'].hasError('required')">
-              Full name is <strong>required</strong>
-            </mat-error>
-            <!-- server-side validation errors -->
-            <mat-error *ngIf="userForm.get('fullName').errors?.serverError">
-              {{ userForm.get("fullName").errors?.serverError }}
-            </mat-error>
-          </mat-form-field>
-        </div>
+
+      <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Full name" type="text" formControlName="fullName" />
+          <mat-error *ngIf="userForm.controls['fullName'].hasError('required')">
+            Full name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Email" formControlName="email" type="email" />
+          <mat-error *ngIf="userForm.controls['email'].hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="userForm.controls['email'].hasError('email')">
+            Must be a valid email
+          </mat-error>
+          <mat-error *ngIf="userForm.controls['email'].hasError('emailTaked')">
+            This email is <strong>already taked</strong>
+          </mat-error>
+        </mat-form-field>
       </div>
 
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Email" formControlName="email" type="email" />
-            <mat-error *ngIf="userForm.controls['email'].hasError('required')">
-              Email is <strong>required</strong>
-            </mat-error>
-            <mat-error *ngIf="userForm.controls['email'].hasError('email')">
-              Must be a valid email
-            </mat-error>
-            <mat-error *ngIf="userForm.controls['email'].hasError('emailTaked')">
-              This email is <strong>already taked</strong>
-            </mat-error>
-            <!-- server-side validation errors -->
-            <mat-error *ngIf="userForm.get('email').errors?.serverError">
-              {{ userForm.get("email").errors?.serverError }}
-            </mat-error>
-          </mat-form-field>
-        </div>
 
-        <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="Roles" formControlName="roles" multiple>
-              <mat-option *ngFor="let role of roles" [value]="role.value">
-                {{ role.name }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="userForm.controls['roles'].hasError('required')">
-              Roles is<strong>required</strong>
-            </mat-error>
-            <!-- server-side validation errors -->
-            <mat-error *ngIf="userForm.get('roles').errors?.serverError">
-              {{ userForm.get("roles").errors?.serverError }}
-            </mat-error>
-          </mat-form-field>
-        </div>
+      <div class="input-row">
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Roles" formControlName="roles" multiple>
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{ role.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.controls['roles'].hasError('required')">
+            Roles is<strong>required</strong>
+          </mat-error>
+        </mat-form-field>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </mat-card-actions>
   </mat-card>
+
 </form>

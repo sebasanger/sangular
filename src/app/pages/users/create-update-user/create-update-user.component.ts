@@ -130,24 +130,3 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 }
-/*
-(err: any) => {
-  const validationErrorMessage = err.error.message;
-
-  if (validationErrorMessage != null) {
-    Swal.fire('Error', validationErrorMessage, 'error');
-  }
-
-  const validationErrors = err.error.errors;
-  if (err.status === 400) {
-    Object.keys(validationErrors).forEach((prop) => {
-      const formControl = this.userForm.get(prop);
-      if (formControl) {
-        formControl.setErrors({
-          serverError: validationErrors[prop],
-        });
-      }
-    });
-  }
-}
-*/
