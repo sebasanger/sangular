@@ -1,10 +1,11 @@
 <div class="example-header" fxLayout="row">
 
-  <mat-form-field color="primary">
-    <input matInput placeholder="Filter by name or email" (keyup)="filterSubject.next($any($event.target).value)" />
+  <mat-form-field color="primary" class="filter">
+    <input matInput placeholder="{{ 'USERS.VIEW.FILTER' | translate }}"
+      (keyup)="filterSubject.next($any($event.target).value)" />
   </mat-form-field>
   <button mat-raised-button color="accent" (click)="addNewUser()" class="add-button">
-    Add user
+    {{ 'USERS.VIEW.ADD' | translate }}
   </button>
 </div>
 
@@ -18,25 +19,25 @@
 
     <!-- fullName Column -->
     <ng-container matColumnDef="fullName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Full name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'USERS.FULLNAME' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let row" data-label="fullName"> {{row.fullName}} </mat-cell>
     </ng-container>
 
     <!-- email Column -->
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'USERS.EMAIL' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let row" data-label="email"> {{row.email}} </mat-cell>
     </ng-container>
 
     <!-- roles Column -->
     <ng-container matColumnDef="roles">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Roles </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'USERS.ROLES' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let row" data-label="roles"> {{row.roles}} </mat-cell>
     </ng-container>
 
     <!-- delete Column -->
     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef class="no-sort"> Edit </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="no-sort"> {{ 'EDIT' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let row" data-label="edit">
         <button mat-icon-button color="accent" (click)="editUser(row.id)">
           <mat-icon>edit</mat-icon>
@@ -46,7 +47,7 @@
 
     <!-- delete Column -->
     <ng-container matColumnDef="delete">
-      <mat-header-cell *matHeaderCellDef class="no-sort"> Delete </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="no-sort"> {{ 'DELETE' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let row" data-label="delete">
         <button mat-icon-button color="warn" (click)="deleteUser(row.id)">
           <mat-icon>delete</mat-icon>

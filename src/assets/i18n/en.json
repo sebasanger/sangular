@@ -1,0 +1,18 @@
+{
+  "EDIT": "Edit",
+  "DELETE": "Delete",
+  "SAVE": "Save",
+  "DASHBOARD": {
+    "TITLE": "Dashboard"
+  },
+  "USERS": {
+    "VIEW": {
+      "TITLE": "Users managment",
+      "FILTER": "Filter by name or email...",
+      "ADD": "Add user"
+    },
+    "FULLNAME": "Full name",
+    "ROLES": "Roles",
+    "EMAIL": "Email"
+  }
+}

@@ -15,21 +15,28 @@ import { LoaderComponent } from './loader/loader.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from '../interceptors/loader-interceptor';
-
+import { LangSelectorComponent } from './lang-selector/lang-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     NavigationComponent,
     Nopage404Component,
     ThemePickerComponent,
     LoaderComponent,
+    LangSelectorComponent,
   ],
   exports: [
     NavigationComponent,
     Nopage404Component,
     ThemePickerComponent,
     LoaderComponent,
+    TranslateModule,
+    LangSelectorComponent,
   ],
   imports: [
+    MatSelectModule,
+    TranslateModule,
     RouterModule,
     CommonModule,
     LayoutModule,

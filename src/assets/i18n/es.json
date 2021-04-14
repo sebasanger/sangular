@@ -1,0 +1,18 @@
+{
+  "EDIT": "Editar",
+  "DELETE": "Eliminar",
+  "SAVE": "Guardar",
+  "DASHBOARD": {
+    "TITLE": "Inicio"
+  },
+  "USERS": {
+    "VIEW": {
+      "TITLE": "Control de usuarios",
+      "FILTER": "Filtrar por nombre o por email...",
+      "ADD": "Agregar usuario"
+    },
+    "FULLNAME": "Nombre completo",
+    "ROLES": "Roles",
+    "EMAIL": "Email"
+  }
+}
