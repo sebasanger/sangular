@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import { ForgetPasswordService } from './forget-password.service';
 import { ForgetRequestPayload } from './forget-request.payload';
@@ -15,7 +16,8 @@ export class ForgetPasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private forgetPasswordService: ForgetPasswordService,
-    private router: Router
+    private router: Router,
+    public translate: TranslateService
   ) {
     this.forgetRequestPayload = {
       email: '',
@@ -33,11 +35,15 @@ export class ForgetPasswordComponent implements OnInit {
 
     this.forgetPasswordService.sendEmail(this.forgetRequestPayload).subscribe(
       (res) => {
-        Swal.fire('Email sended', 'check your email', 'success');
+        Swal.fire(
+          this.translate.instant('FORGOT-PASSWORD.EMAIL-SEND'),
+          this.translate.instant('FORGOT-PASSWORD.EMAIL-SEND-INSTRUCTIONS'),
+          'success'
+        );
         this.router.navigateByUrl('auth/login');
       },
       (err) => {
-        Swal.fire('Error', err.error.message, 'error');
+        Swal.fire(this.translate.instant('ERROR'), err.error.message, 'error');
       }
     );
   }

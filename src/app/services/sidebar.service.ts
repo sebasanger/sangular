@@ -1,5 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { MenuItem } from '../interfaces/ui/menu.interface';
 import { User } from '../models/user.model';
@@ -8,11 +9,20 @@ import * as userAuthSelector from '../state/auth/auth.selectors';
 @Injectable({
   providedIn: 'root',
 })
-export class SidebarService {
+export class SidebarService implements OnInit {
   public menu: MenuItem[];
   public user: User;
 
-  constructor(private authStore: Store<{ auth: any }>) {}
+  constructor(
+    private authStore: Store<{ auth: any }>,
+    public translate: TranslateService
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      console.log('Cambio');
+      this.loadMenu();
+    });
+  }
+  ngOnInit(): void {}
 
   loadMenu(): Observable<MenuItem[]> {
     this.authStore.select(userAuthSelector.getUserAuth).subscribe((res) => {
@@ -26,13 +36,21 @@ export class SidebarService {
   chargeMenu() {
     if (this.user != null) {
       this.menu = [
-        { title: 'Dashboard', icon: 'home', path: '../pages/dashboard' },
-        { title: 'Charts', icon: 'analytics', path: '../pages/charts' },
+        {
+          title: this.translate.instant('MENU.DASHBOARD'),
+          icon: 'home',
+          path: '../pages/dashboard',
+        },
+        {
+          title: this.translate.instant('MENU.CHARTS'),
+          icon: 'analytics',
+          path: '../pages/charts',
+        },
       ];
 
       if (this.user.roles.includes('ADMIN')) {
         this.menu.push({
-          title: 'Users',
+          title: this.translate.instant('MENU.USERS'),
           icon: 'people',
           path: '../pages/users',
         });

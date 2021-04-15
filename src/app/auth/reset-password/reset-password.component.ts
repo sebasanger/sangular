@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import { ResetPasswordService } from './reset-password.service';
 import { ResetRequestPayload } from './reset-request.payload';
@@ -21,7 +22,8 @@ export class ResetPasswordComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private resetPasswordService: ResetPasswordService
+    private resetPasswordService: ResetPasswordService,
+    public translate: TranslateService
   ) {
     this.resetRequestPayload = {
       password: '',
@@ -46,7 +48,11 @@ export class ResetPasswordComponent implements OnInit {
       this.resetPasswordForm.controls['repeatPassword'].value !=
       this.resetPasswordForm.controls['password'].value
     ) {
-      Swal.fire('Error', 'Password not missmatch', 'error');
+      Swal.fire(
+        this.translate.instant('ERROR'),
+        this.translate.instant('RESET-PASSWORD.REPEAT-INCORRECT'),
+        'error'
+      );
     } else {
       this.resetRequestPayload.password = this.resetPasswordForm.controls[
         'password'
@@ -59,10 +65,18 @@ export class ResetPasswordComponent implements OnInit {
         .resetPassword(this.resetRequestPayload)
         .subscribe(
           (res) => {
-            this.router.navigateByUrl('auth/login');
+            Swal.fire(
+              this.translate.instant('SUCCESS'),
+              this.translate.instant('RESET-PASSWORD.SUCCESS'),
+              'success'
+            );
           },
           (err) => {
-            Swal.fire('Error', err.error.message, 'error');
+            Swal.fire(
+              this.translate.instant('ERROR'),
+              err.error.message,
+              'error'
+            );
           }
         );
     }

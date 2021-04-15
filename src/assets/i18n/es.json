@@ -2,8 +2,41 @@
   "EDIT": "Editar",
   "DELETE": "Eliminar",
   "SAVE": "Guardar",
+  "REQUIRED": "es requerido",
+  "EMAIL-NOT-VALID": "El email no es valido",
+  "SUCCESS": "Exito",
+  "ERROR": "Error",
+  "MENU": {
+    "DASHBOARD": "Inicio",
+    "CHARTS": "Graficos",
+    "USERS": "Usuarios"
+  },
   "DASHBOARD": {
     "TITLE": "Inicio"
+  },
+  "LOGIN": {
+    "TITLE": "Iniciar sesion",
+    "REMEMBER": "Recordar email",
+    "FORGOT_PASSWORD": "Olvidaste tu contraseña?",
+    "ACCEPT": "Ingresar",
+    "PASSWORD": "Contraseña",
+    "SUCCESS": "Bienvenido"
+  },
+  "FORGOT-PASSWORD": {
+    "TITLE": "Cambiar contraseña",
+    "ACEPT": "Enviar email",
+    "EMAIL-SEND": "Email enviado",
+    "EMAIL-SEND-INSTRUCTIONS": "Revise su correo electronico"
+  },
+  "RESET-PASSWORD": {
+    "TITLE": "Resetear contraseña",
+    "ACEPT": "Cambiar contraseña",
+    "PASSWORD": "Contraseña",
+    "REPEAT": "Repetir contraseña",
+    "REPEAT-INCORRECT": "Las constraseñas no coinciden",
+    "SUCCESS": "Contraseña cambiada",
+    "TOKEN-INVALID": "Token no valido",
+    "TOKEN-INVALID-INSTRUCTIONS": "sigue el mail en tu correo pide de nuevo un cambio de contraseña"
   },
   "USERS": {
     "VIEW": {

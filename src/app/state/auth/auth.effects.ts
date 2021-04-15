@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public translate: TranslateService
   ) {}
 
   getUserAuth$ = createEffect(() => {
@@ -42,7 +44,11 @@ export class AuthEffects {
         return this.authService.login(action.payload).pipe(
           map((res) => {
             this.router.navigateByUrl('pages/dashboard');
-            Swal.fire('Welcome', 'Hello', 'success');
+            Swal.fire(
+              this.translate.instant('SUCCESS'),
+              this.translate.instant('LOGIN.SUCCESS'),
+              'success'
+            );
             return authActions.loginSuccess({ user: res.user });
           }),
           catchError((error: HttpErrorResponse) => {

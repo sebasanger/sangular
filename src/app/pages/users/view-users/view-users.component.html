@@ -20,7 +20,7 @@
     <!-- fullName Column -->
     <ng-container matColumnDef="fullName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'USERS.FULLNAME' | translate }} </mat-header-cell>
-      <mat-cell *matCellDef="let row" data-label="fullName"> {{row.fullName}} </mat-cell>
+      <mat-cell *matCellDef="let row" data-label="USERS.FULLNAME | translate"> {{row.fullName}} </mat-cell>
     </ng-container>
 
     <!-- email Column -->

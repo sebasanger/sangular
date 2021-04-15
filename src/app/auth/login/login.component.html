@@ -3,7 +3,7 @@
     <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="center center"
       fxLayoutGap="12px">
       <mat-card-header>
-        <mat-card-title>Login</mat-card-title>
+        <mat-card-title> {{ 'LOGIN.TITLE' | translate }} </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="row">
@@ -11,30 +11,33 @@
             <mat-form-field color="accent">
               <input matInput placeholder="Email" type="email" formControlName="email" />
               <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
-                Email is <strong>required</strong>
+                Email <strong> {{ 'REQUIRED' | translate }}</strong>
               </mat-error>
               <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
-                Email not valid
+                {{ 'EMAIL-NOT-VALID' | translate }}
               </mat-error>
             </mat-form-field>
-            <mat-checkbox [checked]="remember" (change)="changerRememberStatus()">Remember me</mat-checkbox>
+            <mat-checkbox [checked]="remember" (change)="changerRememberStatus()"> {{ 'LOGIN.REMEMBER' | translate }}
+            </mat-checkbox>
           </div>
           <div class="col">
             <mat-form-field color="accent">
-              <input matInput type="password" placeholder="Password" formControlName="password" />
+              <input matInput type="password" placeholder="{{ 'LOGIN.PASSWORD' | translate }}"
+                formControlName="password" />
               <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
-                Password is <strong>required</strong>
+                {{ 'LOGIN.PASSWORD' | translate }}<strong> {{ 'REQUIRED' | translate }}</strong>
               </mat-error>
             </mat-form-field>
           </div>
         </div>
         <div color="primary">
-          <a routerLink="/auth/forget-password" class="forget-password-text">Forget yout password?</a>
+          <a routerLink="/auth/forget-password"
+            class="forget-password-text">{{ 'LOGIN.FORGOT_PASSWORD' | translate }}</a>
         </div>
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button color="primary" [disabled]="loginForm.invalid" type="submit">
-          Login
+          {{ 'LOGIN.ACCEPT' | translate }}
         </button>
 
       </mat-card-actions>

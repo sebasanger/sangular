@@ -2,8 +2,41 @@
   "EDIT": "Edit",
   "DELETE": "Delete",
   "SAVE": "Save",
+  "REQUIRED": "is required",
+  "EMAIL-NOT-VALID": "Email not valid",
+  "SUCCESS": "Success",
+  "ERROR": "Error",
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "CHARTS": "Charts",
+    "USERS": "Users"
+  },
   "DASHBOARD": {
     "TITLE": "Dashboard"
+  },
+  "LOGIN": {
+    "TITLE": "Login",
+    "REMEMBER": "Remember me",
+    "FORGOT_PASSWORD": "Forget you password?",
+    "ACCEPT": "Login",
+    "PASSWORD": "Password",
+    "SUCCESS": "Welcome"
+  },
+  "FORGOT-PASSWORD": {
+    "TITLE": "Recover password",
+    "ACEPT": "Send email",
+    "EMAIL-SEND": "Email sended",
+    "EMAIL-SEND-INSTRUCTIONS": "Check your email"
+  },
+  "RESET-PASSWORD": {
+    "TITLE": "Reset password",
+    "ACEPT": "Change password",
+    "PASSWORD": "Password",
+    "REPEAT": "Repeat password",
+    "REPEAT-INCORRECT": "Password not mismatch",
+    "SUCCESS": "Password changed",
+    "TOKEN-INVALID": "Token invlid",
+    "S": "follow the link in your email"
   },
   "USERS": {
     "VIEW": {
