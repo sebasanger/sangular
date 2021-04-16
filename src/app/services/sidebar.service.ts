@@ -16,12 +16,7 @@ export class SidebarService implements OnInit {
   constructor(
     private authStore: Store<{ auth: any }>,
     public translate: TranslateService
-  ) {
-    this.translate.onLangChange.subscribe(() => {
-      console.log('Cambio');
-      this.loadMenu();
-    });
-  }
+  ) {}
   ngOnInit(): void {}
 
   loadMenu(): Observable<MenuItem[]> {
