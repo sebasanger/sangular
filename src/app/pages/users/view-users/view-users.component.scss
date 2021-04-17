@@ -85,3 +85,22 @@ body {
 .filter {
   width: 200px;
 }
+
+
+@media screen and (min-width: 960px) {
+  .mat-column-id {
+    flex: 0 0 5% !important;
+    width: 5% !important;
+  }
+
+  .mat-column-edit {
+    flex: 0 0 5% !important;
+    width: 5% !important;
+  }
+
+  .mat-column-delete {
+    flex: 0 0 5% !important;
+    width: 5% !important;
+  }
+
+}

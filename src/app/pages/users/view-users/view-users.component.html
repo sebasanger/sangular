@@ -13,8 +13,8 @@
   <mat-table matSort matSortActive="id" matSortDirection="asc" matSortDisableClear [dataSource]="dataSource">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row" data-label="id"> {{row.id}} </mat-cell>
+      <mat-header-cell class="w75" *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell class="w75" *matCellDef="let row" data-label="id"> {{row.id}} </mat-cell>
     </ng-container>
 
     <!-- fullName Column -->
