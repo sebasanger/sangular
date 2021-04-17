@@ -19,15 +19,16 @@ export class GlobalErrorHandlerService implements ErrorHandler {
       );
     } else if (errorResponse.error != null && errorResponse.status == 400) {
       const errorMessages = Object.values(errorResponse.error.errors);
+      const errorKey = Object.keys(errorResponse.error.errors);
 
-      errorMessages.forEach((e) => {
-        this._snackBar.open(e + ' ', 'Ok', {
+      for (let i = 0; i < errorKey.length; i++) {
+        this._snackBar.open(errorKey[i] + ': ' + errorMessages[i] + ' ', 'Ok', {
           duration: 5000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
           panelClass: ['error-snackbar'],
         });
-      });
+      }
     } else {
       return;
     }

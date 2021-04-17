@@ -23,6 +23,7 @@ import { menuReducer } from './state/menu/menu.reducer';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LangInterceptorService } from './interceptors/lang-interceptor.service';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.base_url,
@@ -71,6 +72,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LangInterceptorService,
       multi: true,
     },
     { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig },
