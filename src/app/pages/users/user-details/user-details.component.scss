@@ -1,5 +1,6 @@
 mat-card {
   padding: 100px;
+
   display: grid;
   justify-content: center;
   align-items: center;
@@ -16,7 +17,7 @@ mat-card-content {
 
 mat-card-content p {
   font-size: 20px;
-  font-family: 'Courier New', Courier, monospace;
+
 }
 
 mat-card-actions {
@@ -25,4 +26,8 @@ mat-card-actions {
 
 mat-card-actions {
   margin-right: 20px;
+}
+
+section {
+  margin-bottom: 15%;
 }
