@@ -1,0 +1,28 @@
+mat-card {
+  padding: 100px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-header {
+  height: 15 0px;
+}
+
+mat-card-content {
+  margin-top: 40px;
+}
+
+
+mat-card-content p {
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+mat-card-actions {
+  margin-top: 40px;
+}
+
+mat-card-actions {
+  margin-right: 20px;
+}

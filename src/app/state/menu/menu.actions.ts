@@ -4,6 +4,11 @@ import { MenuItem } from 'src/app/interfaces/ui/menu.interface';
 export const loadMenu = createAction('[MENU]  Load menu...');
 
 export const setMenuItems = createAction(
-  '[AUTH] Set menu items...',
+  '[MENU] Set menu items...',
   props<{ menuItems: MenuItem[] }>()
+);
+
+export const setPageTitle = createAction(
+  '[MENU] Set title...',
+  props<{ title: string }>()
 );

@@ -137,5 +137,7 @@ export class ViewUsersComponent implements AfterViewInit, OnInit, OnDestroy {
     });
   }
 
-  onRowClicked(row: any) {}
+  onRowClicked(row: any) {
+    this.router.navigateByUrl('pages/users/details/' + row.id);
+  }
 }

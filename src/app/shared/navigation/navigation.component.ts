@@ -8,7 +8,8 @@ import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
 import { apiUserAuthLogout } from 'src/app/state/auth/auth.actions';
 import { getMenuItems } from '../../state/menu/menu.selectors';
-import { loadMenu } from 'src/app/state/menu/menu.actions';
+import { loadMenu, setPageTitle } from 'src/app/state/menu/menu.actions';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -22,7 +23,8 @@ export class NavigationComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authStore: Store<{ auth: any }>,
-    private menuStore: Store<{ menu: any }>
+    private menuStore: Store<{ menu: any }>,
+    private titleService: Title
   ) {}
   ngOnInit(): void {
     this.authStore.select('auth').subscribe((data: any) => {
@@ -38,6 +40,11 @@ export class NavigationComponent implements OnInit {
     this.menuStore.select(getMenuItems).subscribe((res) => {
       this.menuItems = res;
     });
+  }
+
+  public setTitle(newTitle: string) {
+    this.titleService.setTitle(newTitle + ' | ' + 'Sangular');
+    this.menuStore.dispatch(setPageTitle({ title: newTitle }));
   }
 
   logout() {

@@ -2,17 +2,20 @@
   <!-- Navigation menu in sidebar-->
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+
+    <mat-toolbar class="mat-elevation-z6" color="primary">Menu</mat-toolbar>
+
     <mat-nav-list>
-      <a *ngFor="let item of menuItems" mat-list-item [routerLink]="[item.path]" routerLinkActive="item-selected">
+      <a (click)="setTitle(item.title)" *ngFor="let item of menuItems" mat-list-item [routerLink]="[item.path]"
+        routerLinkActive="item-selected">
         <mat-icon class="menu-icon" color="danger">{{ item.icon }}</mat-icon>{{ item.title }}
       </a>
     </mat-nav-list>
   </mat-sidenav>
   <!-- Navigation menu in sidebar-->
   <mat-sidenav-content>
-    <!-- Left side of navbar-->
-    <mat-toolbar color="primary">
+    <!-- Rigth side of navbar-->
+    <mat-toolbar color="primary" class="mat-elevation-z6">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
@@ -21,8 +24,6 @@
       <app-lang-selector></app-lang-selector>
       <app-theme-picker class="themepicker"></app-theme-picker>
       <span class="spacer"></span>
-      <!-- Left side of navbar-->
-      <!-- Rigth side of navbar-->
       <span class="user-fullname" *ngIf="user != null && user.fullName != null">{{ user.fullName }}</span>
       <button mat-icon-button class="user-menu" aria-label="User avatar" [matMenuTriggerFor]="menu">
         <img [src]="avatar" alt="User avatar" class="user-avatar" *ngIf="avatar" />
@@ -45,8 +46,12 @@
       <app-loader class="progressbar"></app-loader>
     </div>
     <!-- Progresbar -->
+    <app-component-page-header></app-component-page-header>
+
     <!-- Main content -->
     <ng-content></ng-content>
     <!-- Main content -->
+    <app-footer color="primary"></app-footer>
   </mat-sidenav-content>
+
 </mat-sidenav-container>

@@ -31,6 +31,18 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
     private reqValidators: ReqValidatorsService,
     private userStore: Store<{ user: any }>
   ) {}
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.userId = params['id'];
+      takeUntil(this.ngUnsubscribe);
+      if (this.userId > 0) {
+        this.userStore.dispatch(
+          userApiActions.getUserById({ id: this.userId })
+        );
+      }
+    });
+    this.loadUser();
+  }
 
   userForm = this.fb.group({
     fullName: [
@@ -69,19 +81,6 @@ export class CreateUpdateUserComponent implements OnInit, OnDestroy {
         })
       );
     };
-  }
-
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.userId = params['id'];
-      takeUntil(this.ngUnsubscribe);
-      if (this.userId > 0) {
-        this.userStore.dispatch(
-          userApiActions.getUserById({ id: this.userId })
-        );
-      }
-    });
-    this.loadUser();
   }
 
   loadUser() {

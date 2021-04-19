@@ -18,6 +18,8 @@ import { LoaderInterceptor } from '../interceptors/loader-interceptor';
 import { LangSelectorComponent } from './lang-selector/lang-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSelectModule } from '@angular/material/select';
+import { ComponentPageHeaderComponent } from './component-page-header/component-page-header.component';
+import { FooterComponent } from './footer/footer.component';
 @NgModule({
   declarations: [
     NavigationComponent,
@@ -25,6 +27,8 @@ import { MatSelectModule } from '@angular/material/select';
     ThemePickerComponent,
     LoaderComponent,
     LangSelectorComponent,
+    ComponentPageHeaderComponent,
+    FooterComponent,
   ],
   exports: [
     NavigationComponent,
@@ -33,6 +37,8 @@ import { MatSelectModule } from '@angular/material/select';
     LoaderComponent,
     TranslateModule,
     LangSelectorComponent,
+    ComponentPageHeaderComponent,
+    FooterComponent,
   ],
   imports: [
     MatSelectModule,

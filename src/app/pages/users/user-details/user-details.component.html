@@ -1,0 +1,49 @@
+<div class="grid-container animate__animated animate__fadeIn animate__delay-0.4s">
+  <mat-grid-list cols="1" rowHeight="500">
+    <mat-grid-tile>
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image">
+
+            <img width="50" height="50" alt="User photo" *ngIf="user.avatar != null && user.avatar != ''"
+              [src]="user.avatar">
+            <img width="50" height="50" src="/assets/images/ss-icon.jpg"
+              *ngIf="user.avatar == null || user.avatar == ''" />
+          </div>
+
+          <mat-card-title>{{user.fullName}}</mat-card-title>
+          <mat-card-subtitle>{{user.roles}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            Email: {{user.email}}
+          </p>
+          <p>
+            Username: {{user.username}}
+          </p>
+          <p>
+            Enable: {{user.enabled}}
+          </p>
+          <p>
+            Created at: {{user.createdAt | date}}
+          </p>
+          <p>
+            Last password changed at: {{user.lastPasswordChangeAt | date}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="accent" (click)="editUser(user.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteUser(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+    <!-- <mat-grid-tile>2</mat-grid-tile> -->
+  </mat-grid-list>
+
+
+
+</div>

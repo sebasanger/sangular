@@ -28,6 +28,8 @@ import { UpdateAcountComponent } from './update-acount/update-acount.component';
 import { ComponentsModule } from '../components/components.module';
 import { ChartsComponent } from './charts/charts.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UserDetailsComponent } from './users/user-details/user-details.component';
 @NgModule({
   declarations: [
     PagesComponent,
@@ -37,6 +39,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CreateUpdateUserComponent,
     UpdateAcountComponent,
     ChartsComponent,
+    UserDetailsComponent,
   ],
   exports: [
     PagesComponent,
@@ -69,6 +72,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatRadioModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatTabsModule,
   ],
 })
 export class PagesModule {}

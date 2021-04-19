@@ -9,6 +9,7 @@ import { ViewUsersComponent } from './users/view-users/view-users.component';
 import { CreateUpdateUserComponent } from './users/create-update-user/create-update-user.component';
 import { UpdateAcountComponent } from './update-acount/update-acount.component';
 import { ChartsComponent } from './charts/charts.component';
+import { UserDetailsComponent } from './users/user-details/user-details.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,11 @@ const routes: Routes = [
             path: 'update/:id',
             component: CreateUpdateUserComponent,
             data: { subtitle: 'Update user' },
+          },
+          {
+            path: 'details/:id',
+            component: UserDetailsComponent,
+            data: { subtitle: 'Details user' },
           },
         ],
       },

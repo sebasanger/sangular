@@ -4,6 +4,10 @@ export class User {
     public fullName: string,
     public roles: string[],
     public id?: number,
-    public avatar?: string
+    public avatar?: string,
+    public createdAt?: Date,
+    public lastPasswordChangeAt?: Date,
+    public enabled?: boolean,
+    public username?: string
   ) {}
 }
