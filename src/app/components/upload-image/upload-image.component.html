@@ -1,24 +1,15 @@
 <h2 mat-dialog-title>Upload image</h2>
 <mat-dialog-content class="mat-typography">
-  <input type="file" (change)="changeImage($event.target)" />
+  <input type="file" accept="image/x-png,image/jpeg" (change)="changeImage($event.target)" />
 
   <div class="img-container">
-    <img
-      class="image-prev"
-      *ngIf="!temporalImage && actualImage"
-      [src]="actualImage"
-    />
+    <img class="image-prev" *ngIf="!temporalImage && actualImage" [src]="actualImage" />
     <img class="image-prev" *ngIf="temporalImage" [src]="temporalImage" />
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button
-    mat-button
-    [mat-dialog-close]="actualImage"
-    cdkFocusInitial
-    (click)="saveImage()"
-  >
+  <button mat-button [mat-dialog-close]="actualImage" cdkFocusInitial (click)="saveImage()">
     Save
   </button>
 </mat-dialog-actions>

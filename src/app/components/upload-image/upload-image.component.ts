@@ -29,15 +29,6 @@ export class UploadImageComponent implements OnInit {
     private authStore: Store<{ auth: any }>
   ) {}
 
-  updateImageForm = this.fb.group({
-    imageInput: [
-      null,
-      {
-        validators: [Validators.required],
-      },
-    ],
-  });
-
   ngOnInit(): void {
     this.updateImage.id = this.data.id;
     this.updateImage.type = this.data.type;
@@ -47,11 +38,12 @@ export class UploadImageComponent implements OnInit {
   changeImage(e: any) {
     const file: File = e.files[0];
     if (!file) {
-      this.temporalImage = null;
-      console.log('err');
+      console.log(file);
 
+      this.temporalImage = null;
       return;
     }
+
     const reader = new FileReader();
     const url64 = reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -70,6 +62,7 @@ export class UploadImageComponent implements OnInit {
       },
       (err) => {
         Swal.fire('Error', err.error.message, 'error');
+        console.log(err.console);
       }
     );
   }
