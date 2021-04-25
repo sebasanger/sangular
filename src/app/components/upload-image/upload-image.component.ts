@@ -69,7 +69,7 @@ export class UploadImageComponent implements OnInit {
         Swal.fire('Great', 'Image changed', 'success');
       },
       (err) => {
-        Swal.fire('Error', 'Error on change the image', 'error');
+        Swal.fire('Error', err.error.message, 'error');
       }
     );
   }
